@@ -2,23 +2,26 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Семейные Рейтинги и Награды</title>
 <style>
   body {
     font-family: monospace;
-    margin: 0;
-    padding: 10px;
-    background: #f4f6f8;
+    margin: 0 auto;
+    padding: 12px;
+    background: #fff9f9; /* ВАШ НОВЫЙ ФОН */
+    color: #2d1b1b; /* Теплый темный цвет текста вместо чистого черного */
+    max-width: 600px; /* Ограничитель для ПК (мобильный вид) */
+    -webkit-font-smoothing: antialiased;
   }
 
   /* --- ТАБЫ (ВКЛАДКИ) --- */
   .tabs {
     display: flex;
-    background: #e2e8f0;
-    border-radius: 10px;
-    padding: 4px;
-    margin-bottom: 12px;
+    background: #f5ecec; /* Теплая подложка под вкладки */
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 15px;
   }
   .tab-btn {
     flex: 1;
@@ -27,100 +30,133 @@
     border: none;
     background: transparent;
     font-family: monospace;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
-    color: #64748b;
+    color: #887070; /* Мягкий цвет неактивной кнопки */
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
   }
   .tab-btn.active {
     background: #ffffff;
-    color: #0f172a;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #2d1b1b;
+    box-shadow: 0 2px 8px rgba(120, 80, 80, 0.1); /* Мягкая теплая тень */
   }
 
   #date {
     text-align: center;
     font-size: 12px;
     margin-bottom: 12px;
-    color: #555;
+    color: #887070;
     min-height: 14px;
   }
 
+  /* --- ПОИСК --- */
   #search {
     width: 100%;
     box-sizing: border-box;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e6d5d5; /* Теплая граница */
+    background: #ffffff;
+    margin-bottom: 15px;
     font-family: monospace;
     font-size: 14px;
+    color: #2d1b1b;
     outline: none;
+    transition: all 0.3s ease;
+    -webkit-appearance: none; 
   }
-  #search:focus { border-color: #4a90e2; }
+  #search::placeholder { color: #bcaeae; }
+  #search:focus { 
+    border-color: #d4af37; 
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); /* Золотое свечение при фокусе */
+  }
 
-  /* --- BASE CARD --- */
+  /* --- КАРТОЧКИ --- */
   .card {
-    background: white;
-    border-radius: 10px;
-    padding: 11px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-    font-size: 12.5px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(120, 80, 80, 0.06); /* Теплая легкая тень */
+    font-size: 13px;
   }
 
-  /* --- TOP TIERS --- */
-  .top1 { border-left: 6px solid #d4af37; box-shadow: 0 0 12px rgba(212,175,55,0.28); }
-  .top2 { border-left: 6px solid #b0b0b0; }
+  /* --- ЦВЕТА ТОПОВ --- */
+  .top1 { border-left: 6px solid #d4af37; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
+  .top2 { border-left: 6px solid #a0a0a0; }
   .top3 { border-left: 6px solid #a97142; }
-  .top4 { border-left: 6px solid #c9a227; box-shadow: 0 0 8px rgba(201,162,39,0.18); }
-  .top5_10 { border-left: 6px solid #4a90e2; box-shadow: 0 0 8px rgba(74, 144, 226, 0.20); }
-  .top11_20 { background: white; border-left: 6px solid #4ade80; box-shadow: 0 0 10px rgba(74, 222, 128, 0.30); }
+  .top4 { border-left: 6px solid #c9a227; box-shadow: 0 4px 10px rgba(201, 162, 39, 0.12); }
+  .top5_10 { border-left: 6px solid #4a90e2; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.15); }
+  .top11_20 { border-left: 6px solid #4ade80; box-shadow: 0 4px 10px rgba(74, 222, 128, 0.2); }
 
-  /* --- BADGES --- */
+  /* --- БЕЙДЖИ --- */
   .rank-badge {
     display: inline-block;
     font-size: 10px;
-    padding: 2px 7px;
+    padding: 3px 8px;
     border-radius: 6px;
     font-weight: bold;
-    margin-left: 6px;
+    flex-shrink: 0; /* Запрещаем бейджу сжиматься */
   }
-  .rank1 { background: #d4af37; color: #000; }
-  .rank2 { background: #b0b0b0; color: #000; }
+  .rank1 { background: #d4af37; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+  .rank2 { background: #e0e0e0; color: #333; }
   .rank3 { background: #a97142; color: #fff; }
-  .rank4 { background: #c9a227; color: #000; }
-  .rank5_10 { background: #4a90e2; color: #fff; font-size: 9.5px; }
-  .rank11_20 { background: #4ade80; color: #1f3a2e; font-size: 9.5px; }
+  .rank4 { background: #f0e2b6; color: #8a6a1c; }
+  .rank5_10 { background: #e6f0fa; color: #2b6cb0; font-size: 9.5px; }
+  .rank11_20 { background: #e6f9ec; color: #1b7a43; font-size: 9.5px; }
 
-  .row { display: flex; justify-content: space-between; margin-top: 4px; }
-  .label { color: #666; }
-  .value { font-weight: bold; text-align: right; }
+  /* --- СТРОКИ И ЗАЩИТА ОТ ПЕРЕНОСОВ --- */
+  .row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-top: 6px; 
+    gap: 10px;
+  }
+  
+  /* Блок заголовка: имя обрезается, бейдж остается целым */
+  .row-title {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0; /* Обязательно для работы ellipsis внутри flex */
+  }
+  .row-title b {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    flex-shrink: 1;
+    margin-right: 8px;
+    font-size: 14px;
+  }
 
-  .green { color: #1b8f3a; }
-  .red   { color: #c62828; }
+  .label { color: #887070; white-space: nowrap; }
+  .value { font-weight: bold; text-align: right; white-space: nowrap; }
+
+  /* Текстовые акценты */
+  .green { color: #208b3a; }
+  .red   { color: #d32f2f; }
   .gold  { color: #b8860b; }
-  .loading { text-align: center; color: #666; padding: 20px; }
+  .loading { text-align: center; color: #887070; padding: 30px; font-weight: bold; }
 </style>
 </head>
 <body>
 
-  <!-- Блок переключения вкладок -->
+  <!-- Вкладки -->
   <div class="tabs">
     <button id="btn-rewards" class="tab-btn active" onclick="switchTab('rewards')">👑 Награды</button>
     <button id="btn-eagle" class="tab-btn" onclick="switchTab('eagle')">🦅 Орёл</button>
   </div>
 
   <div id="date"></div>
-  <input type="text" id="search" placeholder="Поиск по ID семьи или названию..." oninput="handleSearch()">
+  <input type="text" id="search" placeholder="Поиск (ID семьи или название)..." oninput="handleSearch()">
   <div id="cards"></div>
 
 <script>
 const sheetID = "1ZqicxQ458QCEFhvFi0skekdBSfegq0Qlm6uNEJn1tA8";
 
-// Конфигурация наших страниц
 const config = {
   rewards: { gid: "0", data: [], loaded: false },
   eagle:   { gid: "337717848", data: [], loaded: false }
@@ -128,7 +164,6 @@ const config = {
 
 let currentTab = "rewards"; 
 
-// Утилиты для таблиц
 function v(r, i) {
   return r.c && r.c[i] ? r.c[i].v : "";
 }
@@ -147,17 +182,14 @@ function formatDate(val) {
   return String(val);
 }
 
-// Переключение вкладок
 function switchTab(tab) {
   if (currentTab === tab) return;
   currentTab = tab;
 
-  // Обновляем визуальное состояние кнопок
   document.getElementById("btn-rewards").classList.remove("active");
   document.getElementById("btn-eagle").classList.remove("active");
   document.getElementById(`btn-${tab}`).classList.add("active");
 
-  // Очищаем поиск при переходе
   document.getElementById("search").value = "";
   
   if (config[tab].loaded) {
@@ -167,7 +199,6 @@ function switchTab(tab) {
   }
 }
 
-// Загрузка данных
 async function loadData(tab) {
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?gid=${config[tab].gid}&tq=SELECT%20*`;
   
@@ -193,7 +224,6 @@ async function loadData(tab) {
   }
 }
 
-// Поиск и отрисовка
 function handleSearch() {
   applySearchAndRender();
 }
@@ -202,7 +232,6 @@ function applySearchAndRender() {
   const val = document.getElementById("search").value.toLowerCase().trim();
   const rows = config[currentTab].data;
 
-  // Дата отображается только для вкладки Наград
   const dateEl = document.getElementById("date");
   if (currentTab === "rewards" && rows.length > 0) {
     const updateDate = formatDate(v(rows[0], 0)) || "13.04.2026";
@@ -216,7 +245,6 @@ function applySearchAndRender() {
   if (val) {
     filtered = rows.filter(r => {
       let id, name;
-      // Индексы колонок отличаются в зависимости от листа!
       if (currentTab === "rewards") {
         id = String(v(r, 2)).toLowerCase();
         name = String(v(r, 4)).toLowerCase();
@@ -235,7 +263,6 @@ function applySearchAndRender() {
   }
 }
 
-// Отрисовка: Сезонная Награда
 function renderRewards(rows) {
   let html = "";
   rows.forEach(r => {
@@ -264,7 +291,8 @@ function renderRewards(rows) {
     html += `
     <div class="card ${rankClass}">
       <div class="row">
-        <div><b>#${place} ${crown}${icon}${name} ${badge}</b></div>
+        <!-- БЛОК С ЗАЩИТОЙ ОТ ПЕРЕНОСОВ -->
+        <div class="row-title"><b>#${place} ${crown}${icon}${name}</b> ${badge}</div>
       </div>
       <div class="row">
         <div></div>
@@ -296,10 +324,9 @@ function renderRewards(rows) {
       </div>
     </div>`;
   });
-  document.getElementById("cards").innerHTML = html || "<div class='loading'>Нет данных</div>";
+  document.getElementById("cards").innerHTML = html || "<div class='loading'>Ничего не найдено</div>";
 }
 
-// Отрисовка: Рейтинг Орла
 function renderEagle(rows) {
   let html = "";
   rows.forEach(r => {
@@ -325,7 +352,8 @@ function renderEagle(rows) {
     html += `
     <div class="card ${rankClass}">
       <div class="row">
-        <div><b>${crown}${icon}${familyName} ${badge}</b></div>
+        <!-- БЛОК С ЗАЩИТОЙ ОТ ПЕРЕНОСОВ -->
+        <div class="row-title"><b>${crown}${icon}${familyName}</b> ${badge}</div>
       </div>
       <div class="row">
         <div class="label">ID семьи</div>
@@ -349,15 +377,13 @@ function renderEagle(rows) {
       </div>
     </div>`;
   });
-  document.getElementById("cards").innerHTML = html || "<div class='loading'>Нет данных</div>";
+  document.getElementById("cards").innerHTML = html || "<div class='loading'>Ничего не найдено</div>";
 }
 
-// Автообновление текущей вкладки раз в минуту
 setInterval(() => {
   loadData(currentTab);
 }, 60000);
 
-// Инициализация при старте
 loadData("rewards");
 </script>
 </body>
