@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Лига - Расписание и Результаты</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
@@ -26,6 +26,7 @@
     color: var(--text-main);
     min-height: 100vh;
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
   }
 
   * { box-sizing: border-box; }
@@ -44,7 +45,7 @@
   .main-tab {
     padding: 12px 30px; border-radius: 15px; font-weight: 700; font-size: 16px; text-transform: uppercase;
     letter-spacing: 0.5px; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease;
-    border: 1px solid transparent; display: flex; align-items: center; gap: 8px;
+    border: 1px solid transparent; display: flex; align-items: center; gap: 8px; justify-content: center;
   }
   .main-tab:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
   .main-tab.active {
@@ -59,7 +60,7 @@
   .sub-tabs { display: inline-flex; flex-wrap: wrap; gap: 8px; padding: 5px; border-radius: 15px; }
   .sub-tab {
     padding: 8px 20px; border-radius: 12px; font-weight: 600; font-size: 13px; text-transform: uppercase;
-    color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;
+    color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent; text-align: center;
   }
   .sub-tab:hover { color: var(--text-main); }
   .sub-tab.active {
@@ -84,7 +85,7 @@
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); 
   }
 
-  .content { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+  .content { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
   .search-box { padding: 12px 20px; border-radius: 15px; display: flex; align-items: center; }
   .search-box input { width: 100%; background: transparent; border: none; color: var(--text-main); font-size: 16px; outline: none; font-family: 'Poppins', sans-serif; }
@@ -128,27 +129,74 @@
 
   .loading { text-align: center; padding: 40px; color: var(--accent-main); font-size: 18px; width: 100%; font-weight: 600; }
 
+  /* ========================================= */
+  /* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ВЕРСИЯ (ДО 768px) */
+  /* ========================================= */
   @media (max-width: 768px) {
-    .header { padding: 15px 10px; }
-    .main-tabs { width: 100%; justify-content: center; background: transparent; padding: 0; box-shadow: none; border: none; }
-    .main-tab { width: 100%; justify-content: center; font-size: 15px; padding: 12px; background: var(--card-bg); border: 1px solid var(--card-border); }
-    .sub-tabs { width: 100%; justify-content: center; }
-    .sub-tab { flex: 1; text-align: center; font-size: 12px; padding: 10px; }
+    .header { padding: 15px 10px 10px; gap: 12px; }
     
-    .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
+    /* Табы строго 50 на 50 на одной строке */
+    .main-tabs { width: 100%; display: flex; flex-direction: row; gap: 8px; background: transparent; padding: 0; box-shadow: none; border: none; }
+    .main-tab { flex: 1; padding: 12px 5px; font-size: 12px; letter-spacing: 0; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; }
     
-    .sidebar { flex: none; width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 10px; gap: 10px; scrollbar-width: none; }
-    .sidebar::-webkit-scrollbar { display: none; }
-    .date-btn { white-space: nowrap; padding: 10px 16px; font-size: 14px; border-radius: 10px; background: var(--card-bg); border: 1px solid var(--card-border); }
+    .sub-tabs { width: 100%; display: flex; }
+    .sub-tab { flex: 1; padding: 10px 5px; font-size: 12px; }
     
-    .match-row { padding: 16px 12px; gap: 10px; }
-    .player-name { font-size: 15px; margin-bottom: 6px; }
-    .id-badge { font-size: 12px; padding: 3px 6px; }
+    .main-layout { flex-direction: column; padding: 10px 10px 30px; gap: 15px; }
+    
+    /* Плавный скролл дат (меню-лента) */
+    .sidebar { 
+      flex: none; width: 100%; flex-direction: row; overflow-x: auto; 
+      padding-bottom: 5px; gap: 8px; scroll-snap-type: x mandatory; 
+      scrollbar-width: none; /* скрываем скроллбар в Firefox */
+    }
+    .sidebar::-webkit-scrollbar { display: none; } /* скрываем скроллбар в Chrome/Safari */
+    .date-btn { 
+      scroll-snap-align: start; white-space: nowrap; padding: 10px 16px; 
+      font-size: 14px; border-radius: 10px; flex-shrink: 0; 
+      background: var(--card-bg); border: 1px solid var(--card-border); 
+    }
+    
+    .search-box { padding: 10px 15px; border-radius: 12px; }
+    .search-box input { font-size: 14px; }
+    
+    /* --- ПОЛНАЯ ПЕРЕРАБОТКА КАРТОЧКИ МАТЧА ДЛЯ ТЕЛЕФОНА --- */
+    .match-row { display: flex; flex-direction: column; padding: 14px; gap: 10px; border-radius: 16px; }
+    .match-row:hover { transform: translateY(-2px); }
+    
+    /* Блок времени и VS переносим на самый верх карточки */
+    .match-center { 
+      order: -1; flex-direction: row; justify-content: space-between; 
+      background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 10px; 
+      width: 100%; border: 1px solid rgba(255,255,255,0.03); 
+    }
     .time-badge { font-size: 14px; padding: 4px 10px; }
+    .vs-text { margin-top: 0; font-size: 15px; align-self: center; }
     
-    .result-card { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
-    .res-right { text-align: left; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }
-    .stat-val { font-size: 15px; }
+    /* Игроков выстраиваем списком: Имя слева, ID справа */
+    .team-block { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 28px; }
+    .team-block.left, .team-block.right { text-align: left; }
+    
+    /* Обрезаем слишком длинные имена, чтобы они не ломали карточку */
+    .player-name { 
+      margin-bottom: 0; font-size: 15px; max-width: 65%; 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+    }
+    .id-badge { font-size: 12px; padding: 4px 8px; flex-shrink: 0; }
+    
+    /* --- КАРТОЧКИ РЕЗУЛЬТАТОВ --- */
+    .result-card { flex-direction: column; align-items: stretch; padding: 16px; gap: 10px; }
+    .res-winner { font-size: 15px; }
+    .res-vs { font-size: 12px; line-height: 1.4; }
+    
+    /* Очки выстраиваем в ровную линию снизу */
+    .res-right { 
+      flex-direction: row; justify-content: space-between; align-items: center; 
+      width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; 
+    }
+    .stat-line { display: flex; flex-direction: column; align-items: flex-start; font-size: 10px; gap: 4px; }
+    .stat-line:last-child { align-items: flex-end; }
+    .stat-val { font-size: 14px; margin-left: 0; padding: 4px 8px; }
   }
 </style>
 </head>
@@ -285,7 +333,7 @@ function startAutoRefresh() {
   if (autoRefreshTimer) clearInterval(autoRefreshTimer);
   autoRefreshTimer = setInterval(() => {
     fetchData(getCurrentKey(), true);
-  }, 60000);
+  }, 90000); 
 }
 
 async function fetchData(key, isBackground = false) {
@@ -343,7 +391,6 @@ function parseScheduleData(rows, key) {
     let colJ = getVal(r, 9);
     let isFreeSlot = false;
 
-    // НОВОЕ ПРАВИЛО: Если в столбце I (Имя) написано Свободный слот, очищаем текст
     if (colI.trim().toLowerCase() === "свободный слот") {
       colI = "";
     }
@@ -476,7 +523,6 @@ function renderItems(items, type, showDate = false) {
       let p2BadgeClass = m.isFreeSlot ? "id-badge free-slot" : "id-badge";
       let p2IdText = m.p2_id || "---";
 
-      // Используем &nbsp; для пустых имен, чтобы блоки не схлопывались по высоте
       html += `
         <div class="match-row glass">
           ${dateBadge}
