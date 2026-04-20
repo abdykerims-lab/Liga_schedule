@@ -91,7 +91,7 @@
   }
   .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- SCHEDULE (Tab 1) - НОВЫЙ ДИЗАЙН СТРОКАМИ --- */
+  /* --- SCHEDULE (Tab 1) - ДИЗАЙН СТРОКАМИ --- */
   .schedule-list { 
     display: flex; 
     flex-direction: column; 
@@ -102,7 +102,7 @@
     padding: 15px 20px; 
     border-radius: 15px; 
     display: grid; 
-    grid-template-columns: 1fr auto 1fr; /* Лево, Центр, Право */
+    grid-template-columns: 1fr auto 1fr; 
     align-items: center; 
     gap: 15px;
     transition: transform 0.2s, background 0.2s;
@@ -184,17 +184,11 @@
     .search-box { padding: 10px 15px; }
     .search-box input { font-size: 14px; }
 
-    /* Таб 1: Расписание (Список) на мобильных */
-    .match-row { 
-      padding: 12px 10px; 
-      gap: 10px; 
-      /* Уменьшаем шрифты для вместительности */
-    }
+    .match-row { padding: 12px 10px; gap: 10px; }
     .player-name { font-size: 12px; }
     .team-block { font-size: 10px; }
     .time-badge { font-size: 12px; padding: 3px 8px; }
     
-    /* Таб 2: Результаты (Компактно) */
     .results-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
     .result-card-v2 { padding: 15px 10px; border-radius: 12px; }
     .result-card-v2 h4 { margin: 0 0 4px 0; font-size: 12px; }
@@ -332,7 +326,8 @@ function parseSchedule(rows) {
     let c2_id = getVal(r, 9) || "0000";      // Clan ID 2 
     let p2 = getVal(r, 10) || "Неизвестно";    // Player 2 
 
-    let searchStr = `${colD} ${colE} ${colF}`.toLowerCase();
+    // ИСПРАВЛЕНИЕ: Теперь строка для поиска включает ВСЕ данные (обе стороны)
+    let searchStr = `${colD} ${colE} ${colF} ${p2} ${c2_id} ${c2_name}`.toLowerCase();
 
     if (!cache.schedule.byDate[date]) {
       cache.schedule.byDate[date] = [];
@@ -365,7 +360,8 @@ function parseResults(rows) {
     let scoreNum = getNum(r, 7);
     let scoreStr = getVal(r, 7) || "0";
 
-    let searchStr = `${colF} ${colG} ${colC}`.toLowerCase();
+    // ИСПРАВЛЕНИЕ: Поиск по всем видимым текстам карточки результата
+    let searchStr = `${colC} ${colE} ${colF} ${colG}`.toLowerCase();
 
     if (!cache.results.byDate[date]) {
       cache.results.byDate[date] = [];
@@ -420,10 +416,15 @@ function renderContent(searchQuery = "") {
   let html = "";
 
   if (searchQuery !== "") {
+    // ИСПРАВЛЕНИЕ ПОИСКА: "Умный" поиск по отдельным словам (токенам)
+    const searchTerms = searchQuery.split(" ").filter(t => t !== "");
     let matches = [];
+
     dataRef.dates.forEach(d => {
       dataRef.byDate[d].forEach(item => {
-        if (item.searchStr.includes(searchQuery)) {
+        // Проверяем, что КАЖДОЕ введенное слово есть в строке поиска
+        const isMatch = searchTerms.every(term => item.searchStr.includes(term));
+        if (isMatch) {
           matches.push({ ...item, dateLabel: d });
         }
       });
@@ -462,7 +463,6 @@ function renderItems(items, showDate = false) {
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
       
-      // ГОРИЗОНТАЛЬНЫЕ СТРОКИ ДЛЯ РАСПИСАНИЯ
       html += `
         <div class="match-row glass">
           ${dateBadge}
@@ -486,7 +486,6 @@ function renderItems(items, showDate = false) {
   } 
   
   else {
-    // Вкладка Результатов осталась КАРТОЧКАМИ
     html += `<div class="results-grid">`;
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
