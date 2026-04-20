@@ -308,11 +308,9 @@ async function fetchData(tabName, isBackground = false) {
     
     const newDates = JSON.stringify(cache[tabName].dates);
 
-    // Если это первый запуск ИЛИ даты в сайдбаре поменялись
     if (!isBackground || oldDates !== newDates) {
       buildSidebar(isBackground);
     } else {
-      // Иначе просто незаметно обновляем контент внутри
       if (document.getElementById("searchInput").value.trim() !== "") {
         handleSearch();
       } else {
@@ -402,11 +400,10 @@ function buildSidebar(isBackground = false) {
     return;
   }
 
-  // Сохраняем текущую выбранную дату при фоновом обновлении, если она всё еще существует
   if (isBackground && dataRef.dates.includes(selectedDate)) {
     // оставляем как есть
   } else {
-    selectedDate = dataRef.dates[0]; // если даты нет, сбрасываем на самую первую
+    selectedDate = dataRef.dates[0];
   }
 
   dataRef.dates.forEach((date) => {
@@ -429,7 +426,6 @@ function selectDate(date) {
   selectedDate = date;
   document.getElementById("searchInput").value = ""; 
   
-  // Обновляем визуал кнопок дат
   document.querySelectorAll(".date-btn").forEach(btn => {
     btn.classList.toggle("active", btn.innerText === selectedDate);
   });
@@ -495,7 +491,7 @@ function renderItems(items, showDate = false) {
           <div class="team-block left">
             <span class="player-name">${m.p1}</span>
             <span class="clan-name">${m.c1_name}</span>
-            <span class="clan-id">[ ID: ${m.c1_id} ]</span>
+            <span class="clan-id">ID: ${m.c1_id}</span>
           </div>
           <div class="match-center">
             <div class="time-badge">${m.time}</div>
@@ -504,7 +500,7 @@ function renderItems(items, showDate = false) {
           <div class="team-block right">
             <span class="player-name">${m.p2}</span>
             <span class="clan-name">${m.c2_name}</span>
-            <span class="clan-id">[ ID: ${m.c2_id} ]</span>
+            <span class="clan-id">ID: ${m.c2_id}</span>
           </div>
         </div>`;
     });
@@ -529,12 +525,12 @@ function renderItems(items, showDate = false) {
           <div class="result-details">
             <span class="player-name">${m.colF}</span>
             <span class="clan-name">BIGO ID: ${m.colG}</span>
-            <span class="clan-id">[ ID: ${m.colC} ]</span>
+            <span class="clan-id">ID: ${m.colC}</span>
           </div>
           
           <div class="result-score-box">
             <span class="score-label">ПК Очки</span>
-            <span class="score-value">[ ${m.scoreStr} ]</span>
+            <span class="score-value">${m.scoreStr}</span>
           </div>
         </div>`;
     });
