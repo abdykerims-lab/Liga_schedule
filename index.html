@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Лига - Расписание и Результаты</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
 
   body {
     margin: 0;
@@ -91,14 +91,14 @@
   }
   .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- ОБЩИЕ ЭЛЕМЕНТЫ ДЛЯ ТЕКСТА (Используются в обоих табах) --- */
-  .player-name { font-weight: 600; font-size: 16px; color: #ffffff; display: block; margin-bottom: 2px; letter-spacing: 0.5px; }
-  .clan-name { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px; }
+  /* --- ОБЩИЕ ЭЛЕМЕНТЫ ТЕКСТА --- */
+  .player-name { font-weight: 700; font-size: 17px; color: #ffffff; display: block; margin-bottom: 4px; letter-spacing: 0.5px; }
+  .clan-name { font-size: 13px; color: #cbd5e1; display: block; margin-bottom: 6px; font-weight: 400; }
   .clan-id { 
     font-family: monospace; font-size: 12px; color: #38bdf8; 
-    background: rgba(56, 189, 248, 0.1); padding: 2px 6px; 
+    background: rgba(56, 189, 248, 0.1); padding: 3px 8px; 
     border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);
-    display: inline-block;
+    display: inline-block; font-weight: 600; letter-spacing: 0.5px;
   }
   .date-badge { 
     position: absolute; top: -10px; right: 15px; 
@@ -132,7 +132,7 @@
     text-transform: uppercase; letter-spacing: 1px;
   }
 
-  /* --- RESULTS (Tab 2) - НОВЫЙ ДИЗАЙН ЛИДЕРБОРДА --- */
+  /* --- RESULTS (Tab 2) - ЛИДЕРБОРД --- */
   .results-list { display: flex; flex-direction: column; gap: 12px; }
 
   .result-row {
@@ -142,21 +142,18 @@
   }
   .result-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
 
-  /* Блок места в рейтинге */
   .rank-box { font-size: 18px; font-weight: 800; color: #64748b; width: 40px; text-align: center; }
-  .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); } /* Золото */
-  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); } /* Серебро */
-  .rank-3 { color: #b45309; font-size: 20px; text-shadow: 0 0 10px rgba(180, 83, 9, 0.4); }    /* Бронза */
+  .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
+  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); }
+  .rank-3 { color: #b45309; font-size: 20px; text-shadow: 0 0 10px rgba(180, 83, 9, 0.4); }
 
-  /* Центральный блок с данными */
   .result-details { flex-grow: 1; text-align: left; }
 
-  /* Блок с очками (справа) */
   .result-score-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
-  .score-label { font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }
+  .score-label { font-size: 11px; color: #a855f7; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px; }
   .score-value { 
-    font-size: 22px; font-weight: 800; color: #4ade80; 
-    background: rgba(74, 222, 128, 0.1); padding: 2px 12px; 
+    font-family: monospace; font-size: 20px; font-weight: 800; color: #4ade80; 
+    background: rgba(74, 222, 128, 0.1); padding: 4px 12px; 
     border-radius: 8px; border: 1px solid rgba(74, 222, 128, 0.3);
   }
 
@@ -175,21 +172,19 @@
     .search-box { padding: 10px 15px; }
     .search-box input { font-size: 14px; }
 
-    /* Шрифты и отступы для телефонов */
     .match-row { padding: 12px 10px; gap: 10px; }
-    .player-name { font-size: 14px; }
-    .clan-name { font-size: 11px; margin-bottom: 4px;}
-    .clan-id { font-size: 10px; padding: 2px 4px; }
+    .player-name { font-size: 15px; }
+    .clan-name { font-size: 12px; margin-bottom: 4px;}
+    .clan-id { font-size: 11px; padding: 2px 5px; }
     .time-badge { font-size: 13px; padding: 4px 10px; }
     .vs-text { font-size: 12px; margin-top: 6px; }
     
-    /* Таб 2 для телефонов */
     .result-row { padding: 12px 10px; gap: 12px; }
     .rank-box { width: 30px; font-size: 16px; }
     .rank-1 { font-size: 22px; }
     .rank-2 { font-size: 20px; }
     .rank-3 { font-size: 18px; }
-    .score-value { font-size: 18px; padding: 2px 8px; }
+    .score-value { font-size: 16px; padding: 3px 8px; }
     .score-label { font-size: 9px; }
   }
 </style>
@@ -219,6 +214,7 @@
 const sheetID = "1ine1ZqJrbK9kok_s7QujVLXhzj5hJuoKcguw8bQT2Jo";
 let currentTab = "schedule"; 
 let selectedDate = null;
+let autoRefreshTimer = null;
 
 const cache = {
   schedule: { dates: [], byDate: {}, loaded: false },
@@ -274,13 +270,27 @@ function switchTab(tabName) {
   document.getElementById("sidebar").innerHTML = "";
   document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
 
-  if (cache[tabName].loaded) buildSidebar();
-  else fetchData(tabName);
+  if (cache[tabName].loaded) buildSidebar(false);
+  else fetchData(tabName, false);
 }
 
-async function fetchData(tabName) {
+// Запуск интервала: автообновление каждую 1 минуту (60000 мс)
+function startAutoRefresh() {
+  if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+  autoRefreshTimer = setInterval(() => {
+    if (currentTab) {
+      fetchData(currentTab, true); // true = фоновое обновление (без лоадера)
+    }
+  }, 60000);
+}
+
+async function fetchData(tabName, isBackground = false) {
   const sheetName = tabName === "schedule" ? "Расписание" : "Результаты 2.0";
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent(sheetName)}`;
+
+  if (!isBackground) {
+    document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+  }
 
   try {
     const res = await fetch(url + "&_=" + Date.now());
@@ -288,14 +298,31 @@ async function fetchData(tabName) {
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows || [];
 
+    const oldDates = JSON.stringify(cache[tabName].dates);
+
     if (tabName === "schedule") parseSchedule(rows);
     else parseResults(rows);
 
     cache[tabName].dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
     cache[tabName].loaded = true;
-    buildSidebar();
+    
+    const newDates = JSON.stringify(cache[tabName].dates);
+
+    // Если это первый запуск ИЛИ даты в сайдбаре поменялись
+    if (!isBackground || oldDates !== newDates) {
+      buildSidebar(isBackground);
+    } else {
+      // Иначе просто незаметно обновляем контент внутри
+      if (document.getElementById("searchInput").value.trim() !== "") {
+        handleSearch();
+      } else {
+        renderContent();
+      }
+    }
   } catch (e) {
-    document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
+    if (!isBackground) {
+      document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
+    }
   }
 }
 
@@ -342,14 +369,13 @@ function parseResults(rows) {
     let date = parseDate(getVal(r, 0));
     if (!date || date.toLowerCase() === "дата") return;
 
-    let colC = getVal(r, 2);
-    let colE = getVal(r, 4) || "—";
-    let colF = getVal(r, 5) || "—";
-    let colG = getVal(r, 6) || "—";
+    let colC = getVal(r, 2); // ID Семьи
+    let colF = getVal(r, 5); // Никнейм
+    let colG = getVal(r, 6); // BIGO ID (Название семьи)
     let scoreNum = getNum(r, 7);
-    let scoreStr = getVal(r, 7) || "0";
+    let scoreStr = getVal(r, 7) || "0"; 
 
-    let searchStr = `${colC} ${colE} ${colF} ${colG}`.toLowerCase();
+    let searchStr = `${colC} ${colF} ${colG}`.toLowerCase();
 
     if (!cache.results.byDate[date]) {
       cache.results.byDate[date] = [];
@@ -357,7 +383,7 @@ function parseResults(rows) {
     }
     
     cache.results.byDate[date].push({ 
-      colC, colE, colF, colG, scoreNum, scoreStr, searchStr 
+      colC, colF, colG, scoreNum, scoreStr, searchStr 
     });
   });
 
@@ -366,7 +392,7 @@ function parseResults(rows) {
   }
 }
 
-function buildSidebar() {
+function buildSidebar(isBackground = false) {
   const dataRef = cache[currentTab];
   const sidebar = document.getElementById("sidebar");
   sidebar.innerHTML = "";
@@ -376,20 +402,38 @@ function buildSidebar() {
     return;
   }
 
-  dataRef.dates.forEach((date, index) => {
+  // Сохраняем текущую выбранную дату при фоновом обновлении, если она всё еще существует
+  if (isBackground && dataRef.dates.includes(selectedDate)) {
+    // оставляем как есть
+  } else {
+    selectedDate = dataRef.dates[0]; // если даты нет, сбрасываем на самую первую
+  }
+
+  dataRef.dates.forEach((date) => {
     const btn = document.createElement("div");
     btn.className = "date-btn glass";
+    if (date === selectedDate) btn.classList.add("active");
     btn.innerText = date;
     btn.onclick = () => selectDate(date);
     sidebar.appendChild(btn);
-    
-    if (index === 0) selectDate(date);
   });
+  
+  if (document.getElementById("searchInput").value.trim() !== "") {
+    handleSearch();
+  } else {
+    renderContent();
+  }
 }
 
 function selectDate(date) {
   selectedDate = date;
   document.getElementById("searchInput").value = ""; 
+  
+  // Обновляем визуал кнопок дат
+  document.querySelectorAll(".date-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.innerText === selectedDate);
+  });
+
   renderContent();
 }
 
@@ -430,10 +474,6 @@ function renderContent(searchQuery = "") {
       container.innerHTML = `<div class="loading">Нет данных</div>`;
       return;
     }
-
-    document.querySelectorAll(".date-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.innerText === selectedDate);
-    });
     
     html = renderItems(data, false);
   }
@@ -455,7 +495,7 @@ function renderItems(items, showDate = false) {
           <div class="team-block left">
             <span class="player-name">${m.p1}</span>
             <span class="clan-name">${m.c1_name}</span>
-            <span class="clan-id">ID Семьи: ${m.c1_id}</span>
+            <span class="clan-id">[ ID: ${m.c1_id} ]</span>
           </div>
           <div class="match-center">
             <div class="time-badge">${m.time}</div>
@@ -464,7 +504,7 @@ function renderItems(items, showDate = false) {
           <div class="team-block right">
             <span class="player-name">${m.p2}</span>
             <span class="clan-name">${m.c2_name}</span>
-            <span class="clan-id">ID Семьи: ${m.c2_id}</span>
+            <span class="clan-id">[ ID: ${m.c2_id} ]</span>
           </div>
         </div>`;
     });
@@ -472,18 +512,15 @@ function renderItems(items, showDate = false) {
   } 
   
   else {
-    // ТАБ 2 - НОВЫЙ ВНЕШНИЙ ВИД (ЛИДЕРБОРД)
     html += `<div class="results-list">`;
     items.forEach((m, index) => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
       
-      // Определяем цвет цифры в зависимости от места
       let rankClass = "";
       if (index === 0) rankClass = "rank-1";
       else if (index === 1) rankClass = "rank-2";
       else if (index === 2) rankClass = "rank-3";
 
-      // В Табе 2: colF (Название/Клан), colG (Подзаголовок), colE (ID)
       html += `
         <div class="result-row glass">
           ${dateBadge}
@@ -491,13 +528,13 @@ function renderItems(items, showDate = false) {
           
           <div class="result-details">
             <span class="player-name">${m.colF}</span>
-            <span class="clan-name">${m.colG}</span>
-            <span class="clan-id">ID: ${m.colE}</span>
+            <span class="clan-name">BIGO ID: ${m.colG}</span>
+            <span class="clan-id">[ ID: ${m.colC} ]</span>
           </div>
           
           <div class="result-score-box">
             <span class="score-label">ПК Очки</span>
-            <span class="score-value">${m.scoreStr}</span>
+            <span class="score-value">[ ${m.scoreStr} ]</span>
           </div>
         </div>`;
     });
@@ -507,7 +544,9 @@ function renderItems(items, showDate = false) {
   return html;
 }
 
+// Запускаем всё
 switchTab("schedule");
+startAutoRefresh();
 </script>
 </body>
 </html>
