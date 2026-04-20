@@ -157,6 +157,15 @@
     border-radius: 8px; border: 1px solid rgba(74, 222, 128, 0.3);
   }
 
+  /* --- КАРТИНКИ ОРЛОВ --- */
+  .eagle-img {
+    height: 25px; /* Жесткое ограничение высоты, чтобы не растягивать строку */
+    width: auto;
+    object-fit: contain;
+    margin-top: 5px;
+    border-radius: 4px; /* Легкое скругление углов, на случай если картинка имеет фон */
+  }
+
   .loading { text-align: center; padding: 40px; color: #a78bfa; font-size: 18px; width: 100%; }
 
   /* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
@@ -186,6 +195,8 @@
     .rank-3 { font-size: 18px; }
     .score-value { font-size: 16px; padding: 3px 8px; }
     .score-label { font-size: 9px; }
+    
+    .eagle-img { height: 20px; margin-top: 4px; } /* Делаем картинку еще меньше на мобильных */
   }
 </style>
 </head>
@@ -274,12 +285,11 @@ function switchTab(tabName) {
   else fetchData(tabName, false);
 }
 
-// Запуск интервала: автообновление каждую 1 минуту (60000 мс)
 function startAutoRefresh() {
   if (autoRefreshTimer) clearInterval(autoRefreshTimer);
   autoRefreshTimer = setInterval(() => {
     if (currentTab) {
-      fetchData(currentTab, true); // true = фоновое обновление (без лоадера)
+      fetchData(currentTab, true);
     }
   }, 60000);
 }
@@ -367,11 +377,21 @@ function parseResults(rows) {
     let date = parseDate(getVal(r, 0));
     if (!date || date.toLowerCase() === "дата") return;
 
-    let colC = getVal(r, 2); // ID Семьи
-    let colF = getVal(r, 5); // Никнейм
-    let colG = getVal(r, 6); // BIGO ID (Название семьи)
-    let scoreNum = getNum(r, 7);
+    let colC = getVal(r, 2); 
+    let colF = getVal(r, 5); 
+    let colG = getVal(r, 6); 
+    let scoreNum = getNum(r, 7); 
     let scoreStr = getVal(r, 7) || "0"; 
+
+    // Логика добавления картинки в зависимости от очков
+    let eagleImgSrc = "";
+    if (scoreNum >= 500000) {
+      eagleImgSrc = "https://i.ibb.co/p6fLVxMk/Golden-1.png";
+    } else if (scoreNum >= 50000) {
+      eagleImgSrc = "https://i.ibb.co/m5fQzxRp/Silver-1.png";
+    } else {
+      eagleImgSrc = "https://i.ibb.co/zWmzPJJg/no-eagel.jpg";
+    }
 
     let searchStr = `${colC} ${colF} ${colG}`.toLowerCase();
 
@@ -381,7 +401,7 @@ function parseResults(rows) {
     }
     
     cache.results.byDate[date].push({ 
-      colC, colF, colG, scoreNum, scoreStr, searchStr 
+      colC, colF, colG, scoreNum, scoreStr, eagleImgSrc, searchStr 
     });
   });
 
@@ -531,6 +551,7 @@ function renderItems(items, showDate = false) {
           <div class="result-score-box">
             <span class="score-label">ПК Очки</span>
             <span class="score-value">${m.scoreStr}</span>
+            <img src="${m.eagleImgSrc}" class="eagle-img" loading="lazy" alt="Eagle Badge">
           </div>
         </div>`;
     });
