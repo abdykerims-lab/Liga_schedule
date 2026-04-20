@@ -91,76 +91,73 @@
   }
   .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- SCHEDULE (Tab 1) - НОВЫЙ ДИЗАЙН ШРИФТОВ И ЦВЕТОВ --- */
-  .schedule-list { display: flex; flex-direction: column; gap: 12px; }
-  
-  .match-row {
-    padding: 15px 20px; 
-    border-radius: 15px; 
-    display: grid; 
-    grid-template-columns: 1fr auto 1fr; 
-    align-items: center; 
-    gap: 15px;
-    transition: transform 0.2s, background 0.2s;
-    position: relative;
-  }
-  .match-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
-  
-  .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-
-  /* Время - статусное золотое */
-  .time-badge {
-    background: rgba(0, 0, 0, 0.4); padding: 5px 14px; border-radius: 8px;
-    font-family: monospace; font-size: 15px; font-weight: bold;
-    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
-  }
-  
-  .team-block { display: block; line-height: 1.4; }
-  .team-block.left { text-align: left; }
-  .team-block.right { text-align: right; }
-  
-  /* Игрок - крупный и белый */
+  /* --- ОБЩИЕ ЭЛЕМЕНТЫ ДЛЯ ТЕКСТА (Используются в обоих табах) --- */
   .player-name { font-weight: 600; font-size: 16px; color: #ffffff; display: block; margin-bottom: 2px; letter-spacing: 0.5px; }
-  
-  /* Клан - приглушенный серебристый */
   .clan-name { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px; }
-  
-  /* ID - неоново-голубой бейджик */
   .clan-id { 
     font-family: monospace; font-size: 12px; color: #38bdf8; 
     background: rgba(56, 189, 248, 0.1); padding: 2px 6px; 
     border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);
+    display: inline-block;
   }
-
-  /* VS - строгий красный */
-  .vs-text { 
-    text-align: center; margin-top: 8px; font-style: normal; 
-    color: #f43f5e; font-size: 14px; font-weight: 800; 
-    text-transform: uppercase; letter-spacing: 1px;
-  }
-
   .date-badge { 
     position: absolute; top: -10px; right: 15px; 
     background: #a855f7; color: #fff; font-size: 11px; 
     padding: 4px 8px; border-radius: 8px; font-weight: bold;
   }
 
-  /* --- RESULTS (Tab 2) --- */
-  .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  /* --- SCHEDULE (Tab 1) --- */
+  .schedule-list { display: flex; flex-direction: column; gap: 12px; }
   
-  .result-card-v2 {
-    padding: 24px; border-radius: 16px; text-align: center;
-    transition: transform 0.2s; position: relative;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  .match-row {
+    padding: 15px 20px; border-radius: 15px; display: grid; 
+    grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px;
+    transition: transform 0.2s, background 0.2s; position: relative;
   }
-  .result-card-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+  .match-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
+  
+  .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .team-block { display: block; line-height: 1.4; }
+  .team-block.left { text-align: left; }
+  .team-block.right { text-align: right; }
 
-  .result-card-v2 h4 { margin: 0 0 8px 0; color: #cbd5e1; font-size: 14px; font-weight: 400; }
-  .result-card-v2 h2 { margin: 0 0 8px 0; color: #fff; font-size: 22px; font-weight: 800; }
-  .result-card-v2 h3 { margin: 0 0 15px 0; color: #a855f7; font-size: 16px; font-weight: 600; }
-  .result-card-v2 .pk-score { 
-    margin: auto 0 0 0; color: #fbbf24; background: rgba(251, 191, 36, 0.1); 
-    padding: 6px 15px; border-radius: 8px; border: 1px solid rgba(251,191,36,0.3);
+  .time-badge {
+    background: rgba(0, 0, 0, 0.4); padding: 5px 14px; border-radius: 8px;
+    font-family: monospace; font-size: 15px; font-weight: bold;
+    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
+  }
+  .vs-text { 
+    text-align: center; margin-top: 8px; font-style: normal; 
+    color: #f43f5e; font-size: 14px; font-weight: 800; 
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* --- RESULTS (Tab 2) - НОВЫЙ ДИЗАЙН ЛИДЕРБОРДА --- */
+  .results-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .result-row {
+    display: flex; align-items: center; padding: 15px 20px;
+    border-radius: 15px; gap: 20px; transition: transform 0.2s;
+    position: relative;
+  }
+  .result-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
+
+  /* Блок места в рейтинге */
+  .rank-box { font-size: 18px; font-weight: 800; color: #64748b; width: 40px; text-align: center; }
+  .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); } /* Золото */
+  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); } /* Серебро */
+  .rank-3 { color: #b45309; font-size: 20px; text-shadow: 0 0 10px rgba(180, 83, 9, 0.4); }    /* Бронза */
+
+  /* Центральный блок с данными */
+  .result-details { flex-grow: 1; text-align: left; }
+
+  /* Блок с очками (справа) */
+  .result-score-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+  .score-label { font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }
+  .score-value { 
+    font-size: 22px; font-weight: 800; color: #4ade80; 
+    background: rgba(74, 222, 128, 0.1); padding: 2px 12px; 
+    border-radius: 8px; border: 1px solid rgba(74, 222, 128, 0.3);
   }
 
   .loading { text-align: center; padding: 40px; color: #a78bfa; font-size: 18px; width: 100%; }
@@ -178,7 +175,7 @@
     .search-box { padding: 10px 15px; }
     .search-box input { font-size: 14px; }
 
-    /* Таб 1 Мобильный вид (уменьшенные новые шрифты) */
+    /* Шрифты и отступы для телефонов */
     .match-row { padding: 12px 10px; gap: 10px; }
     .player-name { font-size: 14px; }
     .clan-name { font-size: 11px; margin-bottom: 4px;}
@@ -186,16 +183,14 @@
     .time-badge { font-size: 13px; padding: 4px 10px; }
     .vs-text { font-size: 12px; margin-top: 6px; }
     
-    .results-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    .result-card-v2 { padding: 15px 10px; border-radius: 12px; }
-    .result-card-v2 h4 { margin: 0 0 4px 0; font-size: 12px; }
-    .result-card-v2 h2 { margin: 0 0 4px 0; font-size: 18px; }
-    .result-card-v2 h3 { margin: 0 0 10px 0; font-size: 14px; }
-    .result-card-v2 .pk-score { padding: 4px 10px; font-size: 12px; }
-  }
-
-  @media (max-width: 360px) {
-    .results-grid { grid-template-columns: 1fr; }
+    /* Таб 2 для телефонов */
+    .result-row { padding: 12px 10px; gap: 12px; }
+    .rank-box { width: 30px; font-size: 16px; }
+    .rank-1 { font-size: 22px; }
+    .rank-2 { font-size: 20px; }
+    .rank-3 { font-size: 18px; }
+    .score-value { font-size: 18px; padding: 2px 8px; }
+    .score-label { font-size: 9px; }
   }
 </style>
 </head>
@@ -477,16 +472,33 @@ function renderItems(items, showDate = false) {
   } 
   
   else {
-    html += `<div class="results-grid">`;
-    items.forEach(m => {
+    // ТАБ 2 - НОВЫЙ ВНЕШНИЙ ВИД (ЛИДЕРБОРД)
+    html += `<div class="results-list">`;
+    items.forEach((m, index) => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      
+      // Определяем цвет цифры в зависимости от места
+      let rankClass = "";
+      if (index === 0) rankClass = "rank-1";
+      else if (index === 1) rankClass = "rank-2";
+      else if (index === 2) rankClass = "rank-3";
+
+      // В Табе 2: colF (Название/Клан), colG (Подзаголовок), colE (ID)
       html += `
-        <div class="result-card-v2 glass">
+        <div class="result-row glass">
           ${dateBadge}
-          <h4>${m.colE}</h4>
-          <h2>${m.colF}</h2>
-          <h3>${m.colG}</h3>
-          <h3 class="pk-score">ПК очки: ${m.scoreStr}</h3>
+          <div class="rank-box ${rankClass}">#${index + 1}</div>
+          
+          <div class="result-details">
+            <span class="player-name">${m.colF}</span>
+            <span class="clan-name">${m.colG}</span>
+            <span class="clan-id">ID: ${m.colE}</span>
+          </div>
+          
+          <div class="result-score-box">
+            <span class="score-label">ПК Очки</span>
+            <span class="score-value">${m.scoreStr}</span>
+          </div>
         </div>`;
     });
     html += `</div>`;
