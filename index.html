@@ -146,11 +146,43 @@
 
   .loading { text-align: center; padding: 40px; color: #a78bfa; font-size: 18px; width: 100%; }
 
-  /* --- RESPONSIVE --- */
+  /* --- МОБИЛЬНАЯ АДАПТАЦИЯ (КОМПАКТНЫЙ ВИД) --- */
   @media (max-width: 768px) {
-    .main-layout { flex-direction: column; padding: 10px; }
-    .sidebar { flex: none; width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
-    .date-btn { white-space: nowrap; text-align: center; }
+    .header { padding: 15px 10px; }
+    .tab { padding: 8px 15px; font-size: 13px; }
+    
+    .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
+    .sidebar { flex: none; width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 5px; gap: 8px; }
+    .date-btn { white-space: nowrap; text-align: center; padding: 8px 12px; font-size: 13px; border-radius: 10px; }
+    
+    .content { gap: 15px; }
+    .search-box { padding: 10px 15px; }
+    .search-box input { font-size: 14px; }
+
+    /* Таб 1: Расписание (Компактно) */
+    .schedule-list { 
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* По 2 карточки в ряд на смартфонах */
+      gap: 10px; 
+    }
+    .match-card-v2 { padding: 12px 8px; border-radius: 12px; }
+    .time-badge { font-size: 12px; padding: 3px 8px; margin-bottom: 8px; }
+    .vs-text { margin: 4px 0; font-size: 11px; }
+
+    /* Таб 2: Результаты (Компактно) */
+    .results-grid { 
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* По 2 карточки в ряд на смартфонах */
+      gap: 10px; 
+    }
+    .result-card-v2 { padding: 15px 10px; border-radius: 12px; }
+    .result-card-v2 h4 { margin: 0 0 4px 0; font-size: 12px; }
+    .result-card-v2 h2 { margin: 0 0 4px 0; font-size: 18px; }
+    .result-card-v2 h3 { margin: 0 0 10px 0; font-size: 14px; }
+    .result-card-v2 .pk-score { padding: 4px 10px; font-size: 12px; }
+  }
+
+  /* Для совсем узких экранов (старые iPhone и т.д.) */
+  @media (max-width: 360px) {
+    .schedule-list, .results-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -205,258 +237,4 @@ function parseDate(val) {
     const match = val.match(/Date\((\d+),(\d+),(\d+)/);
     if (match) {
       const y = match[1];
-      const m = String(Number(match[2]) + 1).padStart(2, "0");
-      const d = String(match[3]).padStart(2, "0");
-      return `${d}.${m}.${y}`;
-    }
-  }
-  return val;
-}
-
-function formatTime(val) {
-  if (Array.isArray(val)) return `${String(val[0]).padStart(2,"0")}:${String(val[1]).padStart(2,"0")}`;
-  return val;
-}
-
-// Convert DD.MM.YYYY to Date for sorting
-function parseToDateObj(str) {
-  let parts = str.split('.');
-  if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
-  return new Date(0); 
-}
-
-// --- Tab Logic ---
-function switchTab(tabName) {
-  if (currentTab === tabName && cache[tabName].loaded) return;
-  currentTab = tabName;
-  
-  // Clear search
-  document.getElementById("searchInput").value = "";
-
-  document.getElementById("tab-schedule").classList.remove("active");
-  document.getElementById("tab-results").classList.remove("active");
-  document.getElementById(`tab-${tabName}`).classList.add("active");
-
-  document.getElementById("sidebar").innerHTML = "";
-  document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
-
-  if (cache[tabName].loaded) buildSidebar();
-  else fetchData(tabName);
-}
-
-async function fetchData(tabName) {
-  const sheetName = tabName === "schedule" ? "Расписание" : "Результаты 2.0";
-  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent(sheetName)}`;
-
-  try {
-    const res = await fetch(url + "&_=" + Date.now());
-    const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
-    const rows = json.table.rows || [];
-
-    if (tabName === "schedule") parseSchedule(rows);
-    else parseResults(rows);
-
-    // Sort Dates Descending
-    cache[tabName].dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
-
-    cache[tabName].loaded = true;
-    buildSidebar();
-  } catch (e) {
-    document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
-  }
-}
-
-// --- Parsers ---
-function parseSchedule(rows) {
-  cache.schedule.dates = [];
-  cache.schedule.byDate = {};
-
-  rows.forEach(r => {
-    let date = parseDate(getVal(r, 0));
-    if (!date || date.toLowerCase() === "дата") return;
-
-    let time = formatTime(getVal(r, 1)) || "--:--";
-    let colD = getVal(r, 3); // Player 1
-    let colE = getVal(r, 4); // Clan ID 1
-    let colF = getVal(r, 5); // Clan Name 1
-    let c2_name = getVal(r, 8) || "Без клана";
-    let c2_id = getVal(r, 9) || "0000";
-    let p2 = getVal(r, 10) || "Неизвестно";
-
-    // Search string based on columns D, E and F
-    let searchStr = `${colD} ${colE} ${colF}`.toLowerCase();
-
-    if (!cache.schedule.byDate[date]) {
-      cache.schedule.byDate[date] = [];
-      cache.schedule.dates.push(date);
-    }
-    
-    cache.schedule.byDate[date].push({ 
-      time, p1: colD || "Неизвестно", c1_id: colE || "0000", c1_name: colF || "Без клана", 
-      p2, c2_id, c2_name, searchStr 
-    });
-  });
-
-  // Sort inside by Time Ascending (Column B)
-  for (let d in cache.schedule.byDate) {
-    cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
-  }
-}
-
-function parseResults(rows) {
-  cache.results.dates = [];
-  cache.results.byDate = {};
-
-  rows.forEach(r => {
-    let date = parseDate(getVal(r, 0));
-    if (!date || date.toLowerCase() === "дата") return;
-
-    let colC = getVal(r, 2);
-    let colE = getVal(r, 4) || "—";
-    let colF = getVal(r, 5) || "—";
-    let colG = getVal(r, 6) || "—";
-    let scoreNum = getNum(r, 7);
-    let scoreStr = getVal(r, 7) || "0";
-
-    // Search string based on columns F, G and C
-    let searchStr = `${colF} ${colG} ${colC}`.toLowerCase();
-
-    if (!cache.results.byDate[date]) {
-      cache.results.byDate[date] = [];
-      cache.results.dates.push(date);
-    }
-    
-    cache.results.byDate[date].push({ 
-      colC, colE, colF, colG, scoreNum, scoreStr, searchStr 
-    });
-  });
-
-  // Keep internal sorting by score descending for Tab 2
-  for (let d in cache.results.byDate) {
-    cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
-  }
-}
-
-// --- UI Rendering ---
-function buildSidebar() {
-  const dataRef = cache[currentTab];
-  const sidebar = document.getElementById("sidebar");
-  sidebar.innerHTML = "";
-
-  if (dataRef.dates.length === 0) {
-    document.getElementById("data-container").innerHTML = `<div class="loading">Нет данных</div>`;
-    return;
-  }
-
-  dataRef.dates.forEach((date, index) => {
-    const btn = document.createElement("div");
-    btn.className = "date-btn glass";
-    btn.innerText = date;
-    btn.onclick = () => selectDate(date);
-    sidebar.appendChild(btn);
-    
-    if (index === 0) selectDate(date);
-  });
-}
-
-function selectDate(date) {
-  selectedDate = date;
-  document.getElementById("searchInput").value = ""; // clear search on date click
-  renderContent();
-}
-
-function handleSearch() {
-  const q = document.getElementById("searchInput").value.toLowerCase().trim();
-  renderContent(q);
-}
-
-function renderContent(searchQuery = "") {
-  const container = document.getElementById("data-container");
-  const dataRef = cache[currentTab];
-  let html = "";
-
-  if (searchQuery !== "") {
-    // SEARCH MODE: Search across all dates in current tab
-    let matches = [];
-    dataRef.dates.forEach(d => {
-      dataRef.byDate[d].forEach(item => {
-        if (item.searchStr.includes(searchQuery)) {
-          matches.push({ ...item, dateLabel: d });
-        }
-      });
-    });
-
-    if (matches.length === 0) {
-      container.innerHTML = `<div class="loading">Ничего не найдено</div>`;
-      return;
-    }
-
-    document.querySelectorAll(".date-btn").forEach(btn => btn.classList.remove("active"));
-    html = renderItems(matches, true);
-
-  } else {
-    // NORMAL MODE: Show specific date
-    const data = dataRef.byDate[selectedDate] || [];
-    if (data.length === 0) {
-      container.innerHTML = `<div class="loading">Нет данных</div>`;
-      return;
-    }
-
-    document.querySelectorAll(".date-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.innerText === selectedDate);
-    });
-    
-    html = renderItems(data, false);
-  }
-
-  container.innerHTML = html;
-}
-
-function renderItems(items, showDate = false) {
-  let html = "";
-
-  if (currentTab === "schedule") {
-    html += `<div class="schedule-list">`;
-    items.forEach(m => {
-      let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
-      html += `
-        <div class="match-card-v2 glass">
-          ${dateBadge}
-          <div class="time-badge">${m.time}</div>
-          <div class="monospace-11">
-            <div>${m.p1}</div>
-            <div>[${m.c1_name} #${m.c1_id}]</div>
-            <div class="vs-text">vs</div>
-            <div>${m.p2}</div>
-            <div>[${m.c2_name} #${m.c2_id}]</div>
-          </div>
-        </div>`;
-    });
-    html += `</div>`;
-  } 
-  
-  else {
-    // Вкладка Результаты (Tab 2)
-    html += `<div class="results-grid">`;
-    items.forEach(m => {
-      let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
-      html += `
-        <div class="result-card-v2 glass">
-          ${dateBadge}
-          <h4>${m.colE}</h4>
-          <h2>${m.colF}</h2>
-          <h3>${m.colG}</h3>
-          <h3 class="pk-score">ПК очки: ${m.scoreStr}</h3>
-        </div>`;
-    });
-    html += `</div>`;
-  }
-
-  return html;
-}
-
-switchTab("schedule");
-</script>
-</body>
-</html>
+      const m
