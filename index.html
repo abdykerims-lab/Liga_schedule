@@ -92,14 +92,17 @@
   .search-box input::placeholder { color: var(--text-muted); }
 
   .schedule-list { display: flex; flex-direction: column; gap: 12px; }
+  
+  /* Структура карточки */
   .match-row { padding: 15px 20px; border-radius: 15px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px; transition: transform 0.2s, background 0.2s; position: relative; }
   .match-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.06); border-color: rgba(255,255,255,0.15); }
   
   .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .team-block { display: block; line-height: 1.4; }
-  .team-block.left { text-align: left; }
-  .team-block.right { text-align: right; }
-  .player-name { font-weight: 700; font-size: 17px; color: var(--text-main); display: block; margin-bottom: 4px; letter-spacing: 0.3px; min-height: 25px; }
+  .team-block { display: flex; flex-direction: column; line-height: 1.4; width: 100%; overflow: hidden; }
+  .team-block.left { text-align: left; align-items: flex-start; }
+  .team-block.right { text-align: right; align-items: flex-end; }
+  
+  .player-name { font-weight: 700; font-size: 17px; color: var(--text-main); display: block; margin-bottom: 4px; letter-spacing: 0.3px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
   .id-badge { font-family: monospace; font-size: 14px; color: var(--accent-main); background: rgba(56, 189, 248, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.25); display: inline-block; font-weight: 600; letter-spacing: 0.5px; }
   .id-badge.free-slot { color: #34d399; background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); }
@@ -130,7 +133,7 @@
   .loading { text-align: center; padding: 40px; color: var(--accent-main); font-size: 18px; width: 100%; font-weight: 600; }
 
   /* ========================================= */
-  /* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ВЕРСИЯ (ДО 768px) */
+  /* МОБИЛЬНАЯ ВЕРСИЯ (ДО 768px)               */
   /* ========================================= */
   @media (max-width: 768px) {
     .header { padding: 15px 10px 10px; gap: 12px; }
@@ -148,9 +151,9 @@
     .sidebar { 
       flex: none; width: 100%; flex-direction: row; overflow-x: auto; 
       padding-bottom: 5px; gap: 8px; scroll-snap-type: x mandatory; 
-      scrollbar-width: none; /* скрываем скроллбар в Firefox */
+      scrollbar-width: none;
     }
-    .sidebar::-webkit-scrollbar { display: none; } /* скрываем скроллбар в Chrome/Safari */
+    .sidebar::-webkit-scrollbar { display: none; }
     .date-btn { 
       scroll-snap-align: start; white-space: nowrap; padding: 10px 16px; 
       font-size: 14px; border-radius: 10px; flex-shrink: 0; 
@@ -160,39 +163,46 @@
     .search-box { padding: 10px 15px; border-radius: 12px; }
     .search-box input { font-size: 14px; }
     
-    /* --- ПОЛНАЯ ПЕРЕРАБОТКА КАРТОЧКИ МАТЧА ДЛЯ ТЕЛЕФОНА --- */
-    .match-row { display: flex; flex-direction: column; padding: 14px; gap: 10px; border-radius: 16px; }
-    .match-row:hover { transform: translateY(-2px); }
-    
-    /* Блок времени и VS переносим на самый верх карточки */
-    .match-center { 
-      order: -1; flex-direction: row; justify-content: space-between; 
-      background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 10px; 
-      width: 100%; border: 1px solid rgba(255,255,255,0.03); 
+    /* --- КАРТОЧКА МАТЧА ДЛЯ ТЕЛЕФОНА (3 КОЛОНКИ: Имя/Время/Имя) --- */
+    .match-row { 
+      display: grid; 
+      grid-template-columns: 1fr auto 1fr; /* Оставляем 3 колонки */
+      padding: 12px 10px; 
+      gap: 6px; /* Уменьшаем отступы между колонками */
+      border-radius: 12px;
+      align-items: center; 
     }
-    .time-badge { font-size: 14px; padding: 4px 10px; }
-    .vs-text { margin-top: 0; font-size: 15px; align-self: center; }
     
-    /* Игроков выстраиваем списком: Имя слева, ID справа */
-    .team-block { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 28px; }
-    .team-block.left, .team-block.right { text-align: left; }
-    
-    /* Обрезаем слишком длинные имена, чтобы они не ломали карточку */
+    /* Имя сверху, ID снизу */
     .player-name { 
-      margin-bottom: 0; font-size: 15px; max-width: 65%; 
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+      font-size: 13px; /* Уменьшаем шрифт, чтобы влезло */
+      margin-bottom: 4px; 
     }
-    .id-badge { font-size: 12px; padding: 4px 8px; flex-shrink: 0; }
+    .id-badge { 
+      font-size: 11px; 
+      padding: 3px 6px; 
+      white-space: nowrap;
+    }
+    
+    /* Время сверху, VS снизу */
+    .match-center { gap: 4px; }
+    .time-badge { 
+      font-size: 13px; 
+      padding: 4px 8px; 
+    }
+    .vs-text { 
+      font-size: 11px; 
+      margin-top: 0; 
+    }
     
     /* --- КАРТОЧКИ РЕЗУЛЬТАТОВ --- */
-    .result-card { flex-direction: column; align-items: stretch; padding: 16px; gap: 10px; }
+    .result-card { flex-direction: column; align-items: stretch; padding: 14px; gap: 10px; }
     .res-winner { font-size: 15px; }
     .res-vs { font-size: 12px; line-height: 1.4; }
     
-    /* Очки выстраиваем в ровную линию снизу */
     .res-right { 
       flex-direction: row; justify-content: space-between; align-items: center; 
-      width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; 
+      width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; 
     }
     .stat-line { display: flex; flex-direction: column; align-items: flex-start; font-size: 10px; gap: 4px; }
     .stat-line:last-child { align-items: flex-end; }
