@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лига - Расписание и Результаты</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    /* Purple dark background */
+    background: linear-gradient(135deg, #15092a 0%, #3b1454 100%);
+    color: #fff;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  * { box-sizing: border-box; }
+
+  /* --- GLASSMORPHISM --- */
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* --- HEADER & TABS --- */
+  .header { padding: 20px; text-align: center; }
+  .tab-container { display: inline-flex; gap: 10px; padding: 5px; border-radius: 20px; }
+  
+  .tab {
+    padding: 10px 25px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .tab:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); }
+  .tab.active {
+    opacity: 1;
+    background: rgba(168, 85, 247, 0.4);
+    border: 1px solid rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    cursor: default;
+  }
+
+  /* --- LAYOUT --- */
+  .main-layout {
+    display: flex; max-width: 1200px; margin: 0 auto;
+    padding: 10px 20px 40px; gap: 20px; align-items: flex-start;
+  }
+
+  /* --- SIDEBAR --- */
+  .sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; }
+  
+  .date-btn {
+    padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 15px;
+    font-weight: 600; color: #d8b4fe; transition: all 0.3s ease;
+    border: 1px solid transparent; text-align: left;
+  }
+  .date-btn:hover { background: rgba(255, 255, 255, 0.1); }
+  .date-btn.active {
+    background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.6);
+    color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+  }
+
+  .content { flex: 1; width: 100%; }
+
+  /* --- SCHEDULE (Расписание) --- */
+  .schedule-list { display: flex; flex-direction: column; gap: 15px; }
+  .match-card {
+    padding: 18px 20px; border-radius: 15px; display: flex;
+    align-items: center; gap: 15px; transition: transform 0.2s;
+  }
+  .match-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08); }
+  .time-badge {
+    background: rgba(0, 0, 0, 0.3); padding: 6px 12px; border-radius: 8px;
+    font-family: monospace; font-size: 16px; font-weight: bold;
+    color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); text-align: center;
+  }
+  .match-info { font-size: 16px; line-height: 1.5; flex: 1; }
+  .player { font-weight: 800; color: #fff; }
+  .clan { font-weight: 600; color: #a78bfa; font-size: 15px; }
+  .vs { font-weight: 900; color: #f43f5e; margin: 0 8px; font-style: italic; }
+
+  /* --- RESULTS GRID (Результаты) --- */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .result-card {
+    border-radius: 16px;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .result-img-container {
+    width: 100%;
+    height: 140px; 
+    position: relative;
+    background: #000;
+  }
+
+  .result-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+  }
+
+  /* Значок места */
+  .rank-badge-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .rank-1 .rank-badge-overlay { color: #fbbf24; border-color: rgba(251,191,36,0.5); box-shadow: 0 0 10px rgba(251,191,36,0.3);}
+  .rank-2 .rank-badge-overlay { color: #94a3b8; border-color: rgba(148,163,184,0.5); }
+  .rank-3 .rank-badge-overlay { color: #b45309; border-color: rgba(180,83,9,0.5); }
+
+  .result-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .res-col-e { font-size: 18px; font-weight: 800; color: #fff; }
+  .res-col-f { font-size: 14px; font-weight: 600; color: #d8b4fe; }
+  .res-col-g { font-size: 13px; font-weight: 400; color: #cbd5e1; }
+
+  .points-badge {
+    margin-top: auto; 
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fbbf24;
+    font-size: 14px;
+    display: inline-block;
+  }
+  .points-badge span { font-size: 18px; font-weight: 900; }
+
+  .loading { text-align: center; padding: 40px; color: #a78bfa; font-size: 18px; }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .main-layout { flex-direction: column; padding: 10px; }
+    .sidebar { flex: none; width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
+    .date-btn { white-space: nowrap; text-align: center; }
+    .match-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .results-grid { grid-template-columns: 1fr; } 
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="glass tab-container">
+      <div id="tab-schedule" class="tab active" onclick="switchTab('schedule')">Расписание Лиги</div>
+      <div id="tab-results" class="tab" onclick="switchTab('results')">Результаты Лиги</div>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="content" id="data-container">
+      <div class="loading">Загрузка данных...</div>
+    </div>
+  </div>
+
+<script>
+const sheetID = "1ine1ZqJrbK9kok_s7QujVLXhzj5hJuoKcguw8bQT2Jo";
+let currentTab = "schedule"; 
+
+const cache = {
+  schedule: { dates: [], byDate: {}, loaded: false },
+  results:  { dates: [], byDate: {}, loaded: false }
+};
+
+// ==========================================
+// ЛОГИКА ВЫБОРА КАРТИНОК
+// ==========================================
+function getImageForScore(score) {
+  if (score >= 500000) {
+    return "https://i.ibb.co/p6fLVxMk/Golden-1.png";
+  } else if (score >= 50000) {
+    return "https://i.ibb.co/m5fQzxRp/Silver-1.png";
+  } else {
+    return "https://i.ibb.co/zWmzPJJg/no-eagel.jpg";
+  }
+}
+// ==========================================
+
+function getVal(row, index) {
+  if (!row || !row.c || !row.c[index]) return "";
+  if (row.c[index].f) return String(row.c[index].f).trim();
+  return String(row.c[index].v || "").trim();
+}
+
+function getNum(row, index) {
+  if (!row || !row.c || !row.c[index]) return 0;
+  const val = row.c[index].v;
+  return typeof val === 'number' ? val : (Number(val) || 0);
+}
+
+function parseDate(val) {
+  if (typeof val === "string" && val.startsWith("Date(")) {
+    const match = val.match(/Date\((\d+),(\d+),(\d+)/);
+    if (match) {
+      const y = match[1];
+      const m = String(Number(match[2]) + 1).padStart(2, "0");
+      const d = String(match[3]).padStart(2, "0");
+      return `${d}.${m}.${y}`;
+    }
+  }
+  return val;
+}
+
+function formatTime(val) {
+  if (Array.isArray(val)) return `${String(val[0]).padStart(2,"0")}:${String(val[1]).padStart(2,"0")}`;
+  return val;
+}
+
+function switchTab(tabName) {
+  if (currentTab === tabName && cache[tabName].loaded) return;
+  currentTab = tabName;
+
+  document.getElementById("tab-schedule").classList.remove("active");
+  document.getElementById("tab-results").classList.remove("active");
+  document.getElementById(`tab-${tabName}`).classList.add("active");
+
+  document.getElementById("sidebar").innerHTML = "";
+  document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+
+  if (cache[tabName].loaded) buildSidebar();
+  else fetchData(tabName);
+}
+
+async function fetchData(tabName) {
+  const sheetName = tabName === "schedule" ? "Расписание" : "Результаты 2.0";
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent(sheetName)}`;
+
+  try {
+    const res = await fetch(url + "&_=" + Date.now());
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows || [];
+
+    if (tabName === "schedule") parseSchedule(rows);
+    else parseResults(rows);
+
+    cache[tabName].loaded = true;
+    buildSidebar();
+  } catch (e) {
+    document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки вкладки "${sheetName}"</div>`;
+  }
+}
+
+function parseSchedule(rows) {
+  cache.schedule.dates = [];
+  cache.schedule.byDate = {};
+
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase() === "дата") return;
+    let time = formatTime(getVal(r, 1)) || "--:--";
+    let p1 = getVal(r, 3) || "Неизвестно";
+    let c1_id = getVal(r, 4) || "0000";
+    let c1_name = getVal(r, 5) || "Без клана";
+    let c2_name = getVal(r, 8) || "Без клана";
+    let c2_id = getVal(r, 9) || "0000";
+    let p2 = getVal(r, 10) || "Неизвестно";
+
+    if (!cache.schedule.byDate[date]) {
+      cache.schedule.byDate[date] = [];
+      cache.schedule.dates.push(date);
+    }
+    cache.schedule.byDate[date].push({ time, p1, c1_id, c1_name, p2, c2_id, c2_name });
+  });
+}
+
+function parseResults(rows) {
+  cache.results.dates = [];
+  cache.results.byDate = {};
+
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase() === "дата") return;
+
+    let colE = getVal(r, 4) || "—";
+    let colF = getVal(r, 5) || "—";
+    let colG = getVal(r, 6) || "—";
+    let scoreNum = getNum(r, 7);
+    let scoreStr = getVal(r, 7) || "0";
+
+    if (!cache.results.byDate[date]) {
+      cache.results.byDate[date] = [];
+      cache.results.dates.push(date);
+    }
+    cache.results.byDate[date].push({ colE, colF, colG, scoreNum, scoreStr });
+  });
+
+  for (let d in cache.results.byDate) {
+    cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
+  }
+}
+
+function buildSidebar() {
+  const dataRef = cache[currentTab];
+  const sidebar = document.getElementById("sidebar");
+  sidebar.innerHTML = "";
+
+  if (dataRef.dates.length === 0) {
+    document.getElementById("data-container").innerHTML = `<div class="loading">Нет данных</div>`;
+    return;
+  }
+
+  dataRef.dates.forEach((date, index) => {
+    const btn = document.createElement("div");
+    btn.className = "date-btn glass";
+    btn.innerText = date;
+    btn.onclick = () => selectDate(date);
+    sidebar.appendChild(btn);
+    if (index === 0) selectDate(date);
+  });
+}
+
+function selectDate(date) {
+  const buttons = document.getElementById("sidebar").querySelectorAll(".date-btn");
+  buttons.forEach(btn => btn.classList.toggle("active", btn.innerText === date));
+
+  const container = document.getElementById("data-container");
+  const data = cache[currentTab].byDate[date] || [];
+
+  if (data.length === 0) {
+    container.innerHTML = `<div class="loading">Нет данных на эту дату</div>`;
+    return;
+  }
+
+  let html = "";
+
+  if (currentTab === "schedule") {
+    html = `<div class="schedule-list">`;
+    data.forEach(m => {
+      html += `
+        <div class="match-card glass">
+          <div class="time-badge">${m.time}</div>
+          <div class="match-info">
+            <span class="player">${m.p1}</span> 
+            <span class="clan">[${m.c1_name} #${m.c1_id}]</span> 
+            <span class="vs">VS</span> 
+            <span class="player">${m.p2}</span> 
+            <span class="clan">[${m.c2_name} #${m.c2_id}]</span>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  } else {
+    // Вкладка Результаты
+    html = `<div class="results-grid">`;
+    data.forEach((item, idx) => {
+      let rankClass = idx === 0 ? 'rank-1' : (idx === 1 ? 'rank-2' : (idx === 2 ? 'rank-3' : ''));
+      let imageSrc = getImageForScore(item.scoreNum);
+
+      html += `
+        <div class="result-card glass ${rankClass}">
+          <div class="result-img-container">
+            <img src="${imageSrc}" class="result-img" alt="cover">
+            <div class="rank-badge-overlay">#${idx + 1}</div>
+          </div>
+          
+          <div class="result-content">
+            <div class="res-col-e">${item.colE}</div>
+            <div class="res-col-f">${item.colF}</div>
+            <div class="res-col-g">${item.colG}</div>
+            <div class="points-badge">ПК Очки: <span>${item.scoreStr}</span></div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+}
+
+switchTab("schedule");
+</script>
+</body>
+</html>
