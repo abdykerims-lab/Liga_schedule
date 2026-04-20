@@ -28,151 +28,95 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
-  /* --- ШАПКА И ВКЛАДКИ --- */
-  .header { padding: 20px; text-align: center; }
-  .tab-container { 
-    display: inline-flex; flex-wrap: wrap; gap: 8px; 
-    padding: 6px; border-radius: 20px; justify-content: center;
-  }
+  /* --- НАВИГАЦИЯ (ДВУХУРОВНЕВАЯ) --- */
+  .header { padding: 20px 20px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px; }
   
-  .tab {
-    padding: 10px 20px;
-    border-radius: 15px;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #fff;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
+  /* Главные вкладки */
+  .main-tabs { display: inline-flex; flex-wrap: wrap; gap: 10px; padding: 6px; border-radius: 20px; }
+  .main-tab {
+    padding: 12px 30px; border-radius: 15px; font-weight: 700; font-size: 16px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #fff; cursor: pointer; opacity: 0.5; transition: all 0.3s ease;
+    border: 1px solid transparent; display: flex; align-items: center; gap: 8px;
+  }
+  .main-tab:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); }
+  .main-tab.active {
+    opacity: 1; background: rgba(168, 85, 247, 0.4); border: 1px solid rgba(168, 85, 247, 0.6);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); cursor: default;
   }
 
-  .tab:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); }
-  .tab.active {
-    opacity: 1;
-    background: rgba(168, 85, 247, 0.4);
-    border: 1px solid rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
-    cursor: default;
+  /* Подвкладки */
+  .sub-tabs-wrapper { min-height: 45px; display: flex; justify-content: center; width: 100%; }
+  .sub-tabs { display: inline-flex; flex-wrap: wrap; gap: 8px; padding: 5px; border-radius: 15px; }
+  .sub-tab {
+    padding: 8px 20px; border-radius: 12px; font-weight: 600; font-size: 13px; text-transform: uppercase;
+    color: #cbd5e1; cursor: pointer; opacity: 0.6; transition: all 0.3s ease; border: 1px solid transparent;
+  }
+  .sub-tab:hover { opacity: 1; color: #fff; }
+  .sub-tab.active {
+    opacity: 1; color: #fff; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); cursor: default;
   }
 
   /* --- МАКЕТ --- */
-  .main-layout {
-    display: flex; max-width: 1200px; margin: 0 auto;
-    padding: 10px 20px 40px; gap: 20px; align-items: flex-start;
-  }
+  .main-layout { display: flex; max-width: 1200px; margin: 0 auto; padding: 10px 20px 40px; gap: 20px; align-items: flex-start; }
 
   /* --- БОКОВАЯ ПАНЕЛЬ С ДАТАМИ --- */
   .sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; }
-  
   .date-btn {
-    padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 15px;
-    font-weight: 600; color: #d8b4fe; transition: all 0.3s ease;
-    border: 1px solid transparent; text-align: left;
+    padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 15px; font-weight: 600;
+    color: #d8b4fe; transition: all 0.3s ease; border: 1px solid transparent; text-align: left;
   }
   .date-btn:hover { background: rgba(255, 255, 255, 0.1); }
-  .date-btn.active {
-    background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.6);
-    color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-  }
+  .date-btn.active { background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.6); color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
 
   .content { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 20px; }
 
   /* --- ПОИСК --- */
-  .search-box {
-    padding: 12px 20px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .search-box input {
-    width: 100%; background: transparent; border: none;
-    color: #fff; font-size: 16px; outline: none;
-    font-family: 'Poppins', sans-serif;
-  }
+  .search-box { padding: 12px 20px; border-radius: 15px; display: flex; align-items: center; }
+  .search-box input { width: 100%; background: transparent; border: none; color: #fff; font-size: 16px; outline: none; font-family: 'Poppins', sans-serif; }
   .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- СТИЛИ ДЛЯ РАСПИСАНИЯ (TAB 1 & 3) --- */
+  /* --- СТИЛИ ДЛЯ РАСПИСАНИЯ --- */
   .schedule-list { display: flex; flex-direction: column; gap: 12px; }
-  
-  .match-row {
-    padding: 15px 20px; border-radius: 15px; display: grid; 
-    grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px;
-    transition: transform 0.2s; position: relative;
-  }
+  .match-row { padding: 15px 20px; border-radius: 15px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px; transition: transform 0.2s; position: relative; }
   .match-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
-  
   .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .team-block { display: block; line-height: 1.4; }
   .team-block.left { text-align: left; }
   .team-block.right { text-align: right; }
-
   .player-name { font-weight: 700; font-size: 17px; color: #ffffff; display: block; margin-bottom: 4px; }
   
-  /* Синий ID */
-  .id-badge { 
-    font-family: monospace; font-size: 13px; color: #38bdf8; 
-    background: rgba(56, 189, 248, 0.1); padding: 3px 8px; 
-    border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);
-    display: inline-block; font-weight: 600;
-  }
-  /* Зеленый статус для свободного слота */
-  .id-badge.free-slot {
-    color: #4ade80;
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-  }
+  .id-badge { font-family: monospace; font-size: 13px; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2); display: inline-block; font-weight: 600; }
+  .id-badge.free-slot { color: #4ade80; background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.3); }
 
-  .time-badge {
-    background: rgba(0, 0, 0, 0.4); padding: 5px 14px; border-radius: 8px;
-    font-family: monospace; font-size: 15px; font-weight: bold;
-    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
-  }
-  .vs-text { 
-    text-align: center; margin-top: 8px; font-style: normal; 
-    color: #f43f5e; font-size: 14px; font-weight: 800; text-transform: uppercase;
-  }
+  .time-badge { background: rgba(0, 0, 0, 0.4); padding: 5px 14px; border-radius: 8px; font-family: monospace; font-size: 15px; font-weight: bold; color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+  .vs-text { text-align: center; margin-top: 8px; font-style: normal; color: #f43f5e; font-size: 14px; font-weight: 800; text-transform: uppercase; }
 
-  /* --- СТИЛИ ДЛЯ РЕЗУЛЬТАТОВ (TAB 2) --- */
+  /* --- СТИЛИ ДЛЯ РЕЗУЛЬТАТОВ --- */
   .results-list { display: flex; flex-direction: column; gap: 15px; }
-
-  .result-card {
-    padding: 18px 20px; border-radius: 15px;
-    display: flex; justify-content: space-between; align-items: center;
-    transition: transform 0.2s; position: relative; gap: 15px;
-    border-left: 4px solid #a855f7;
-  }
+  .result-card { padding: 18px 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s; position: relative; gap: 15px; border-left: 4px solid #a855f7; }
   .result-card:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
-
   .res-left { display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .res-right { display: flex; flex-direction: column; gap: 8px; text-align: right; min-width: 150px; }
-
   .res-winner { font-size: 16px; font-weight: 700; color: #fbbf24; }
   .res-winner span { color: #fff; margin-left: 5px; }
-  
   .res-vs { font-size: 13px; color: #cbd5e1; font-weight: 500; }
   .res-vs .vs-red { color: #f43f5e; font-weight: 800; margin: 0 5px; }
-
   .stat-line { font-size: 12px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
   .stat-val { font-family: monospace; font-size: 16px; font-weight: 800; margin-left: 6px; padding: 2px 6px; border-radius: 6px; }
   .stat-val.points { color: #4ade80; background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.2); }
   .stat-val.beans { color: #facc15; background: rgba(250, 204, 21, 0.1); border: 1px solid rgba(250, 204, 21, 0.2); }
-
-  .date-badge { 
-    position: absolute; top: -10px; right: 15px; 
-    background: #a855f7; color: #fff; font-size: 11px; 
-    padding: 4px 8px; border-radius: 8px; font-weight: bold;
-  }
+  .date-badge { position: absolute; top: -10px; right: 15px; background: #a855f7; color: #fff; font-size: 11px; padding: 4px 8px; border-radius: 8px; font-weight: bold; }
 
   .loading { text-align: center; padding: 40px; color: #a78bfa; font-size: 18px; width: 100%; }
 
   /* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
   @media (max-width: 768px) {
     .header { padding: 15px 10px; }
-    .tab-container { flex-direction: column; width: 100%; gap: 5px; }
-    .tab { font-size: 13px; width: 100%; text-align: center; }
+    .main-tabs { width: 100%; justify-content: center; }
+    .main-tab { width: 100%; justify-content: center; font-size: 14px; padding: 10px; }
+    .sub-tabs { width: 100%; justify-content: center; }
+    .sub-tab { flex: 1; text-align: center; font-size: 12px; padding: 8px 10px; }
     
     .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
     .sidebar { flex: none; width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 5px; gap: 8px; }
@@ -190,10 +134,27 @@
 <body>
 
   <div class="header">
-    <div class="glass tab-container">
-      <div id="tab-sched-royal" class="tab active" onclick="switchTab('sched-royal')">Расписание "Королевский ПК"</div>
-      <div id="tab-res-royal" class="tab" onclick="switchTab('res-royal')">Результат "Королевский ПК"</div>
-      <div id="tab-sched-mini" class="tab" onclick="switchTab('sched-mini')">Расписание "Мини_ПК"</div>
+    <!-- ГЛАВНЫЕ ВКЛАДКИ -->
+    <div class="glass main-tabs">
+      <div id="main-royal" class="main-tab active" onclick="switchMainTab('royal')">👑 Королевский ПК</div>
+      <div id="main-mini" class="main-tab" onclick="switchMainTab('mini')">⚡ Мини-ПК</div>
+    </div>
+
+    <!-- ПОДВКЛАДКИ -->
+    <div class="sub-tabs-wrapper">
+      
+      <!-- Подвкладки Королевского ПК -->
+      <div id="subs-royal" class="glass sub-tabs">
+        <div id="sub-royal-schedule" class="sub-tab active" onclick="switchSubTab('schedule')">Расписание</div>
+        <div id="sub-royal-results" class="sub-tab" onclick="switchSubTab('results')">Результаты</div>
+      </div>
+      
+      <!-- Подвкладки Мини ПК (пока только Расписание) -->
+      <div id="subs-mini" class="glass sub-tabs" style="display: none;">
+        <div id="sub-mini-schedule" class="sub-tab active" onclick="switchSubTab('schedule')">Расписание</div>
+        <!-- Закомментировано на будущее: <div id="sub-mini-results" class="sub-tab" onclick="switchSubTab('results')">Результаты</div> -->
+      </div>
+      
     </div>
   </div>
 
@@ -210,23 +171,24 @@
   </div>
 
 <script>
-// НОВЫЙ ID ТАБЛИЦЫ
 const sheetID = "13X37rn0LMrezZ-4s-R9h2vaNSioYc9cVLJ0DVMnM3SU";
 
+// Конфигурация для комбинаций Главная + Подвкладка
 const tabsConfig = {
-  "sched-royal": { sheetName: "Schedule", type: "schedule" },
-  "res-royal":   { sheetName: "лист1", type: "result" },
-  "sched-mini":  { sheetName: "Schedule Mini", type: "schedule-mini" }
+  "royal-schedule": { sheetName: "Schedule", type: "schedule" },
+  "royal-results":  { sheetName: "лист1", type: "result" },
+  "mini-schedule":  { sheetName: "Schedule Mini", type: "schedule-mini" }
 };
 
-let currentTab = "sched-royal"; 
+let currentMain = "royal"; 
+let currentSub = "schedule"; 
 let selectedDate = null;
 let autoRefreshTimer = null;
 
 const cache = {
-  "sched-royal": { dates: [], byDate: {}, loaded: false },
-  "res-royal":   { dates: [], byDate: {}, loaded: false },
-  "sched-mini":  { dates: [], byDate: {}, loaded: false }
+  "royal-schedule": { dates: [], byDate: {}, loaded: false },
+  "royal-results":  { dates: [], byDate: {}, loaded: false },
+  "mini-schedule":  { dates: [], byDate: {}, loaded: false }
 };
 
 function getVal(row, index) {
@@ -265,31 +227,63 @@ function parseToDateObj(str) {
   return new Date(0); 
 }
 
-function switchTab(tabId) {
-  if (currentTab === tabId && cache[tabId].loaded) return;
-  currentTab = tabId;
-  
+// --- НАВИГАЦИЯ ---
+function switchMainTab(mainId) {
+  if (currentMain === mainId) return;
+  currentMain = mainId;
+
+  // Визуальное обновление главных вкладок
+  document.querySelectorAll(".main-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(`main-${mainId}`).classList.add("active");
+
+  // Показ нужных подвкладок
+  document.getElementById("subs-royal").style.display = mainId === "royal" ? "inline-flex" : "none";
+  document.getElementById("subs-mini").style.display  = mainId === "mini" ? "inline-flex" : "none";
+
+  // При смене главной вкладки всегда сбрасываем на 'schedule'
+  switchSubTab('schedule', true);
+}
+
+function switchSubTab(subId, force = false) {
+  if (!force && currentSub === subId) return;
+  currentSub = subId;
+
+  // Визуальное обновление подвкладок внутри активной главной вкладки
+  document.querySelectorAll(`#subs-${currentMain} .sub-tab`).forEach(t => t.classList.remove("active"));
+  let activeSubBtn = document.getElementById(`sub-${currentMain}-${subId}`);
+  if (activeSubBtn) activeSubBtn.classList.add("active");
+
+  loadCurrentView();
+}
+
+function getCurrentKey() {
+  return `${currentMain}-${currentSub}`;
+}
+
+function loadCurrentView() {
+  const key = getCurrentKey();
   document.getElementById("searchInput").value = "";
-
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.getElementById(`tab-${tabId}`).classList.add("active");
-
   document.getElementById("sidebar").innerHTML = "";
   document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
 
-  if (cache[tabId].loaded) buildSidebar(false);
-  else fetchData(tabId, false);
+  if (cache[key] && cache[key].loaded) {
+    buildSidebar(false);
+  } else {
+    fetchData(key, false);
+  }
 }
 
 function startAutoRefresh() {
   if (autoRefreshTimer) clearInterval(autoRefreshTimer);
   autoRefreshTimer = setInterval(() => {
-    if (currentTab) fetchData(currentTab, true);
+    fetchData(getCurrentKey(), true);
   }, 60000);
 }
 
-async function fetchData(tabId, isBackground = false) {
-  const config = tabsConfig[tabId];
+// --- ЗАГРУЗКА И ПАРСИНГ ---
+async function fetchData(key, isBackground = false) {
+  if (!tabsConfig[key]) return; // Защита от несуществующих комбинаций
+  const config = tabsConfig[key];
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent(config.sheetName)}`;
 
   if (!isBackground) {
@@ -302,111 +296,90 @@ async function fetchData(tabId, isBackground = false) {
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows || [];
 
-    const oldDates = JSON.stringify(cache[tabId].dates);
+    const oldDates = JSON.stringify(cache[key].dates);
 
-    if (config.type.startsWith("schedule")) parseScheduleData(rows, tabId, config.type === "schedule-mini");
-    else parseResultData(rows, tabId);
+    if (config.type.startsWith("schedule")) parseScheduleData(rows, key, config.type === "schedule-mini");
+    else parseResultData(rows, key);
 
-    // Сортировка Дат по убыванию
-    cache[tabId].dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
-    cache[tabId].loaded = true;
+    cache[key].dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
+    cache[key].loaded = true;
     
-    const newDates = JSON.stringify(cache[tabId].dates);
+    const newDates = JSON.stringify(cache[key].dates);
 
-    if (!isBackground || oldDates !== newDates) {
-      buildSidebar(isBackground);
-    } else {
-      if (document.getElementById("searchInput").value.trim() !== "") handleSearch();
-      else renderContent();
+    // Обновляем UI только если мы смотрим на эту же вкладку прямо сейчас
+    if (getCurrentKey() === key) {
+      if (!isBackground || oldDates !== newDates) {
+        buildSidebar(isBackground);
+      } else {
+        if (document.getElementById("searchInput").value.trim() !== "") handleSearch();
+        else renderContent();
+      }
     }
   } catch (e) {
-    if (!isBackground) {
+    if (!isBackground && getCurrentKey() === key) {
       document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
     }
   }
 }
 
-// ПАРСЕР ДЛЯ TAB 1 и TAB 3
-function parseScheduleData(rows, tabId, isMini) {
-  cache[tabId].dates = [];
-  cache[tabId].byDate = {};
+function parseScheduleData(rows, key, isMini) {
+  cache[key].dates = [];
+  cache[key].byDate = {};
 
   rows.forEach(r => {
     let date = parseDate(getVal(r, 0));
     if (!date || date.toLowerCase().includes("дата")) return;
 
     let time = formatTime(getVal(r, 1)) || "--:--"; 
-    let colD = getVal(r, 3); // Игрок 1 Имя
-    let colE = getVal(r, 4); // Игрок 1 ID
-    
-    let colI = getVal(r, 8); // Игрок 2 Имя
-    let colJ = getVal(r, 9); // Игрок 2 ID
-
+    let colD = getVal(r, 3);
+    let colE = getVal(r, 4);
+    let colI = getVal(r, 8);
+    let colJ = getVal(r, 9);
     let isFreeSlot = false;
 
     if (isMini) {
-      // Для МИНИ ПК: если пусто -> Свободный слот
       if (!colJ) { colJ = "Свободный слот"; isFreeSlot = true; colI = ""; }
       else if (colJ.toLowerCase() === "свободный слот") { isFreeSlot = true; }
     } else {
-      // Для КОРОЛЕВСКОГО: если равно тексту "Свободный слот"
       if (colJ.toLowerCase() === "свободный слот") { isFreeSlot = true; }
     }
 
     let searchStr = `${colD} ${colE} ${colI} ${colJ}`.toLowerCase();
 
-    if (!cache[tabId].byDate[date]) {
-      cache[tabId].byDate[date] = [];
-      cache[tabId].dates.push(date);
-    }
-    
-    cache[tabId].byDate[date].push({ 
-      time, p1_name: colD, p1_id: colE, p2_name: colI, p2_id: colJ, isFreeSlot, searchStr 
-    });
+    if (!cache[key].byDate[date]) { cache[key].byDate[date] = []; cache[key].dates.push(date); }
+    cache[key].byDate[date].push({ time, p1_name: colD, p1_id: colE, p2_name: colI, p2_id: colJ, isFreeSlot, searchStr });
   });
 
-  // Сортировка внутри дня по Времени (возрастание)
-  for (let d in cache[tabId].byDate) {
-    cache[tabId].byDate[d].sort((a, b) => a.time.localeCompare(b.time));
-  }
+  for (let d in cache[key].byDate) cache[key].byDate[d].sort((a, b) => a.time.localeCompare(b.time));
 }
 
-// ПАРСЕР ДЛЯ TAB 2
-function parseResultData(rows, tabId) {
-  cache[tabId].dates = [];
-  cache[tabId].byDate = {};
+function parseResultData(rows, key) {
+  cache[key].dates = [];
+  cache[key].byDate = {};
 
   rows.forEach(r => {
     let date = parseDate(getVal(r, 0));
     if (!date || date.toLowerCase().includes("дата")) return;
 
-    let colB = getVal(r, 1); // Игрок 1 (VS)
-    let colD = getVal(r, 3); // Игрок 2 (VS)
-    let winner = getVal(r, 4); // Победитель (Col E)
-    let pointsNum = getNum(r, 5); // ПК Очки (число для сортировки)
-    let pointsStr = getVal(r, 5); // ПК Очки (строка для вывода)
-    let beans = getVal(r, 6); // Награда, бобы (Col G)
-
+    let colB = getVal(r, 1);
+    let colD = getVal(r, 3);
+    let winner = getVal(r, 4);
+    let pointsNum = getNum(r, 5);
+    let pointsStr = getVal(r, 5);
+    let beans = getVal(r, 6);
     let searchStr = `${colB} ${colD} ${winner}`.toLowerCase();
 
-    if (!cache[tabId].byDate[date]) {
-      cache[tabId].byDate[date] = [];
-      cache[tabId].dates.push(date);
-    }
-    
-    cache[tabId].byDate[date].push({ 
-      colB, colD, winner, pointsNum, pointsStr, beans, searchStr 
-    });
+    if (!cache[key].byDate[date]) { cache[key].byDate[date] = []; cache[key].dates.push(date); }
+    cache[key].byDate[date].push({ colB, colD, winner, pointsNum, pointsStr, beans, searchStr });
   });
 
-  // Сортировка внутри дня по ПК Очкам (убывание)
-  for (let d in cache[tabId].byDate) {
-    cache[tabId].byDate[d].sort((a, b) => b.pointsNum - a.pointsNum);
-  }
+  for (let d in cache[key].byDate) cache[key].byDate[d].sort((a, b) => b.pointsNum - a.pointsNum);
 }
 
+// --- ОТОБРАЖЕНИЕ ---
 function buildSidebar(isBackground = false) {
-  const dataRef = cache[currentTab];
+  const key = getCurrentKey();
+  const dataRef = cache[key];
   const sidebar = document.getElementById("sidebar");
   sidebar.innerHTML = "";
 
@@ -435,10 +408,7 @@ function buildSidebar(isBackground = false) {
 function selectDate(date) {
   selectedDate = date;
   document.getElementById("searchInput").value = ""; 
-  
-  document.querySelectorAll(".date-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.innerText === selectedDate);
-  });
+  document.querySelectorAll(".date-btn").forEach(btn => btn.classList.toggle("active", btn.innerText === selectedDate));
   renderContent();
 }
 
@@ -449,8 +419,9 @@ function handleSearch() {
 
 function renderContent(searchQuery = "") {
   const container = document.getElementById("data-container");
-  const dataRef = cache[currentTab];
-  const type = tabsConfig[currentTab].type;
+  const key = getCurrentKey();
+  const dataRef = cache[key];
+  const type = tabsConfig[key].type;
   let html = "";
 
   if (searchQuery !== "") {
@@ -469,7 +440,6 @@ function renderContent(searchQuery = "") {
       container.innerHTML = `<div class="loading">Ничего не найдено</div>`;
       return;
     }
-
     document.querySelectorAll(".date-btn").forEach(btn => btn.classList.remove("active"));
     html = renderItems(matches, type, true);
 
@@ -514,12 +484,10 @@ function renderItems(items, type, showDate = false) {
     });
     html += `</div>`;
   } 
-  
   else if (type === "result") {
     html += `<div class="results-list">`;
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
-      
       html += `
         <div class="result-card glass">
           ${dateBadge}
@@ -535,12 +503,11 @@ function renderItems(items, type, showDate = false) {
     });
     html += `</div>`;
   }
-
   return html;
 }
 
-// Запускаем
-switchTab("sched-royal");
+// Инициализация
+loadCurrentView();
 startAutoRefresh();
 </script>
 </body>
