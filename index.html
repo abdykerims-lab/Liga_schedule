@@ -108,18 +108,32 @@
     margin-bottom: 12px;
   }
   
-  .monospace-11 {
-    font-family: monospace;
-    font-size: 11px;
-    text-align: center;
-    line-height: 1.4;
+  /* НОВАЯ РАЗМЕТКА ВНУТРИ КАРТОЧКИ (ЛЕВО / ПРАВО) */
+  .match-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .team-block {
+    display: flex;
+    flex-direction: column;
     width: 100%;
   }
+  .team-block.left { text-align: left; }
+  .team-block.right { text-align: right; }
+  
+  .player-name { font-weight: bold; font-size: 12px; color: #fff; }
+  .clan-name { color: #cbd5e1; }
+  .clan-id { color: #a855f7; }
 
-  .vs-text { margin: 8px 0; font-style: italic; color: #f43f5e; font-size: 13px; font-weight: bold; }
+  .vs-text { 
+    text-align: center; margin: 8px 0; font-style: italic; 
+    color: #f43f5e; font-size: 13px; font-weight: bold; width: 100%;
+  }
+
   .date-badge { 
     position: absolute; top: -10px; right: -10px; 
     background: #a855f7; color: #fff; font-size: 11px; 
@@ -160,19 +174,12 @@
     .search-box input { font-size: 14px; }
 
     /* Таб 1: Расписание (Компактно) */
-    .schedule-list { 
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* По 2 карточки в ряд на смартфонах */
-      gap: 10px; 
-    }
+    .schedule-list { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
     .match-card-v2 { padding: 12px 8px; border-radius: 12px; }
     .time-badge { font-size: 12px; padding: 3px 8px; margin-bottom: 8px; }
-    .vs-text { margin: 4px 0; font-size: 11px; }
-
+    
     /* Таб 2: Результаты (Компактно) */
-    .results-grid { 
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* По 2 карточки в ряд на смартфонах */
-      gap: 10px; 
-    }
+    .results-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
     .result-card-v2 { padding: 15px 10px; border-radius: 12px; }
     .result-card-v2 h4 { margin: 0 0 4px 0; font-size: 12px; }
     .result-card-v2 h2 { margin: 0 0 4px 0; font-size: 18px; }
@@ -180,7 +187,7 @@
     .result-card-v2 .pk-score { padding: 4px 10px; font-size: 12px; }
   }
 
-  /* Для совсем узких экранов (старые iPhone и т.д.) */
+  /* Для совсем узких экранов */
   @media (max-width: 360px) {
     .schedule-list, .results-grid { grid-template-columns: 1fr; }
   }
@@ -262,7 +269,6 @@ function switchTab(tabName) {
   if (currentTab === tabName && cache[tabName].loaded) return;
   currentTab = tabName;
   
-  // Clear search
   document.getElementById("searchInput").value = "";
 
   document.getElementById("tab-schedule").classList.remove("active");
@@ -312,11 +318,11 @@ function parseSchedule(rows) {
     let colD = getVal(r, 3); // Player 1
     let colE = getVal(r, 4); // Clan ID 1
     let colF = getVal(r, 5); // Clan Name 1
-    let c2_name = getVal(r, 8) || "Без клана";
-    let c2_id = getVal(r, 9) || "0000";
-    let p2 = getVal(r, 10) || "Неизвестно";
+    
+    let c2_name = getVal(r, 8) || "Без клана"; // Clan Name 2 (Col I)
+    let c2_id = getVal(r, 9) || "0000";      // Clan ID 2 (Col J)
+    let p2 = getVal(r, 10) || "Неизвестно";    // Player 2 (Col K)
 
-    // Search string based on columns D, E and F
     let searchStr = `${colD} ${colE} ${colF}`.toLowerCase();
 
     if (!cache.schedule.byDate[date]) {
@@ -330,7 +336,6 @@ function parseSchedule(rows) {
     });
   });
 
-  // Sort inside by Time Ascending (Column B)
   for (let d in cache.schedule.byDate) {
     cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
   }
@@ -351,7 +356,6 @@ function parseResults(rows) {
     let scoreNum = getNum(r, 7);
     let scoreStr = getVal(r, 7) || "0";
 
-    // Search string based on columns F, G and C
     let searchStr = `${colF} ${colG} ${colC}`.toLowerCase();
 
     if (!cache.results.byDate[date]) {
@@ -364,7 +368,6 @@ function parseResults(rows) {
     });
   });
 
-  // Keep internal sorting by score descending for Tab 2
   for (let d in cache.results.byDate) {
     cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
   }
@@ -394,7 +397,7 @@ function buildSidebar() {
 
 function selectDate(date) {
   selectedDate = date;
-  document.getElementById("searchInput").value = ""; // clear search on date click
+  document.getElementById("searchInput").value = ""; 
   renderContent();
 }
 
@@ -409,7 +412,6 @@ function renderContent(searchQuery = "") {
   let html = "";
 
   if (searchQuery !== "") {
-    // SEARCH MODE: Search across all dates in current tab
     let matches = [];
     dataRef.dates.forEach(d => {
       dataRef.byDate[d].forEach(item => {
@@ -428,7 +430,6 @@ function renderContent(searchQuery = "") {
     html = renderItems(matches, true);
 
   } else {
-    // NORMAL MODE: Show specific date
     const data = dataRef.byDate[selectedDate] || [];
     if (data.length === 0) {
       container.innerHTML = `<div class="loading">Нет данных</div>`;
@@ -452,16 +453,24 @@ function renderItems(items, showDate = false) {
     html += `<div class="schedule-list">`;
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      
+      // ИСПОЛЬЗУЕМ НОВУЮ РАЗМЕТКУ (ЛЕВО/ПРАВО)
       html += `
         <div class="match-card-v2 glass">
           ${dateBadge}
           <div class="time-badge">${m.time}</div>
-          <div class="monospace-11">
-            <div>${m.p1}</div>
-            <div>[${m.c1_name} #${m.c1_id}]</div>
-            <div class="vs-text">vs</div>
-            <div>${m.p2}</div>
-            <div>[${m.c2_name} #${m.c2_id}]</div>
+          <div class="match-content">
+            <div class="team-block left">
+              <span class="player-name">${m.p1}</span>
+              <span class="clan-name">${m.c1_name}</span>
+              <span class="clan-id">ID Семьи: ${m.c1_id}</span>
+            </div>
+            <div class="vs-text">VS</div>
+            <div class="team-block right">
+              <span class="player-name">${m.p2}</span>
+              <span class="clan-name">${m.c2_name}</span>
+              <span class="clan-id">ID семьи: ${m.c2_id}</span>
+            </div>
           </div>
         </div>`;
     });
@@ -469,7 +478,6 @@ function renderItems(items, showDate = false) {
   } 
   
   else {
-    // Вкладка Результаты (Tab 2)
     html += `<div class="results-grid">`;
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
