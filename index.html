@@ -91,12 +91,8 @@
   }
   .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- SCHEDULE (Tab 1) - ДИЗАЙН СТРОКАМИ --- */
-  .schedule-list { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 12px; 
-  }
+  /* --- SCHEDULE (Tab 1) - НОВЫЙ ДИЗАЙН ШРИФТОВ И ЦВЕТОВ --- */
+  .schedule-list { display: flex; flex-direction: column; gap: 12px; }
   
   .match-row {
     padding: 15px 20px; 
@@ -108,41 +104,39 @@
     transition: transform 0.2s, background 0.2s;
     position: relative;
   }
-  .match-row:hover { 
-    transform: translateX(5px); 
-    background: rgba(255, 255, 255, 0.08); 
-  }
+  .match-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.08); }
   
-  .match-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
+  /* Время - статусное золотое */
   .time-badge {
-    background: rgba(0, 0, 0, 0.3); padding: 4px 12px; border-radius: 8px;
-    font-family: monospace; font-size: 14px; font-weight: bold;
-    color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); 
+    background: rgba(0, 0, 0, 0.4); padding: 5px 14px; border-radius: 8px;
+    font-family: monospace; font-size: 15px; font-weight: bold;
+    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
   }
   
-  .team-block {
-    display: flex;
-    flex-direction: column;
-    font-family: monospace;
-    font-size: 11px;
-    line-height: 1.5;
-  }
+  .team-block { display: block; line-height: 1.4; }
   .team-block.left { text-align: left; }
   .team-block.right { text-align: right; }
   
-  .player-name { font-weight: bold; font-size: 13px; color: #fff; }
-  .clan-name { color: #cbd5e1; }
-  .clan-id { color: #a855f7; }
+  /* Игрок - крупный и белый */
+  .player-name { font-weight: 600; font-size: 16px; color: #ffffff; display: block; margin-bottom: 2px; letter-spacing: 0.5px; }
+  
+  /* Клан - приглушенный серебристый */
+  .clan-name { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px; }
+  
+  /* ID - неоново-голубой бейджик */
+  .clan-id { 
+    font-family: monospace; font-size: 12px; color: #38bdf8; 
+    background: rgba(56, 189, 248, 0.1); padding: 2px 6px; 
+    border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);
+  }
 
+  /* VS - строгий красный */
   .vs-text { 
-    text-align: center; margin-top: 5px; font-style: italic; 
-    color: #f43f5e; font-size: 12px; font-weight: bold;
+    text-align: center; margin-top: 8px; font-style: normal; 
+    color: #f43f5e; font-size: 14px; font-weight: 800; 
+    text-transform: uppercase; letter-spacing: 1px;
   }
 
   .date-badge { 
@@ -184,10 +178,13 @@
     .search-box { padding: 10px 15px; }
     .search-box input { font-size: 14px; }
 
+    /* Таб 1 Мобильный вид (уменьшенные новые шрифты) */
     .match-row { padding: 12px 10px; gap: 10px; }
-    .player-name { font-size: 12px; }
-    .team-block { font-size: 10px; }
-    .time-badge { font-size: 12px; padding: 3px 8px; }
+    .player-name { font-size: 14px; }
+    .clan-name { font-size: 11px; margin-bottom: 4px;}
+    .clan-id { font-size: 10px; padding: 2px 4px; }
+    .time-badge { font-size: 13px; padding: 4px 10px; }
+    .vs-text { font-size: 12px; margin-top: 6px; }
     
     .results-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
     .result-card-v2 { padding: 15px 10px; border-radius: 12px; }
@@ -214,11 +211,9 @@
   <div class="main-layout">
     <div class="sidebar" id="sidebar"></div>
     <div class="content">
-      <!-- Поиск -->
       <div class="search-box glass">
         <input type="text" id="searchInput" placeholder="Поиск (введите текст)..." onkeyup="handleSearch()">
       </div>
-      <!-- Контейнер для данных -->
       <div id="data-container">
         <div class="loading">Загрузка данных...</div>
       </div>
@@ -318,15 +313,14 @@ function parseSchedule(rows) {
     if (!date || date.toLowerCase() === "дата") return;
 
     let time = formatTime(getVal(r, 1)) || "--:--";
-    let colD = getVal(r, 3); // Player 1
-    let colE = getVal(r, 4); // Clan ID 1
-    let colF = getVal(r, 5); // Clan Name 1
+    let colD = getVal(r, 3);
+    let colE = getVal(r, 4);
+    let colF = getVal(r, 5);
     
-    let c2_name = getVal(r, 8) || "Без клана"; // Clan Name 2 
-    let c2_id = getVal(r, 9) || "0000";      // Clan ID 2 
-    let p2 = getVal(r, 10) || "Неизвестно";    // Player 2 
+    let c2_name = getVal(r, 8) || "Без клана"; 
+    let c2_id = getVal(r, 9) || "0000";      
+    let p2 = getVal(r, 10) || "Неизвестно";    
 
-    // ИСПРАВЛЕНИЕ: Теперь строка для поиска включает ВСЕ данные (обе стороны)
     let searchStr = `${colD} ${colE} ${colF} ${p2} ${c2_id} ${c2_name}`.toLowerCase();
 
     if (!cache.schedule.byDate[date]) {
@@ -360,7 +354,6 @@ function parseResults(rows) {
     let scoreNum = getNum(r, 7);
     let scoreStr = getVal(r, 7) || "0";
 
-    // ИСПРАВЛЕНИЕ: Поиск по всем видимым текстам карточки результата
     let searchStr = `${colC} ${colE} ${colF} ${colG}`.toLowerCase();
 
     if (!cache.results.byDate[date]) {
@@ -416,13 +409,11 @@ function renderContent(searchQuery = "") {
   let html = "";
 
   if (searchQuery !== "") {
-    // ИСПРАВЛЕНИЕ ПОИСКА: "Умный" поиск по отдельным словам (токенам)
     const searchTerms = searchQuery.split(" ").filter(t => t !== "");
     let matches = [];
 
     dataRef.dates.forEach(d => {
       dataRef.byDate[d].forEach(item => {
-        // Проверяем, что КАЖДОЕ введенное слово есть в строке поиска
         const isMatch = searchTerms.every(term => item.searchStr.includes(term));
         if (isMatch) {
           matches.push({ ...item, dateLabel: d });
