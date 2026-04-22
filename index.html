@@ -8,14 +8,12 @@
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
   :root {
-    /* --- НОВЫЙ ФОН --- */
     --bg-main: #181c1c;        
     --accent-main: #38bdf8;    
     --accent-hover: #0ea5e9;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     
-    /* Адаптированное "стекло" под фон #181c1c */
     --card-bg: rgba(255, 255, 255, 0.04);
     --card-border: rgba(255, 255, 255, 0.08);
   }
@@ -33,7 +31,6 @@
 
   * { box-sizing: border-box; }
 
-  /* --- ОСНОВНЫЕ СТИЛИ --- */
   .glass {
     background: var(--card-bg);
     backdrop-filter: blur(16px);
@@ -107,7 +104,6 @@
   .player-name { font-weight: 700; font-size: 17px; color: var(--text-main); display: block; margin-bottom: 4px; letter-spacing: 0.3px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
   .id-badge { font-family: monospace; font-size: 14px; color: var(--accent-main); background: rgba(56, 189, 248, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.25); display: inline-block; font-weight: 600; letter-spacing: 0.5px; }
-  .id-badge.free-slot { color: #34d399; background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); }
 
   .time-badge { background: rgba(0, 0, 0, 0.4); padding: 6px 16px; border-radius: 8px; font-family: monospace; font-size: 15px; font-weight: bold; color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: inset 0 0 8px rgba(251, 191, 36, 0.1); }
   .vs-text { text-align: center; margin-top: 8px; font-style: normal; color: #f43f5e; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
@@ -144,13 +140,14 @@
     color: #ffffff;
     font-weight: 700;
     font-size: 13px;
-    padding: 6px 14px;
-    border-radius: 8px;
+    padding: 4px 12px;
+    border-radius: 6px;
     box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: monospace;
   }
   
   .signup-btn:hover {
@@ -160,9 +157,6 @@
     background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   }
 
-  /* ========================================= */
-  /* МОБИЛЬНАЯ ВЕРСИЯ (ДО 768px)               */
-  /* ========================================= */
   @media (max-width: 768px) {
     .header { padding: 15px 10px 10px; gap: 12px; }
     
@@ -205,7 +199,7 @@
     .time-badge { font-size: 13px; padding: 4px 8px; }
     .vs-text { font-size: 11px; margin-top: 0; }
 
-    .signup-btn { font-size: 11px; padding: 5px 10px; }
+    .signup-btn { font-size: 11px; padding: 3px 8px; }
     
     .result-card { flex-direction: column; align-items: stretch; padding: 14px; gap: 10px; }
     .res-winner { font-size: 15px; }
@@ -545,14 +539,17 @@ function renderItems(items, type, showDate = false) {
       // Блок второго игрока или кнопки "Записаться"
       let rightSideHtml = "";
       if (m.isFreeSlot) {
+        // Выводим текст "Свободный слот" и кнопку под ним
         rightSideHtml = `
-          <div class="team-block right" style="justify-content: center;">
+          <div class="team-block right">
+            <span class="player-name" style="color: #34d399; font-style: italic;">Свободный слот</span>
             <a href="https://activity.bigo.tv/live/act/act_16907/index.html?id=84033" target="_blank" class="signup-btn">
               ✏️ Записаться
             </a>
           </div>
         `;
       } else {
+        // Стандартный вывод игрока
         rightSideHtml = `
           <div class="team-block right">
             <span class="player-name">${m.p2_name || "&nbsp;"}</span>
@@ -604,4 +601,3 @@ startAutoRefresh();
 </script>
 </body>
 </html>
-```
