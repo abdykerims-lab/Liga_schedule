@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Семейная Лига BIGO</title>
     <style>
         :root {
@@ -10,11 +10,14 @@
             --primary-hover: #60a5fa; --text-main: #f8fafc; --text-muted: #94a3b8;
             --border-color: #334155; --accent: #10b981;
         }
+        
+        * { box-sizing: border-box; }
+        
         body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
         .container { max-width: 900px; margin: 0 auto; }
         
         /* Шапка и Языки */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid var(--border-color); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--border-color); }
         h1 { margin: 0; font-size: 28px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .lang-switcher { display: flex; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 4px; }
         .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 16px; border-radius: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
@@ -22,13 +25,13 @@
 
         /* Главное меню (Tab 1, 2, 3) */
         .main-menu { display: flex; gap: 10px; margin-bottom: 25px; }
-        .main-btn { background: var(--card-bg); color: var(--text-muted); border: 2px solid var(--border-color); font-size: 18px; font-weight: bold; cursor: pointer; padding: 12px 25px; border-radius: 12px; transition: 0.3s; flex: 1; text-align: center; }
+        .main-btn { background: var(--card-bg); color: var(--text-muted); border: 2px solid var(--border-color); font-size: 18px; font-weight: bold; cursor: pointer; padding: 12px 20px; border-radius: 12px; transition: 0.3s; flex: 1; text-align: center; }
         .main-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
         .main-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
 
         /* Подменю (для Rewards) */
-        .tabs, .subtabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab-btn, .subtab-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .tabs, .subtabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn, .subtab-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .tab-btn.active, .subtab-btn.active { background-color: rgba(59, 130, 246, 0.15); border-color: var(--primary); color: var(--primary-hover); }
 
         /* Контент */
@@ -39,19 +42,46 @@
         .cal-row:last-child, .rule-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
         .cal-title { color: var(--primary-hover); font-size: 18px; margin: 0 0 5px 0; }
         .cal-text, .rule-text { color: #cbd5e1; font-size: 16px; }
-        .action-button { display: inline-block; background: var(--accent); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+        .action-button { display: inline-block; background: var(--accent); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.2s; font-size: 15px;}
         .action-button:hover { background: #059669; transform: scale(1.05); }
         .main-title { font-size: 24px; color: #fff; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;}
 
         /* Стили для Таблиц (Rewards) */
         .data-table-wrapper { overflow-x: auto; margin: 15px 0; border-radius: 8px; border: 1px solid var(--border-color); }
-        .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); }
-        .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); font-size: 15px;}
+        .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
         .data-table th { background-color: rgba(255,255,255,0.05); color: var(--accent); }
         .cell-img { max-width: 70px; max-height: 70px; border-radius: 8px; object-fit: contain; }
 
         #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* =========================================================
+           АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ ТЕЛЕФОНЫ (Экран меньше 600px) 
+           ========================================================= */
+        @media (max-width: 600px) {
+            body { padding: 10px; } /* Уменьшаем отступы по краям экрана */
+            .content-area { padding: 15px; } /* Уменьшаем отступы внутри белого блока */
+            
+            h1 { font-size: 22px; } /* Уменьшаем главный заголовок */
+            .lang-btn { padding: 4px 12px; font-size: 14px; } /* Кнопки языка поменьше */
+            
+            .main-menu { gap: 5px; } /* Кнопки Награды/Календарь ближе друг к другу */
+            .main-btn { font-size: 13px; padding: 10px 5px; border-radius: 8px; border-width: 1px; } /* Сами кнопки меньше */
+            
+            .tab-btn { font-size: 13px; padding: 6px 12px; }
+            .subtab-btn { font-size: 12px; padding: 5px 10px; }
+            
+            .main-title { font-size: 20px; margin-bottom: 15px; }
+            .cal-title { font-size: 16px; }
+            .cal-text, .rule-text { font-size: 14px; line-height: 1.4; } /* Делаем текст компактнее */
+            
+            .data-table { font-size: 13px; } /* Табличный текст меньше */
+            .data-table th, .data-table td { padding: 8px 10px; } /* Отступы в таблице меньше */
+            .cell-img { max-width: 50px; max-height: 50px; } /* Картинки чуть меньше */
+            
+            .action-button { padding: 8px 15px; font-size: 13px; width: 100%; text-align: center;} /* Кнопка-ссылка на всю ширину */
+        }
     </style>
 </head>
 <body>
@@ -85,9 +115,6 @@
 </div>
 
 <script>
-    // ==========================================
-    // НАСТРОЙКИ ССЫЛОК И БАЗЫ ДАННЫХ
-    // ==========================================
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
     const GIDS = {
         'Rewards': '1082140898',   // Tab 1 (Награды)
@@ -170,7 +197,6 @@
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
         
-        // Меняем текст главных кнопок в зависимости от языка
         const mainBtns = document.querySelectorAll('.main-btn');
         mainBtns[0].innerText = lang === 'RU' ? 'Награды' : 'Mukofotlar';
         mainBtns[1].innerText = lang === 'RU' ? 'Календарь' : 'Taqvim';
@@ -203,9 +229,6 @@
         else if (currentMainTab === 'Rules') renderRulesContent();
     }
 
-    // ==========================================
-    // РЕНДЕР: TAB 1 (REWARDS)
-    // ==========================================
     function renderRewardsNav() {
         const tabsContainer = document.getElementById('tabs-container');
         const subtabsContainer = document.getElementById('subtabs-container');
@@ -282,16 +305,13 @@
         document.getElementById('content-container').innerHTML = html || `<div class="rule-text">Данные отсутствуют.</div>`;
     }
 
-    // ==========================================
-    // РЕНДЕР: TAB 2 (КАЛЕНДАРЬ)
-    // ==========================================
     function renderCalendarContent() {
         const rows = allData['Calendar'];
         let html = '<div>';
         
         let hasData = false;
         rows.forEach((row, idx) => {
-            if (idx === 0) return; // Пропуск шапки
+            if (idx === 0) return; 
             
             let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2);
             let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
@@ -318,16 +338,13 @@
         document.getElementById('content-container').innerHTML = html;
     }
 
-    // ==========================================
-    // РЕНДЕР: TAB 3 (ПРАВИЛА)
-    // ==========================================
     function renderRulesContent() {
         const rows = allData['Rules'];
         let html = '<div>';
         
         let hasData = false;
         rows.forEach((row, idx) => {
-            if (idx === 0) return; // Пропуск шапки
+            if (idx === 0) return; 
             
             let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); 
             let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
@@ -335,7 +352,7 @@
             if (!title && !text) return;
             hasData = true;
 
-            if (idx === 1) { // Самая первая строка данных - главный заголовок
+            if (idx === 1) { 
                 html += `<h2 class="main-title">${title}</h2>`;
                 if (text) html += `<div class="rule-text" style="margin-bottom:20px;">${text.replace(/\n/g, '<br>')}</div>`;
             } else {
@@ -351,7 +368,6 @@
         document.getElementById('content-container').innerHTML = html;
     }
 
-    // Запуск приложения
     fetchAllData();
 </script>
 </body>
