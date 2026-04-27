@@ -23,13 +23,13 @@
         .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 16px; border-radius: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
 
-        /* Главное меню (Tab 1, 2, 3) */
+        /* Главное меню */
         .main-menu { display: flex; gap: 10px; margin-bottom: 25px; }
         .main-btn { background: var(--card-bg); color: var(--text-muted); border: 2px solid var(--border-color); font-size: 18px; font-weight: bold; cursor: pointer; padding: 12px 20px; border-radius: 12px; transition: 0.3s; flex: 1; text-align: center; }
         .main-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
         .main-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
 
-        /* Подменю (для Rewards) */
+        /* Подменю (Rewards) */
         .tabs, .subtabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn, .subtab-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 15px;}
         .tab-btn.active, .subtab-btn.active { background-color: rgba(59, 130, 246, 0.15); border-color: var(--primary); color: var(--primary-hover); }
@@ -37,7 +37,7 @@
         /* Контент */
         .content-area { background-color: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid var(--border-color); animation: fadeIn 0.4s ease; }
         
-        /* Стили для Календаря и Правил */
+        /* Стили для блоков и текста */
         .cal-row, .rule-block { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
         .cal-row:last-child, .rule-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
         .cal-title { color: var(--primary-hover); font-size: 18px; margin: 0 0 5px 0; }
@@ -46,7 +46,7 @@
         .action-button:hover { background: #059669; transform: scale(1.05); }
         .main-title { font-size: 24px; color: #fff; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;}
 
-        /* Стили для Таблиц (Rewards) */
+        /* Таблицы */
         .data-table-wrapper { overflow-x: auto; margin: 15px 0; border-radius: 8px; border: 1px solid var(--border-color); }
         .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); font-size: 15px;}
         .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
@@ -56,31 +56,23 @@
         #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* =========================================================
-           АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ ТЕЛЕФОНЫ (Экран меньше 600px) 
-           ========================================================= */
+        /* Мобильная адаптация */
         @media (max-width: 600px) {
-            body { padding: 10px; } /* Уменьшаем отступы по краям экрана */
-            .content-area { padding: 15px; } /* Уменьшаем отступы внутри белого блока */
-            
-            h1 { font-size: 22px; } /* Уменьшаем главный заголовок */
-            .lang-btn { padding: 4px 12px; font-size: 14px; } /* Кнопки языка поменьше */
-            
-            .main-menu { gap: 5px; } /* Кнопки Награды/Календарь ближе друг к другу */
-            .main-btn { font-size: 13px; padding: 10px 5px; border-radius: 8px; border-width: 1px; } /* Сами кнопки меньше */
-            
+            body { padding: 10px; }
+            .content-area { padding: 15px; }
+            h1 { font-size: 22px; }
+            .lang-btn { padding: 4px 12px; font-size: 14px; }
+            .main-menu { gap: 5px; }
+            .main-btn { font-size: 13px; padding: 10px 5px; border-radius: 8px; border-width: 1px; }
             .tab-btn { font-size: 13px; padding: 6px 12px; }
             .subtab-btn { font-size: 12px; padding: 5px 10px; }
-            
             .main-title { font-size: 20px; margin-bottom: 15px; }
             .cal-title { font-size: 16px; }
-            .cal-text, .rule-text { font-size: 14px; line-height: 1.4; } /* Делаем текст компактнее */
-            
-            .data-table { font-size: 13px; } /* Табличный текст меньше */
-            .data-table th, .data-table td { padding: 8px 10px; } /* Отступы в таблице меньше */
-            .cell-img { max-width: 50px; max-height: 50px; } /* Картинки чуть меньше */
-            
-            .action-button { padding: 8px 15px; font-size: 13px; width: 100%; text-align: center;} /* Кнопка-ссылка на всю ширину */
+            .cal-text, .rule-text { font-size: 14px; line-height: 1.4; }
+            .data-table { font-size: 13px; }
+            .data-table th, .data-table td { padding: 8px 10px; }
+            .cell-img { max-width: 50px; max-height: 50px; }
+            .action-button { padding: 8px 15px; font-size: 13px; width: 100%; text-align: center;}
         }
     </style>
 </head>
@@ -95,7 +87,7 @@
         </div>
     </div>
 
-    <!-- Главное меню (Tab 1, Tab 2, Tab 3) -->
+    <!-- Меню -->
     <div class="main-menu" id="main-menu" style="display: none;">
         <button class="main-btn active" onclick="switchMainTab('Rewards')">Награды</button>
         <button class="main-btn" onclick="switchMainTab('Calendar')">Календарь</button>
@@ -104,26 +96,20 @@
     
     <div id="loader">Загрузка данных (0/3)... ⏳</div>
 
-    <!-- Область подменю (Только для Rewards) -->
     <div id="rewards-nav" style="display: none;">
         <div class="tabs" id="tabs-container"></div>
         <div class="subtabs" id="subtabs-container"></div>
     </div>
 
-    <!-- Контент -->
     <div class="content-area" id="content-container" style="display: none;"></div>
 </div>
 
 <script>
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const GIDS = {
-        'Rewards': '1082140898',   // Tab 1 (Награды)
-        'Calendar': '691237427',   // Tab 2 (Календарь)
-        'Rules': '0'               // Tab 3 (Правила)
-    };
+    const GIDS = { 'Rewards': '1082140898', 'Calendar': '691237427', 'Rules': '0' };
 
     let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
-    let parsedRewards = {}; 
+    let parsedRewards = { 'RU': {}, 'UZ': {} }; 
     
     let currentLang = 'RU';
     let currentMainTab = 'Rewards';
@@ -138,7 +124,7 @@
             const promises = Object.keys(GIDS).map(async (tabName) => {
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${GIDS[tabName]}`;
                 const res = await fetch(url);
-                if (!res.ok) throw new Error(`Ошибка загрузки: ${tabName}`);
+                if (!res.ok) throw new Error(`Ошибка: ${tabName}`);
                 const text = await res.text();
                 allData[tabName] = parseCSV(text);
                 
@@ -150,8 +136,7 @@
             prepareRewardsData(); 
             initUI();
         } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки данных. Убедитесь, что таблица доступна по ссылке.';
-            console.error(error);
+            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Убедитесь, что таблица доступна.';
         }
     }
 
@@ -172,17 +157,37 @@
         return rows;
     }
 
+    // НОВАЯ ЛОГИКА: Раздельный сбор данных для RU и UZ (с новыми колонками)
     function prepareRewardsData() {
         const rows = allData['Rewards'];
+        
+        let lastRuTab = '', lastRuSub = '';
+        let lastUzTab = '', lastUzSub = '';
+
         for (let i = 1; i < rows.length; i++) { 
             const r = rows[i];
-            const tab = getCol(r, 0); 
-            const subtab = getCol(r, 1); 
-            if (!tab && !subtab) continue;
             
-            if (!parsedRewards[tab]) parsedRewards[tab] = {};
-            if (!parsedRewards[tab][subtab]) parsedRewards[tab][subtab] = [];
-            parsedRewards[tab][subtab].push(r);
+            // --- Парсинг RU (A, B, C, D, E) ---
+            let rTab = getCol(r, 0); if (rTab) lastRuTab = rTab; // A
+            let rSub = getCol(r, 1); if (rSub) lastRuSub = rSub; // B
+            let rC1 = getCol(r, 2), rC2 = getCol(r, 3), rC3 = getCol(r, 4); // C, D, E
+            
+            if (lastRuTab && lastRuSub && (rC1 || rC2 || rC3)) {
+                if (!parsedRewards['RU'][lastRuTab]) parsedRewards['RU'][lastRuTab] = {};
+                if (!parsedRewards['RU'][lastRuTab][lastRuSub]) parsedRewards['RU'][lastRuTab][lastRuSub] = [];
+                parsedRewards['RU'][lastRuTab][lastRuSub].push({ c1: rC1, c2: rC2, c3: rC3 });
+            }
+
+            // --- Парсинг UZ (F, G, H, I, J) ---
+            let uTab = getCol(r, 5); if (uTab) lastUzTab = uTab; // F
+            let uSub = getCol(r, 6); if (uSub) lastUzSub = uSub; // G
+            let uC1 = getCol(r, 7), uC2 = getCol(r, 8), uC3 = getCol(r, 9); // H, I, J
+            
+            if (lastUzTab && lastUzSub && (uC1 || uC2 || uC3)) {
+                if (!parsedRewards['UZ'][lastUzTab]) parsedRewards['UZ'][lastUzTab] = {};
+                if (!parsedRewards['UZ'][lastUzTab][lastUzSub]) parsedRewards['UZ'][lastUzTab][lastUzSub] = [];
+                parsedRewards['UZ'][lastUzTab][lastUzSub].push({ c1: uC1, c2: uC2, c3: uC3 });
+            }
         }
     }
 
@@ -193,7 +198,9 @@
     }
 
     function setLang(lang) {
+        const oldLang = currentLang;
         currentLang = lang;
+        
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
         
@@ -202,7 +209,24 @@
         mainBtns[1].innerText = lang === 'RU' ? 'Календарь' : 'Taqvim';
         mainBtns[2].innerText = lang === 'RU' ? 'Правила' : 'Qoidalar';
 
-        renderCurrentView();
+        if (currentMainTab === 'Rewards') {
+            // Пытаемся сохранить активную вкладку при смене языка
+            const oldTabs = Object.keys(parsedRewards[oldLang]);
+            const newTabs = Object.keys(parsedRewards[lang]);
+            const tabIdx = oldTabs.indexOf(currentActiveTab);
+            
+            currentActiveTab = (tabIdx !== -1 && newTabs[tabIdx]) ? newTabs[tabIdx] : newTabs[0];
+
+            if (currentActiveTab) {
+                const oldSubtabs = Object.keys(parsedRewards[oldLang][oldTabs[tabIdx]] || {});
+                const newSubtabs = Object.keys(parsedRewards[lang][currentActiveTab] || {});
+                const subIdx = oldSubtabs.indexOf(currentActiveSubtab);
+                currentActiveSubtab = (subIdx !== -1 && newSubtabs[subIdx]) ? newSubtabs[subIdx] : newSubtabs[0];
+            }
+            renderRewardsNav();
+        } else {
+            renderCurrentView();
+        }
     }
 
     function switchMainTab(tab) {
@@ -212,8 +236,11 @@
         
         document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
         
-        if (tab === 'Rewards' && Object.keys(parsedRewards).length > 0) {
-            if(!currentActiveTab) currentActiveTab = Object.keys(parsedRewards)[0];
+        if (tab === 'Rewards') {
+            const tabs = Object.keys(parsedRewards[currentLang]);
+            if (!currentActiveTab || !tabs.includes(currentActiveTab)) {
+                currentActiveTab = tabs[0];
+            }
             renderRewardsNav();
         } else {
             renderCurrentView();
@@ -234,33 +261,37 @@
         const subtabsContainer = document.getElementById('subtabs-container');
         tabsContainer.innerHTML = ''; subtabsContainer.innerHTML = '';
 
-        const tabs = Object.keys(parsedRewards);
+        const tabs = Object.keys(parsedRewards[currentLang]);
         tabs.forEach(tab => {
             const btn = document.createElement('button');
             btn.className = 'tab-btn' + (tab === currentActiveTab ? ' active' : '');
             btn.innerText = tab;
-            btn.onclick = () => { currentActiveTab = tab; currentActiveSubtab = Object.keys(parsedRewards[tab])[0]; renderRewardsNav(); };
+            btn.onclick = () => { currentActiveTab = tab; currentActiveSubtab = Object.keys(parsedRewards[currentLang][tab])[0]; renderRewardsNav(); };
             tabsContainer.appendChild(btn);
         });
 
-        if(!currentActiveSubtab || !parsedRewards[currentActiveTab][currentActiveSubtab]) {
-            currentActiveSubtab = Object.keys(parsedRewards[currentActiveTab])[0];
+        if (currentActiveTab && parsedRewards[currentLang][currentActiveTab]) {
+            const subtabs = Object.keys(parsedRewards[currentLang][currentActiveTab]);
+            if (!currentActiveSubtab || !subtabs.includes(currentActiveSubtab)) {
+                currentActiveSubtab = subtabs[0];
+            }
+            
+            subtabs.forEach(sub => {
+                const btn = document.createElement('button');
+                btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
+                btn.innerText = sub;
+                btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
+                subtabsContainer.appendChild(btn);
+            });
         }
-
-        const subtabs = Object.keys(parsedRewards[currentActiveTab]);
-        subtabs.forEach(sub => {
-            const btn = document.createElement('button');
-            btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
-            btn.innerText = sub;
-            btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
-            subtabsContainer.appendChild(btn);
-        });
-
         renderCurrentView();
     }
 
+    // НОВАЯ ЛОГИКА ОТРИСОВКИ ТАБЛИЦ И ТЕКСТА
     function renderRewardsContent() {
-        const rows = parsedRewards[currentActiveTab][currentActiveSubtab] || [];
+        const tabData = parsedRewards[currentLang][currentActiveTab] || {};
+        const rows = tabData[currentActiveSubtab] || [];
+        
         let html = '';
         let inFullTable = false, inMiniTable = false;
 
@@ -270,30 +301,36 @@
             return text.replace(/\n/g, '<br>');
         };
 
-        rows.forEach((row, idx) => {
-            let c1 = currentLang === 'RU' ? getCol(row, 2) : getCol(row, 5);
-            let c2 = currentLang === 'RU' ? getCol(row, 3) : getCol(row, 6);
-            let c3 = currentLang === 'RU' ? getCol(row, 4) : getCol(row, 7);
+        rows.forEach((row) => {
+            let { c1, c2, c3 } = row;
 
-            if (!c1 && !c2 && !c3) return;
-
+            // 1. ПОЛНАЯ ТАБЛИЦА (3 колонки заполнены)
             if (c1 && c2 && c3) {
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                if (!inFullTable) { html += `<div class="data-table-wrapper"><table class="data-table">`; inFullTable = true; }
-                if (idx === 0 || (!getCol(rows[idx-1], 2) && currentLang === 'RU')) { 
-                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`;
+                
+                if (!inFullTable) { 
+                    html += `<div class="data-table-wrapper"><table class="data-table">`; 
+                    inFullTable = true;
+                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`; // Первая строка = шапка
                 } else {
                     html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
                 }
             } 
+            // 2. МИНИ-ТАБЛИЦА ДЛЯ КАРТИНОК (колонка 1 пустая, 2 и 3 заполнены)
             else if (!c1 && c2 && c3) {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
-                if (!inMiniTable) { html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px;">`; inMiniTable = true; }
+                
+                if (!inMiniTable) { 
+                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px;">`; 
+                    inMiniTable = true; 
+                }
                 html += `<tr><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
             } 
+            // 3. ТЕКСТ (колонки 1 и/или 2 заполнены, 3 - пустая)
             else {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
+                
                 html += `<div class="rule-block">`;
                 if (c1) html += `<h3 class="cal-title">${c1}</h3>`;
                 if (c2) html += `<div class="rule-text">${fmt(c2)}</div>`;
@@ -308,11 +345,10 @@
     function renderCalendarContent() {
         const rows = allData['Calendar'];
         let html = '<div>';
-        
         let hasData = false;
+        
         rows.forEach((row, idx) => {
             if (idx === 0) return; 
-            
             let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2);
             let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
 
@@ -341,11 +377,10 @@
     function renderRulesContent() {
         const rows = allData['Rules'];
         let html = '<div>';
-        
         let hasData = false;
+        
         rows.forEach((row, idx) => {
             if (idx === 0) return; 
-            
             let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); 
             let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
 
