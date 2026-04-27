@@ -105,8 +105,15 @@
 </div>
 
 <script>
+    // ==========================================
+    // ВАШИ ОБНОВЛЕННЫЕ GID (ID ЛИСТОВ)
+    // ==========================================
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const GIDS = { 'Rewards': '1082140898', 'Calendar': '691237427', 'Rules': '0' };
+    const GIDS = { 
+        'Rewards': '1090262398',  // Обновленный GID Наград
+        'Calendar': '691237427',  // GID Календаря
+        'Rules': '0'              // GID Правил
+    };
 
     let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
     let parsedRewards = { 'RU': {}, 'UZ': {} }; 
@@ -157,7 +164,6 @@
         return rows;
     }
 
-    // НОВАЯ ЛОГИКА: Раздельный сбор данных для RU и UZ (с новыми колонками)
     function prepareRewardsData() {
         const rows = allData['Rewards'];
         
@@ -210,9 +216,8 @@
         mainBtns[2].innerText = lang === 'RU' ? 'Правила' : 'Qoidalar';
 
         if (currentMainTab === 'Rewards') {
-            // Пытаемся сохранить активную вкладку при смене языка
-            const oldTabs = Object.keys(parsedRewards[oldLang]);
-            const newTabs = Object.keys(parsedRewards[lang]);
+            const oldTabs = Object.keys(parsedRewards[oldLang] || {});
+            const newTabs = Object.keys(parsedRewards[lang] || {});
             const tabIdx = oldTabs.indexOf(currentActiveTab);
             
             currentActiveTab = (tabIdx !== -1 && newTabs[tabIdx]) ? newTabs[tabIdx] : newTabs[0];
@@ -237,7 +242,7 @@
         document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
         
         if (tab === 'Rewards') {
-            const tabs = Object.keys(parsedRewards[currentLang]);
+            const tabs = Object.keys(parsedRewards[currentLang] || {});
             if (!currentActiveTab || !tabs.includes(currentActiveTab)) {
                 currentActiveTab = tabs[0];
             }
@@ -261,7 +266,7 @@
         const subtabsContainer = document.getElementById('subtabs-container');
         tabsContainer.innerHTML = ''; subtabsContainer.innerHTML = '';
 
-        const tabs = Object.keys(parsedRewards[currentLang]);
+        const tabs = Object.keys(parsedRewards[currentLang] || {});
         tabs.forEach(tab => {
             const btn = document.createElement('button');
             btn.className = 'tab-btn' + (tab === currentActiveTab ? ' active' : '');
@@ -287,7 +292,6 @@
         renderCurrentView();
     }
 
-    // НОВАЯ ЛОГИКА ОТРИСОВКИ ТАБЛИЦ И ТЕКСТА
     function renderRewardsContent() {
         const tabData = parsedRewards[currentLang][currentActiveTab] || {};
         const rows = tabData[currentActiveSubtab] || [];
@@ -304,19 +308,17 @@
         rows.forEach((row) => {
             let { c1, c2, c3 } = row;
 
-            // 1. ПОЛНАЯ ТАБЛИЦА (3 колонки заполнены)
             if (c1 && c2 && c3) {
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
                 
                 if (!inFullTable) { 
                     html += `<div class="data-table-wrapper"><table class="data-table">`; 
                     inFullTable = true;
-                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`; // Первая строка = шапка
+                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`;
                 } else {
                     html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
                 }
             } 
-            // 2. МИНИ-ТАБЛИЦА ДЛЯ КАРТИНОК (колонка 1 пустая, 2 и 3 заполнены)
             else if (!c1 && c2 && c3) {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 
@@ -326,7 +328,6 @@
                 }
                 html += `<tr><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
             } 
-            // 3. ТЕКСТ (колонки 1 и/или 2 заполнены, 3 - пустая)
             else {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
