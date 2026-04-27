@@ -5,74 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Семейная Лига BIGO</title>
     <style>
+        /* Цветовая палитра в стиле скриншота */
         :root {
-            --bg-color: #0f172a; --card-bg: #1e293b; --primary: #3b82f6;
-            --primary-hover: #60a5fa; --text-main: #f8fafc; --text-muted: #94a3b8;
-            --border-color: #334155; --accent: #10b981;
+            --bg-page: #0d1115;       
+            --bg-card: #181d23;       
+            --bg-table: #21262d;      
+            
+            --teal-dark: #123f45;     
+            --teal-light: #186c72;    
+            
+            --orange: #f5a631;        
+            --orange-bg: #f5a631;     
+            
+            --text-main: #ffffff;     
+            --text-muted: #8b949e;    
+            --border-line: #2d333b;   
         }
         
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 900px; margin: 0 auto; }
+        body { 
+            background-color: var(--bg-page); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 20px 10px; 
+            line-height: 1.5; 
+        }
+        .container { max-width: 800px; margin: 0 auto; }
         
         /* Шапка и Языки */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--border-color); }
-        h1 { margin: 0; font-size: 28px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .lang-switcher { display: flex; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 4px; }
-        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 16px; border-radius: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .lang-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
+        .header { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .lang-switcher { display: flex; background: #1f2937; border-radius: 20px; padding: 4px; }
+        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 5px 15px; border-radius: 16px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
+        .lang-btn.active { background: var(--orange); color: #000; }
 
-        /* Главное меню */
-        .main-menu { display: flex; gap: 10px; margin-bottom: 25px; }
-        .main-btn { background: var(--card-bg); color: var(--text-muted); border: 2px solid var(--border-color); font-size: 18px; font-weight: bold; cursor: pointer; padding: 12px 20px; border-radius: 12px; transition: 0.3s; flex: 1; text-align: center; }
-        .main-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
-        .main-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        /* =========================================
+           ГЛАВНОЕ МЕНЮ (По центру)
+           ========================================= */
+        .main-menu { 
+            display: flex; 
+            justify-content: center; /* Центрируем кнопки */
+            flex-wrap: wrap;
+            gap: 15px; 
+            margin-bottom: 25px; 
+        }
+        .main-btn { 
+            background-color: var(--teal-dark); 
+            color: var(--text-main); 
+            border: none; 
+            font-size: 20px; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            cursor: pointer; 
+            padding: 16px 40px; /* Заданные отступы вместо растягивания */
+            border-radius: 8px; 
+            transition: 0.3s; 
+            text-align: center; 
+            position: relative;
+            min-width: 200px; /* Минимальная ширина для красоты */
+        }
+        .main-btn.active { 
+            background-color: var(--teal-light); 
+            color: var(--orange); 
+            border-bottom: 5px solid var(--orange);
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
 
-        /* Подменю (Rewards) */
-        .tabs, .subtabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab-btn, .subtab-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 15px;}
-        .tab-btn.active, .subtab-btn.active { background-color: rgba(59, 130, 246, 0.15); border-color: var(--primary); color: var(--primary-hover); }
+        /* Основная карточка */
+        .content-area { 
+            background-color: var(--bg-card); 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            animation: fadeIn 0.4s ease; 
+        }
 
-        /* Контент */
-        .content-area { background-color: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid var(--border-color); animation: fadeIn 0.4s ease; }
+        /* =========================================
+           ПОДМЕНЮ (По центру)
+           ========================================= */
+        .tabs-wrapper {
+            display: flex;
+            justify-content: center; /* Центрируем блок слитных кнопок */
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        #tabs-container {
+            display: inline-flex;
+            background-color: var(--teal-light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--orange);
+            font-size: 18px;
+            font-weight: bold;
+            padding: 14px 45px; /* Широкие кликабельные зоны */
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .tab-btn.active {
+            background-color: var(--orange-bg);
+            color: #ffffff;
+        }
+
+        #subtabs-container { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+        .subtab-btn { background: transparent; border: 1px solid var(--border-line); color: var(--text-muted); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; text-align: center; }
+        .subtab-btn.active { border-color: var(--orange); color: var(--orange); }
+
+        /* =========================================
+           ЗАГОЛОВКИ И ТЕКСТ
+           ========================================= */
+        .cal-title { color: var(--orange); font-size: 22px; text-align: center; margin: 20px 0 15px 0; font-weight: bold; }
+        .rule-text, .cal-text { color: #d1d5db; font-size: 16px; margin-bottom: 15px; text-align: center; }
+        .main-title { font-size: 24px; color: var(--orange); text-align: center; margin-bottom: 20px; }
+
+        /* =========================================
+           ТАБЛИЦЫ (Данные по центру)
+           ========================================= */
+        .data-table-wrapper { 
+            background-color: var(--bg-table); 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            margin-bottom: 25px;
+            padding: 5px 15px;
+        }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+        .data-table th, .data-table td { 
+            padding: 14px 10px; 
+            border-bottom: 1px solid var(--border-line); 
+            white-space: nowrap; 
+            text-align: center; /* Центрируем весь текст в ячейках */
+            vertical-align: middle;
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table th { color: var(--text-main); font-size: 13px; font-weight: bold; }
+        .data-table td:nth-child(3) { color: var(--orange); font-weight: bold; }
+        .data-table td:nth-child(1), .data-table td:nth-child(2) { color: var(--text-main); }
         
-        /* Стили для блоков и текста */
-        .cal-row, .rule-block { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
-        .cal-row:last-child, .rule-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
-        .cal-title { color: var(--primary-hover); font-size: 18px; margin: 0 0 5px 0; }
-        .cal-text, .rule-text { color: #cbd5e1; font-size: 16px; }
-        .action-button { display: inline-block; background: var(--accent); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.2s; font-size: 15px;}
-        .action-button:hover { background: #059669; transform: scale(1.05); }
-        .main-title { font-size: 24px; color: #fff; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;}
-
-        /* Таблицы */
-        .data-table-wrapper { overflow-x: auto; margin: 15px 0; border-radius: 8px; border: 1px solid var(--border-color); }
-        .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); font-size: 15px;}
-        .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
-        .data-table th { background-color: rgba(255,255,255,0.05); color: var(--accent); }
-        .cell-img { max-width: 70px; max-height: 70px; border-radius: 8px; object-fit: contain; }
-
-        #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px; }
+        .cell-img { max-width: 40px; max-height: 40px; vertical-align: middle; margin: 0 auto; display: block;}
+        
+        .action-button { display: block; text-align: center; background: var(--teal-light); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        
+        #loader { text-align: center; color: var(--orange); padding: 50px; font-size: 18px; font-weight: bold;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Мобильная адаптация */
+        /* =========================================
+           МОБИЛЬНАЯ АДАПТАЦИЯ (Телефоны)
+           ========================================= */
         @media (max-width: 600px) {
-            body { padding: 10px; }
-            .content-area { padding: 15px; }
-            h1 { font-size: 22px; }
-            .lang-btn { padding: 4px 12px; font-size: 14px; }
-            .main-menu { gap: 5px; }
-            .main-btn { font-size: 13px; padding: 10px 5px; border-radius: 8px; border-width: 1px; }
-            .tab-btn { font-size: 13px; padding: 6px 12px; }
-            .subtab-btn { font-size: 12px; padding: 5px 10px; }
-            .main-title { font-size: 20px; margin-bottom: 15px; }
-            .cal-title { font-size: 16px; }
-            .cal-text, .rule-text { font-size: 14px; line-height: 1.4; }
+            body { padding: 15px 10px; }
+            .content-area { padding: 20px 15px; border-radius: 12px; }
+            
+            /* На телефоне возвращаем растягивание, чтобы было красиво и крупно */
+            .main-menu { gap: 6px; flex-wrap: nowrap; }
+            .main-btn { font-size: 13px; padding: 12px 5px; border-bottom-width: 4px; min-width: unset; flex: 1; }
+            
+            .tabs-wrapper { display: flex; }
+            #tabs-container { display: flex; width: 100%; }
+            .tab-btn { font-size: 14px; padding: 10px 5px; flex: 1; }
+            
+            .cal-title { font-size: 18px; }
+            .rule-text, .cal-text { font-size: 14px; }
+            
             .data-table { font-size: 13px; }
-            .data-table th, .data-table td { padding: 8px 10px; }
-            .cell-img { max-width: 50px; max-height: 50px; }
-            .action-button { padding: 8px 15px; font-size: 13px; width: 100%; text-align: center;}
+            .data-table th { font-size: 11px; padding: 10px 5px;}
+            .data-table td { padding: 12px 5px; }
+            .data-table-wrapper { padding: 0 10px; border-radius: 8px;}
         }
     </style>
 </head>
@@ -80,40 +182,34 @@
 
 <div class="container">
     <div class="header">
-        <h1>👑 Семейная Лига</h1>
         <div class="lang-switcher">
             <button class="lang-btn active" onclick="setLang('RU')">RU</button>
             <button class="lang-btn" onclick="setLang('UZ')">UZ</button>
         </div>
     </div>
 
-    <!-- Меню -->
     <div class="main-menu" id="main-menu" style="display: none;">
         <button class="main-btn active" onclick="switchMainTab('Rewards')">Награды</button>
         <button class="main-btn" onclick="switchMainTab('Calendar')">Календарь</button>
         <button class="main-btn" onclick="switchMainTab('Rules')">Правила</button>
     </div>
     
-    <div id="loader">Загрузка данных (0/3)... ⏳</div>
+    <div id="loader">Загрузка данных... ⏳</div>
 
-    <div id="rewards-nav" style="display: none;">
-        <div class="tabs" id="tabs-container"></div>
-        <div class="subtabs" id="subtabs-container"></div>
+    <div class="content-area" id="content-container" style="display: none;">
+        <div id="rewards-nav" style="display: none;">
+            <div class="tabs-wrapper">
+                <div id="tabs-container"></div>
+            </div>
+            <div id="subtabs-container"></div>
+        </div>
+        <div id="dynamic-content"></div>
     </div>
-
-    <div class="content-area" id="content-container" style="display: none;"></div>
 </div>
 
 <script>
-    // ==========================================
-    // ВАШИ ОБНОВЛЕННЫЕ GID (ID ЛИСТОВ)
-    // ==========================================
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const GIDS = { 
-        'Rewards': '1090262398',  // Обновленный GID Наград
-        'Calendar': '691237427',  // GID Календаря
-        'Rules': '0'              // GID Правил
-    };
+    const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0' };
 
     let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
     let parsedRewards = { 'RU': {}, 'UZ': {} }; 
@@ -127,23 +223,19 @@
 
     async function fetchAllData() {
         try {
-            let loaded = 0;
             const promises = Object.keys(GIDS).map(async (tabName) => {
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${GIDS[tabName]}`;
                 const res = await fetch(url);
-                if (!res.ok) throw new Error(`Ошибка: ${tabName}`);
+                if (!res.ok) throw new Error();
                 const text = await res.text();
                 allData[tabName] = parseCSV(text);
-                
-                loaded++;
-                document.getElementById('loader').innerText = `Загрузка данных (${loaded}/3)... ⏳`;
             });
 
             await Promise.all(promises);
             prepareRewardsData(); 
             initUI();
         } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Убедитесь, что таблица доступна.';
+            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Обновите страницу.';
         }
     }
 
@@ -166,17 +258,15 @@
 
     function prepareRewardsData() {
         const rows = allData['Rewards'];
-        
         let lastRuTab = '', lastRuSub = '';
         let lastUzTab = '', lastUzSub = '';
 
         for (let i = 1; i < rows.length; i++) { 
             const r = rows[i];
             
-            // --- Парсинг RU (A, B, C, D, E) ---
-            let rTab = getCol(r, 0); if (rTab) lastRuTab = rTab; // A
-            let rSub = getCol(r, 1); if (rSub) lastRuSub = rSub; // B
-            let rC1 = getCol(r, 2), rC2 = getCol(r, 3), rC3 = getCol(r, 4); // C, D, E
+            let rTab = getCol(r, 0); if (rTab) lastRuTab = rTab;
+            let rSub = getCol(r, 1); if (rSub) lastRuSub = rSub;
+            let rC1 = getCol(r, 2), rC2 = getCol(r, 3), rC3 = getCol(r, 4);
             
             if (lastRuTab && lastRuSub && (rC1 || rC2 || rC3)) {
                 if (!parsedRewards['RU'][lastRuTab]) parsedRewards['RU'][lastRuTab] = {};
@@ -184,10 +274,9 @@
                 parsedRewards['RU'][lastRuTab][lastRuSub].push({ c1: rC1, c2: rC2, c3: rC3 });
             }
 
-            // --- Парсинг UZ (F, G, H, I, J) ---
-            let uTab = getCol(r, 5); if (uTab) lastUzTab = uTab; // F
-            let uSub = getCol(r, 6); if (uSub) lastUzSub = uSub; // G
-            let uC1 = getCol(r, 7), uC2 = getCol(r, 8), uC3 = getCol(r, 9); // H, I, J
+            let uTab = getCol(r, 5); if (uTab) lastUzTab = uTab;
+            let uSub = getCol(r, 6); if (uSub) lastUzSub = uSub;
+            let uC1 = getCol(r, 7), uC2 = getCol(r, 8), uC3 = getCol(r, 9);
             
             if (lastUzTab && lastUzSub && (uC1 || uC2 || uC3)) {
                 if (!parsedRewards['UZ'][lastUzTab]) parsedRewards['UZ'][lastUzTab] = {};
@@ -211,9 +300,9 @@
         event.target.classList.add('active');
         
         const mainBtns = document.querySelectorAll('.main-btn');
-        mainBtns[0].innerText = lang === 'RU' ? 'Награды' : 'Mukofotlar';
-        mainBtns[1].innerText = lang === 'RU' ? 'Календарь' : 'Taqvim';
-        mainBtns[2].innerText = lang === 'RU' ? 'Правила' : 'Qoidalar';
+        mainBtns[0].innerText = lang === 'RU' ? 'НАГРАДЫ' : 'MUKOFOTLAR';
+        mainBtns[1].innerText = lang === 'RU' ? 'КАЛЕНДАРЬ' : 'TAQVIM';
+        mainBtns[2].innerText = lang === 'RU' ? 'ПРАВИЛА' : 'QOIDALAR';
 
         if (currentMainTab === 'Rewards') {
             const oldTabs = Object.keys(parsedRewards[oldLang] || {});
@@ -239,13 +328,12 @@
         document.querySelectorAll('.main-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
         
+        document.getElementById('content-container').style.display = 'block';
         document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
         
         if (tab === 'Rewards') {
             const tabs = Object.keys(parsedRewards[currentLang] || {});
-            if (!currentActiveTab || !tabs.includes(currentActiveTab)) {
-                currentActiveTab = tabs[0];
-            }
+            if (!currentActiveTab || !tabs.includes(currentActiveTab)) currentActiveTab = tabs[0];
             renderRewardsNav();
         } else {
             renderCurrentView();
@@ -253,9 +341,6 @@
     }
 
     function renderCurrentView() {
-        const container = document.getElementById('content-container');
-        container.style.display = 'block';
-        
         if (currentMainTab === 'Rewards') renderRewardsContent();
         else if (currentMainTab === 'Calendar') renderCalendarContent();
         else if (currentMainTab === 'Rules') renderRulesContent();
@@ -277,17 +362,17 @@
 
         if (currentActiveTab && parsedRewards[currentLang][currentActiveTab]) {
             const subtabs = Object.keys(parsedRewards[currentLang][currentActiveTab]);
-            if (!currentActiveSubtab || !subtabs.includes(currentActiveSubtab)) {
-                currentActiveSubtab = subtabs[0];
-            }
+            if (!currentActiveSubtab || !subtabs.includes(currentActiveSubtab)) currentActiveSubtab = subtabs[0];
             
-            subtabs.forEach(sub => {
-                const btn = document.createElement('button');
-                btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
-                btn.innerText = sub;
-                btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
-                subtabsContainer.appendChild(btn);
-            });
+            if (!(subtabs.length === 1 && subtabs[0] === "")) {
+                subtabs.forEach(sub => {
+                    const btn = document.createElement('button');
+                    btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
+                    btn.innerText = sub;
+                    btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
+                    subtabsContainer.appendChild(btn);
+                });
+            }
         }
         renderCurrentView();
     }
@@ -310,7 +395,6 @@
 
             if (c1 && c2 && c3) {
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                
                 if (!inFullTable) { 
                     html += `<div class="data-table-wrapper"><table class="data-table">`; 
                     inFullTable = true;
@@ -318,34 +402,29 @@
                 } else {
                     html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
                 }
-            } 
-            else if (!c1 && c2 && c3) {
+            } else if (!c1 && c2 && c3) {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
-                
                 if (!inMiniTable) { 
-                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px;">`; 
+                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px; margin: 0 auto;">`; 
                     inMiniTable = true; 
                 }
-                html += `<tr><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
-            } 
-            else {
+                html += `<tr><td style="border-bottom:none;">${fmt(c2)}</td><td style="border-bottom:none;">${fmt(c3)}</td></tr>`;
+            } else {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
                 
-                html += `<div class="rule-block">`;
-                if (c1) html += `<h3 class="cal-title">${c1}</h3>`;
+                if (c1) html += `<div class="cal-title">${c1}</div>`;
                 if (c2) html += `<div class="rule-text">${fmt(c2)}</div>`;
-                html += `</div>`;
             }
         });
 
         if (inFullTable || inMiniTable) html += `</table></div>`;
-        document.getElementById('content-container').innerHTML = html || `<div class="rule-text">Данные отсутствуют.</div>`;
+        document.getElementById('dynamic-content').innerHTML = html || `<div class="rule-text">Данные отсутствуют.</div>`;
     }
 
     function renderCalendarContent() {
         const rows = allData['Calendar'];
-        let html = '<div>';
+        let html = '';
         let hasData = false;
         
         rows.forEach((row, idx) => {
@@ -356,8 +435,7 @@
             if (!title && !value) return;
             hasData = true;
 
-            html += `<div class="cal-row">`;
-            if (title) html += `<h3 class="cal-title">${title}</h3>`;
+            if (title) html += `<div class="cal-title" style="font-size:18px;">${title}</div>`;
             
             if (value) {
                 if (value.startsWith('http')) {
@@ -367,17 +445,15 @@
                     html += `<div class="cal-text">${value.replace(/\n/g, '<br>')}</div>`;
                 }
             }
-            html += `</div>`;
+            html += `<hr style="border: 0; border-bottom: 1px solid var(--border-line); margin: 15px 0;">`;
         });
         
-        if (!hasData) html += `<div class="rule-text">Календарь пока пуст.</div>`;
-        html += '</div>';
-        document.getElementById('content-container').innerHTML = html;
+        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text">Календарь пока пуст.</div>`;
     }
 
     function renderRulesContent() {
         const rows = allData['Rules'];
-        let html = '<div>';
+        let html = '';
         let hasData = false;
         
         rows.forEach((row, idx) => {
@@ -389,19 +465,15 @@
             hasData = true;
 
             if (idx === 1) { 
-                html += `<h2 class="main-title">${title}</h2>`;
-                if (text) html += `<div class="rule-text" style="margin-bottom:20px;">${text.replace(/\n/g, '<br>')}</div>`;
+                html += `<div class="main-title">${title}</div>`;
+                if (text) html += `<div class="rule-text" style="margin-bottom:25px;">${text.replace(/\n/g, '<br>')}</div>`;
             } else {
-                html += `<div class="rule-block">`;
-                if (title) html += `<h3 class="cal-title">${title}</h3>`;
+                if (title) html += `<div class="cal-title" style="font-size:18px;">${title}</div>`;
                 if (text) html += `<div class="rule-text">${text.replace(/\n/g, '<br>')}</div>`;
-                html += `</div>`;
             }
         });
         
-        if (!hasData) html += `<div class="rule-text">Правила формируются.</div>`;
-        html += '</div>';
-        document.getElementById('content-container').innerHTML = html;
+        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text">Правила формируются.</div>`;
     }
 
     fetchAllData();
