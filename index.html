@@ -86,13 +86,13 @@
 
 <script>
     // ==========================================
-    // ⚠️ ВАШИ НАСТРОЙКИ (Вставьте GID листов!)
+    // НАСТРОЙКИ ССЫЛОК И БАЗЫ ДАННЫХ
     // ==========================================
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
     const GIDS = {
-        'Rewards': '1082140898',   // Tab 1 (готово)
-        'Calendar': '000000000',   // Tab 2 (Вставьте реальный GID листа Calendar)
-        'Rules': '000000000'       // Tab 3 (Вставьте реальный GID листа Rules)
+        'Rewards': '1082140898',   // Tab 1 (Награды)
+        'Calendar': '691237427',   // Tab 2 (Календарь)
+        'Rules': '0'               // Tab 3 (Правила)
     };
 
     let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
@@ -100,10 +100,9 @@
     
     let currentLang = 'RU';
     let currentMainTab = 'Rewards';
-    let currentActiveTab = '';    // Для Rewards (Семьям)
-    let currentActiveSubtab = ''; // Для Rewards (Бобы)
+    let currentActiveTab = '';    
+    let currentActiveSubtab = ''; 
 
-    // Безопасное получение ячейки
     const getCol = (row, index) => (row && row[index]) ? row[index].trim() : '';
 
     async function fetchAllData() {
@@ -112,6 +111,7 @@
             const promises = Object.keys(GIDS).map(async (tabName) => {
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${GIDS[tabName]}`;
                 const res = await fetch(url);
+                if (!res.ok) throw new Error(`Ошибка загрузки: ${tabName}`);
                 const text = await res.text();
                 allData[tabName] = parseCSV(text);
                 
@@ -120,10 +120,10 @@
             });
 
             await Promise.all(promises);
-            prepareRewardsData(); // Структурируем только Награды
+            prepareRewardsData(); 
             initUI();
         } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Проверьте ID и доступы.';
+            document.getElementById('loader').innerText = '❌ Ошибка загрузки данных. Убедитесь, что таблица доступна по ссылке.';
             console.error(error);
         }
     }
@@ -145,13 +145,12 @@
         return rows;
     }
 
-    // Подготавливаем сложную структуру для Rewards
     function prepareRewardsData() {
         const rows = allData['Rewards'];
-        for (let i = 1; i < rows.length; i++) { // Пропуск заголовка (строка 1)
+        for (let i = 1; i < rows.length; i++) { 
             const r = rows[i];
-            const tab = getCol(r, 0); // Семьям
-            const subtab = getCol(r, 1); // Награды в бобах
+            const tab = getCol(r, 0); 
+            const subtab = getCol(r, 1); 
             if (!tab && !subtab) continue;
             
             if (!parsedRewards[tab]) parsedRewards[tab] = {};
@@ -170,6 +169,13 @@
         currentLang = lang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
+        
+        // Меняем текст главных кнопок в зависимости от языка
+        const mainBtns = document.querySelectorAll('.main-btn');
+        mainBtns[0].innerText = lang === 'RU' ? 'Награды' : 'Mukofotlar';
+        mainBtns[1].innerText = lang === 'RU' ? 'Календарь' : 'Taqvim';
+        mainBtns[2].innerText = lang === 'RU' ? 'Правила' : 'Qoidalar';
+
         renderCurrentView();
     }
 
@@ -178,7 +184,6 @@
         document.querySelectorAll('.main-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
         
-        // Показываем подменю только если это Rewards
         document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
         
         if (tab === 'Rewards' && Object.keys(parsedRewards).length > 0) {
@@ -199,7 +204,7 @@
     }
 
     // ==========================================
-    // РЕНДЕР: TAB 1 (REWARDS - НАГРАДЫ)
+    // РЕНДЕР: TAB 1 (REWARDS)
     // ==========================================
     function renderRewardsNav() {
         const tabsContainer = document.getElementById('tabs-container');
@@ -249,23 +254,20 @@
 
             if (!c1 && !c2 && !c3) return;
 
-            // Таблица 3 колонки
             if (c1 && c2 && c3) {
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
                 if (!inFullTable) { html += `<div class="data-table-wrapper"><table class="data-table">`; inFullTable = true; }
-                if (idx === 0 || (!getCol(rows[idx-1], 2) && currentLang === 'RU')) { // Шапка
+                if (idx === 0 || (!getCol(rows[idx-1], 2) && currentLang === 'RU')) { 
                     html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`;
                 } else {
                     html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
                 }
             } 
-            // Таблица 2 колонки (картинки)
             else if (!c1 && c2 && c3) {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (!inMiniTable) { html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px;">`; inMiniTable = true; }
                 html += `<tr><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
             } 
-            // Текст (Заголовок + Описание)
             else {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
@@ -277,73 +279,79 @@
         });
 
         if (inFullTable || inMiniTable) html += `</table></div>`;
-        document.getElementById('content-container').innerHTML = html;
+        document.getElementById('content-container').innerHTML = html || `<div class="rule-text">Данные отсутствуют.</div>`;
     }
 
     // ==========================================
-    // РЕНДЕР: TAB 2 (CALENDAR - КАЛЕНДАРЬ)
+    // РЕНДЕР: TAB 2 (КАЛЕНДАРЬ)
     // ==========================================
     function renderCalendarContent() {
         const rows = allData['Calendar'];
         let html = '<div>';
         
+        let hasData = false;
         rows.forEach((row, idx) => {
-            if (idx === 0) return; // Пропуск строки 1 (Заголовки таблицы)
+            if (idx === 0) return; // Пропуск шапки
             
-            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); // A(0) / C(2)
-            let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3); // B(1) / D(3)
+            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2);
+            let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
 
             if (!title && !value) return;
+            hasData = true;
 
             html += `<div class="cal-row">`;
             if (title) html += `<h3 class="cal-title">${title}</h3>`;
             
             if (value) {
-                // Если значение - это ссылка (URL), делаем из неё кнопку
                 if (value.startsWith('http')) {
-                    html += `<a href="${value}" target="_blank" class="action-button">Открыть ссылку</a>`;
+                    const btnText = currentLang === 'RU' ? 'Открыть ссылку' : 'Havolani ochish';
+                    html += `<a href="${value}" target="_blank" class="action-button">${btnText}</a>`;
                 } else {
                     html += `<div class="cal-text">${value.replace(/\n/g, '<br>')}</div>`;
                 }
             }
             html += `</div>`;
         });
+        
+        if (!hasData) html += `<div class="rule-text">Календарь пока пуст.</div>`;
         html += '</div>';
         document.getElementById('content-container').innerHTML = html;
     }
 
     // ==========================================
-    // РЕНДЕР: TAB 3 (RULES - ПРАВИЛА)
+    // РЕНДЕР: TAB 3 (ПРАВИЛА)
     // ==========================================
     function renderRulesContent() {
         const rows = allData['Rules'];
         let html = '<div>';
         
+        let hasData = false;
         rows.forEach((row, idx) => {
-            if (idx === 0) return; // Пропуск строки 1 (Заголовки таблицы)
+            if (idx === 0) return; // Пропуск шапки
             
-            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); // A(0) / C(2)
-            let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);  // B(1) / D(3)
+            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); 
+            let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
 
             if (!title && !text) return;
+            hasData = true;
 
-            // Строка 2 (idx 1): Главный заголовок (A2 / C2)
-            if (idx === 1) {
+            if (idx === 1) { // Самая первая строка данных - главный заголовок
                 html += `<h2 class="main-title">${title}</h2>`;
                 if (text) html += `<div class="rule-text" style="margin-bottom:20px;">${text.replace(/\n/g, '<br>')}</div>`;
             } else {
-                // Остальные правила
                 html += `<div class="rule-block">`;
                 if (title) html += `<h3 class="cal-title">${title}</h3>`;
                 if (text) html += `<div class="rule-text">${text.replace(/\n/g, '<br>')}</div>`;
                 html += `</div>`;
             }
         });
+        
+        if (!hasData) html += `<div class="rule-text">Правила формируются.</div>`;
         html += '</div>';
         document.getElementById('content-container').innerHTML = html;
     }
 
-    // Запуск!
+    // Запуск приложения
     fetchAllData();
 </script>
 </body>
