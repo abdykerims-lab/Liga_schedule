@@ -40,11 +40,11 @@
         .lang-btn.active { background: var(--orange); color: #000; }
 
         /* =========================================
-           ГЛАВНОЕ МЕНЮ (По центру)
+           ГЛАВНОЕ МЕНЮ (Всегда по центру)
            ========================================= */
         .main-menu { 
             display: flex; 
-            justify-content: center; /* Центрируем кнопки */
+            justify-content: center; 
             flex-wrap: wrap;
             gap: 15px; 
             margin-bottom: 25px; 
@@ -57,12 +57,12 @@
             font-weight: 800; 
             text-transform: uppercase;
             cursor: pointer; 
-            padding: 16px 40px; /* Заданные отступы вместо растягивания */
+            padding: 16px 40px; 
             border-radius: 8px; 
             transition: 0.3s; 
             text-align: center; 
             position: relative;
-            min-width: 200px; /* Минимальная ширина для красоты */
+            min-width: 200px; 
         }
         .main-btn.active { 
             background-color: var(--teal-light); 
@@ -82,11 +82,11 @@
         }
 
         /* =========================================
-           ПОДМЕНЮ (По центру)
+           ПОДМЕНЮ (Всегда по центру)
            ========================================= */
         .tabs-wrapper {
             display: flex;
-            justify-content: center; /* Центрируем блок слитных кнопок */
+            justify-content: center; 
             width: 100%;
             margin-bottom: 15px;
         }
@@ -102,7 +102,7 @@
             color: var(--orange);
             font-size: 18px;
             font-weight: bold;
-            padding: 14px 45px; /* Широкие кликабельные зоны */
+            padding: 14px 45px; 
             cursor: pointer;
             transition: 0.3s;
             text-align: center;
@@ -117,14 +117,17 @@
         .subtab-btn.active { border-color: var(--orange); color: var(--orange); }
 
         /* =========================================
-           ЗАГОЛОВКИ И ТЕКСТ
+           ЗАГОЛОВКИ И ТЕКСТ (По умолчанию - слева)
            ========================================= */
-        .cal-title { color: var(--orange); font-size: 22px; text-align: center; margin: 20px 0 15px 0; font-weight: bold; }
-        .rule-text, .cal-text { color: #d1d5db; font-size: 16px; margin-bottom: 15px; text-align: center; }
-        .main-title { font-size: 24px; color: var(--orange); text-align: center; margin-bottom: 20px; }
+        .cal-title { color: var(--orange); font-size: 22px; margin: 20px 0 15px 0; font-weight: bold; text-align: left; }
+        .rule-text, .cal-text { color: #d1d5db; font-size: 16px; margin-bottom: 15px; text-align: left; }
+        .main-title { font-size: 24px; color: var(--orange); margin-bottom: 20px; text-align: left; }
+        
+        /* Вспомогательный класс для центрирования элементов Календаря */
+        .text-center { text-align: center !important; }
 
         /* =========================================
-           ТАБЛИЦЫ (Данные по центру)
+           ТАБЛИЦЫ (Данные всегда по центру)
            ========================================= */
         .data-table-wrapper { 
             background-color: var(--bg-table); 
@@ -138,7 +141,7 @@
             padding: 14px 10px; 
             border-bottom: 1px solid var(--border-line); 
             white-space: nowrap; 
-            text-align: center; /* Центрируем весь текст в ячейках */
+            text-align: center; /* Центрируем весь текст в таблицах (С2-Е9 и т.д.) */
             vertical-align: middle;
         }
         .data-table tr:last-child td { border-bottom: none; }
@@ -148,7 +151,7 @@
         
         .cell-img { max-width: 40px; max-height: 40px; vertical-align: middle; margin: 0 auto; display: block;}
         
-        .action-button { display: block; text-align: center; background: var(--teal-light); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        .action-button { display: inline-block; text-align: center; background: var(--teal-light); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; }
         
         #loader { text-align: center; color: var(--orange); padding: 50px; font-size: 18px; font-weight: bold;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -160,7 +163,6 @@
             body { padding: 15px 10px; }
             .content-area { padding: 20px 15px; border-radius: 12px; }
             
-            /* На телефоне возвращаем растягивание, чтобы было красиво и крупно */
             .main-menu { gap: 6px; flex-wrap: nowrap; }
             .main-btn { font-size: 13px; padding: 12px 5px; border-bottom-width: 4px; min-width: unset; flex: 1; }
             
@@ -413,6 +415,7 @@
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
                 
+                // Текст вне таблиц выравнивается по левому краю (классы по умолчанию)
                 if (c1) html += `<div class="cal-title">${c1}</div>`;
                 if (c2) html += `<div class="rule-text">${fmt(c2)}</div>`;
             }
@@ -435,20 +438,21 @@
             if (!title && !value) return;
             hasData = true;
 
-            if (title) html += `<div class="cal-title" style="font-size:18px;">${title}</div>`;
+            // Календарь выравнивается строго по центру (добавлен класс text-center)
+            if (title) html += `<div class="cal-title text-center" style="font-size:18px;">${title}</div>`;
             
             if (value) {
                 if (value.startsWith('http')) {
                     const btnText = currentLang === 'RU' ? 'Открыть ссылку' : 'Havolani ochish';
-                    html += `<a href="${value}" target="_blank" class="action-button">${btnText}</a>`;
+                    html += `<div class="text-center"><a href="${value}" target="_blank" class="action-button">${btnText}</a></div>`;
                 } else {
-                    html += `<div class="cal-text">${value.replace(/\n/g, '<br>')}</div>`;
+                    html += `<div class="cal-text text-center">${value.replace(/\n/g, '<br>')}</div>`;
                 }
             }
             html += `<hr style="border: 0; border-bottom: 1px solid var(--border-line); margin: 15px 0;">`;
         });
         
-        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text">Календарь пока пуст.</div>`;
+        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text text-center">Календарь пока пуст.</div>`;
     }
 
     function renderRulesContent() {
@@ -464,6 +468,7 @@
             if (!title && !text) return;
             hasData = true;
 
+            // Правила по левому краю (классы по умолчанию)
             if (idx === 1) { 
                 html += `<div class="main-title">${title}</div>`;
                 if (text) html += `<div class="rule-text" style="margin-bottom:25px;">${text.replace(/\n/g, '<br>')}</div>`;
