@@ -3,148 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейная Лига - Награды</title>
+    <title>Семейная Лига BIGO</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #3b82f6;
-            --primary-hover: #60a5fa;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --accent: #10b981;
+            --bg-color: #0f172a; --card-bg: #1e293b; --primary: #3b82f6;
+            --primary-hover: #60a5fa; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --border-color: #334155; --accent: #10b981;
         }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Шапка и переключатель языков */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 28px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .lang-switcher {
-            display: flex;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 4px;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 6px 16px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .lang-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
-        }
-
-        /* Табы и Сабтабы */
-        .tabs, .subtabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
-        .tab-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; }
-
-        .subtab-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; }
         
-        .subtab-btn:hover { color: var(--text-main); }
-        .subtab-btn.active {
-            background-color: rgba(59, 130, 246, 0.1);
-            border-color: var(--primary);
-            color: var(--primary-hover);
-        }
+        /* Шапка и Языки */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid var(--border-color); }
+        h1 { margin: 0; font-size: 28px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .lang-switcher { display: flex; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 4px; }
+        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 16px; border-radius: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .lang-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
 
-        /* Контентная область */
-        .content-area {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            border: 1px solid var(--border-color);
-            animation: fadeIn 0.4s ease;
-        }
+        /* Главное меню (Tab 1, 2, 3) */
+        .main-menu { display: flex; gap: 10px; margin-bottom: 25px; }
+        .main-btn { background: var(--card-bg); color: var(--text-muted); border: 2px solid var(--border-color); font-size: 18px; font-weight: bold; cursor: pointer; padding: 12px 25px; border-radius: 12px; transition: 0.3s; flex: 1; text-align: center; }
+        .main-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
+        .main-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
 
-        /* Блоки Текста */
-        .rule-block { margin-top: 25px; margin-bottom: 25px; }
-        .rule-title { font-size: 18px; color: var(--primary-hover); margin: 0 0 8px 0; }
-        .rule-text { color: #cbd5e1; font-size: 15px; }
+        /* Подменю (для Rewards) */
+        .tabs, .subtabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn, .subtab-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active, .subtab-btn.active { background-color: rgba(59, 130, 246, 0.15); border-color: var(--primary); color: var(--primary-hover); }
 
-        /* Таблицы */
-        .data-table-wrapper { overflow-x: auto; margin-top: 15px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+        /* Контент */
+        .content-area { background-color: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid var(--border-color); animation: fadeIn 0.4s ease; }
+        
+        /* Стили для Календаря и Правил */
+        .cal-row, .rule-block { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .cal-row:last-child, .rule-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .cal-title { color: var(--primary-hover); font-size: 18px; margin: 0 0 5px 0; }
+        .cal-text, .rule-text { color: #cbd5e1; font-size: 16px; }
+        .action-button { display: inline-block; background: var(--accent); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+        .action-button:hover { background: #059669; transform: scale(1.05); }
+        .main-title { font-size: 24px; color: #fff; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;}
+
+        /* Стили для Таблиц (Rewards) */
+        .data-table-wrapper { overflow-x: auto; margin: 15px 0; border-radius: 8px; border: 1px solid var(--border-color); }
         .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); }
-        .data-table th, .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-        .data-table th { background-color: rgba(255,255,255,0.05); color: var(--accent); font-weight: 600; }
-        .data-table tr:last-child td { border-bottom: none; }
-        .data-table tr:hover { background-color: rgba(255,255,255,0.03); }
+        .data-table th, .data-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .data-table th { background-color: rgba(255,255,255,0.05); color: var(--accent); }
+        .cell-img { max-width: 70px; max-height: 70px; border-radius: 8px; object-fit: contain; }
 
-        /* Картинки внутри ячеек */
-        .cell-img { max-width: 60px; max-height: 60px; border-radius: 8px; object-fit: contain; }
-
-        #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px;}
+        #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -152,211 +58,293 @@
 
 <div class="container">
     <div class="header">
-        <h1>🏆 Награды Лиги</h1>
-        
+        <h1>👑 Семейная Лига</h1>
         <div class="lang-switcher">
             <button class="lang-btn active" onclick="setLang('RU')">RU</button>
             <button class="lang-btn" onclick="setLang('UZ')">UZ</button>
         </div>
     </div>
-    
-    <div id="loader">Синхронизация с базой данных... ⏳</div>
 
-    <div class="tabs" id="tabs-container" style="display: none;"></div>
-    <div class="subtabs" id="subtabs-container" style="display: none;"></div>
+    <!-- Главное меню (Tab 1, Tab 2, Tab 3) -->
+    <div class="main-menu" id="main-menu" style="display: none;">
+        <button class="main-btn active" onclick="switchMainTab('Rewards')">Награды</button>
+        <button class="main-btn" onclick="switchMainTab('Calendar')">Календарь</button>
+        <button class="main-btn" onclick="switchMainTab('Rules')">Правила</button>
+    </div>
+    
+    <div id="loader">Загрузка данных (0/3)... ⏳</div>
+
+    <!-- Область подменю (Только для Rewards) -->
+    <div id="rewards-nav" style="display: none;">
+        <div class="tabs" id="tabs-container"></div>
+        <div class="subtabs" id="subtabs-container"></div>
+    </div>
+
+    <!-- Контент -->
     <div class="content-area" id="content-container" style="display: none;"></div>
 </div>
 
 <script>
+    // ==========================================
+    // ⚠️ ВАШИ НАСТРОЙКИ (Вставьте GID листов!)
+    // ==========================================
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const gid = '1082140898'; 
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+    const GIDS = {
+        'Rewards': '1082140898',   // Tab 1 (готово)
+        'Calendar': '000000000',   // Tab 2 (Вставьте реальный GID листа Calendar)
+        'Rules': '000000000'       // Tab 3 (Вставьте реальный GID листа Rules)
+    };
 
-    let siteData = {}; 
+    let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
+    let parsedRewards = {}; 
+    
     let currentLang = 'RU';
-    let currentActiveTab = '';
-    let currentActiveSubtab = '';
+    let currentMainTab = 'Rewards';
+    let currentActiveTab = '';    // Для Rewards (Семьям)
+    let currentActiveSubtab = ''; // Для Rewards (Бобы)
 
-    // Меняем язык и перерисовываем страницу
+    // Безопасное получение ячейки
+    const getCol = (row, index) => (row && row[index]) ? row[index].trim() : '';
+
+    async function fetchAllData() {
+        try {
+            let loaded = 0;
+            const promises = Object.keys(GIDS).map(async (tabName) => {
+                const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${GIDS[tabName]}`;
+                const res = await fetch(url);
+                const text = await res.text();
+                allData[tabName] = parseCSV(text);
+                
+                loaded++;
+                document.getElementById('loader').innerText = `Загрузка данных (${loaded}/3)... ⏳`;
+            });
+
+            await Promise.all(promises);
+            prepareRewardsData(); // Структурируем только Награды
+            initUI();
+        } catch (error) {
+            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Проверьте ID и доступы.';
+            console.error(error);
+        }
+    }
+
+    function parseCSV(csv) {
+        const rows = [];
+        let row = [], col = "", inQ = false;
+        for (let i = 0; i < csv.length; i++) {
+            let c = csv[i], nc = csv[i+1];
+            if (c === '"' && inQ && nc === '"') { col += '"'; i++; }
+            else if (c === '"') inQ = !inQ;
+            else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
+            else if ((c === '\n' || c === '\r') && !inQ) {
+                if (c === '\r' && nc === '\n') i++;
+                row.push(col.trim()); rows.push(row); row = []; col = "";
+            } else col += c;
+        }
+        if (col || row.length) { row.push(col.trim()); rows.push(row); }
+        return rows;
+    }
+
+    // Подготавливаем сложную структуру для Rewards
+    function prepareRewardsData() {
+        const rows = allData['Rewards'];
+        for (let i = 1; i < rows.length; i++) { // Пропуск заголовка (строка 1)
+            const r = rows[i];
+            const tab = getCol(r, 0); // Семьям
+            const subtab = getCol(r, 1); // Награды в бобах
+            if (!tab && !subtab) continue;
+            
+            if (!parsedRewards[tab]) parsedRewards[tab] = {};
+            if (!parsedRewards[tab][subtab]) parsedRewards[tab][subtab] = [];
+            parsedRewards[tab][subtab].push(r);
+        }
+    }
+
+    function initUI() {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main-menu').style.display = 'flex';
+        switchMainTab('Rewards');
+    }
+
     function setLang(lang) {
         currentLang = lang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
-        if (currentActiveTab && currentActiveSubtab) {
-            renderContent(currentActiveTab, currentActiveSubtab);
+        renderCurrentView();
+    }
+
+    function switchMainTab(tab) {
+        currentMainTab = tab;
+        document.querySelectorAll('.main-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Показываем подменю только если это Rewards
+        document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
+        
+        if (tab === 'Rewards' && Object.keys(parsedRewards).length > 0) {
+            if(!currentActiveTab) currentActiveTab = Object.keys(parsedRewards)[0];
+            renderRewardsNav();
+        } else {
+            renderCurrentView();
         }
     }
 
-    // Скачивание базы
-    async function fetchData() {
-        try {
-            const response = await fetch(csvUrl);
-            const csvText = await response.text();
-            parseCSVtoObject(csvText);
-            initUI();
-        } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Проверьте доступы таблицы.';
-        }
+    function renderCurrentView() {
+        const container = document.getElementById('content-container');
+        container.style.display = 'block';
+        
+        if (currentMainTab === 'Rewards') renderRewardsContent();
+        else if (currentMainTab === 'Calendar') renderCalendarContent();
+        else if (currentMainTab === 'Rules') renderRulesContent();
     }
 
-    // Парсер таблицы
-    function parseCSVtoObject(csv) {
-        const rows = [];
-        let row = [], col = "", inQuotes = false;
-        for (let i = 0; i < csv.length; i++) {
-            let char = csv[i], nextChar = csv[i+1];
-            if (char === '"' && inQuotes && nextChar === '"') { col += '"'; i++; }
-            else if (char === '"') inQuotes = !inQuotes;
-            else if (char === ',' && !inQuotes) { row.push(col.trim()); col = ""; }
-            else if ((char === '\n' || char === '\r') && !inQuotes) {
-                if (char === '\r' && nextChar === '\n') i++;
-                row.push(col.trim()); rows.push(row); row = []; col = "";
-            } else col += char;
-        }
-        if (col || row.length) { row.push(col.trim()); rows.push(row); }
-
-        for (let i = 1; i < rows.length; i++) {
-            const r = rows[i];
-            if (r.length < 2 || (!r[0] && !r[1])) continue; 
-            const tab = r[0]; // Семьям / Ведущим
-            const subtab = r[1]; // Награды в бобах / Вирт награды
-            
-            if (!siteData[tab]) siteData[tab] = {};
-            if (!siteData[tab][subtab]) siteData[tab][subtab] = [];
-            siteData[tab][subtab].push(r);
-        }
-    }
-
-    // Меню первого уровня (Семьям / Ведущим)
-    function initUI() {
-        document.getElementById('loader').style.display = 'none';
+    // ==========================================
+    // РЕНДЕР: TAB 1 (REWARDS - НАГРАДЫ)
+    // ==========================================
+    function renderRewardsNav() {
         const tabsContainer = document.getElementById('tabs-container');
-        tabsContainer.style.display = 'flex';
+        const subtabsContainer = document.getElementById('subtabs-container');
+        tabsContainer.innerHTML = ''; subtabsContainer.innerHTML = '';
 
-        const tabs = Object.keys(siteData);
-        if (tabs.length === 0) return;
-
-        tabs.forEach((tab, index) => {
+        const tabs = Object.keys(parsedRewards);
+        tabs.forEach(tab => {
             const btn = document.createElement('button');
-            btn.className = 'tab-btn' + (index === 0 ? ' active' : '');
+            btn.className = 'tab-btn' + (tab === currentActiveTab ? ' active' : '');
             btn.innerText = tab;
-            btn.onclick = () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentActiveTab = tab;
-                renderSubtabs(tab);
-            };
+            btn.onclick = () => { currentActiveTab = tab; currentActiveSubtab = Object.keys(parsedRewards[tab])[0]; renderRewardsNav(); };
             tabsContainer.appendChild(btn);
         });
 
-        currentActiveTab = tabs[0];
-        renderSubtabs(tabs[0]);
-    }
+        if(!currentActiveSubtab || !parsedRewards[currentActiveTab][currentActiveSubtab]) {
+            currentActiveSubtab = Object.keys(parsedRewards[currentActiveTab])[0];
+        }
 
-    // Меню второго уровня (Бобы / Картинки)
-    function renderSubtabs(tabName) {
-        const subtabsContainer = document.getElementById('subtabs-container');
-        subtabsContainer.innerHTML = '';
-        subtabsContainer.style.display = 'flex';
-
-        const subtabs = Object.keys(siteData[tabName]);
-        
-        subtabs.forEach((subtab, index) => {
+        const subtabs = Object.keys(parsedRewards[currentActiveTab]);
+        subtabs.forEach(sub => {
             const btn = document.createElement('button');
-            btn.className = 'subtab-btn' + (index === 0 ? ' active' : '');
-            btn.innerText = subtab;
-            btn.onclick = () => {
-                document.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentActiveSubtab = subtab;
-                renderContent(tabName, subtab);
-            };
+            btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
+            btn.innerText = sub;
+            btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
             subtabsContainer.appendChild(btn);
         });
 
-        currentActiveSubtab = subtabs[0];
-        renderContent(tabName, subtabs[0]);
+        renderCurrentView();
     }
 
-    // Главная логика: Рисуем контент!
-    function renderContent(tabName, subtabName) {
-        const contentContainer = document.getElementById('content-container');
-        contentContainer.style.display = 'block';
-        contentContainer.innerHTML = '';
-        
-        const rows = siteData[tabName][subtabName];
+    function renderRewardsContent() {
+        const rows = parsedRewards[currentActiveTab][currentActiveSubtab] || [];
         let html = '';
-        let inFullTable = false; // Для таблицы из 3 колонок
-        let inMiniTable = false; // Для таблицы из 2 колонок
+        let inFullTable = false, inMiniTable = false;
 
-        // Функция форматирования: если ссылка - делаем картинку, если текст - сохраняем переносы
-        const formatCell = (text) => {
+        const fmt = (text) => {
             if (!text) return '';
-            if (text.startsWith('http://') || text.startsWith('https://')) {
-                return `<img src="${text}" class="cell-img" alt="Награда">`;
-            }
+            if (text.startsWith('http')) return `<img src="${text}" class="cell-img" alt="img">`;
             return text.replace(/\n/g, '<br>');
         };
 
-        rows.forEach((row, index) => {
-            // Выбираем колонки в зависимости от языка
-            let col1 = currentLang === 'RU' ? row[2] : row[5];
-            let col2 = currentLang === 'RU' ? row[3] : row[6];
-            let col3 = currentLang === 'RU' ? row[4] : row[7];
+        rows.forEach((row, idx) => {
+            let c1 = currentLang === 'RU' ? getCol(row, 2) : getCol(row, 5);
+            let c2 = currentLang === 'RU' ? getCol(row, 3) : getCol(row, 6);
+            let c3 = currentLang === 'RU' ? getCol(row, 4) : getCol(row, 7);
 
-            col1 = col1 ? col1.trim() : '';
-            col2 = col2 ? col2.trim() : '';
-            col3 = col3 ? col3.trim() : '';
+            if (!c1 && !c2 && !c3) return;
 
-            // Если строка пустая в текущем языке - пропускаем
-            if (!col1 && !col2 && !col3) return;
-
-            // ЛОГИКА 1: Заполнены все 3 колонки -> Это БОЛЬШАЯ ТАБЛИЦА
-            if (col1 && col2 && col3) {
+            // Таблица 3 колонки
+            if (c1 && c2 && c3) {
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                if (!inFullTable) {
-                    html += `<div class="data-table-wrapper"><table class="data-table">`;
-                    inFullTable = true;
-                }
-                
-                // Если это первая строка блока, делаем её шапкой таблицы (теги <th>)
-                if (index === 0 || (rows[index-1] && (!rows[index-1][2] || !rows[index-1][4]))) {
-                    html += `<tr><th>${formatCell(col1)}</th><th>${formatCell(col2)}</th><th>${formatCell(col3)}</th></tr>`;
+                if (!inFullTable) { html += `<div class="data-table-wrapper"><table class="data-table">`; inFullTable = true; }
+                if (idx === 0 || (!getCol(rows[idx-1], 2) && currentLang === 'RU')) { // Шапка
+                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`;
                 } else {
-                    html += `<tr><td>${formatCell(col1)}</td><td>${formatCell(col2)}</td><td>${formatCell(col3)}</td></tr>`;
+                    html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
                 }
             } 
-            // ЛОГИКА 2: Col 1 пустая, Col 2 и Col 3 заполнены -> Это МИНИ-ТАБЛИЦА (для картинок)
-            else if (!col1 && col2 && col3) {
+            // Таблица 2 колонки (картинки)
+            else if (!c1 && c2 && c3) {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
-                if (!inMiniTable) {
-                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width: 500px;">`;
-                    inMiniTable = true;
-                }
-                html += `<tr><td>${formatCell(col2)}</td><td>${formatCell(col3)}</td></tr>`;
+                if (!inMiniTable) { html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px;">`; inMiniTable = true; }
+                html += `<tr><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
             } 
-            // ЛОГИКА 3: Заполнено только Col 1 и/или Col 2 (Col 3 пустая) -> Это ТЕКСТ (Заголовок + Описание)
+            // Текст (Заголовок + Описание)
             else {
                 if (inFullTable) { html += '</table></div>'; inFullTable = false; }
                 if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                
-                if (col1 || col2) {
-                    html += `<div class="rule-block">`;
-                    if (col1) html += `<h3 class="rule-title">${col1}</h3>`;
-                    if (col2) html += `<div class="rule-text">${formatCell(col2)}</div>`;
-                    html += `</div>`;
-                }
+                html += `<div class="rule-block">`;
+                if (c1) html += `<h3 class="cal-title">${c1}</h3>`;
+                if (c2) html += `<div class="rule-text">${fmt(c2)}</div>`;
+                html += `</div>`;
             }
         });
 
-        // Закрываем таблицы, если цикл закончился, а таблица не закрылась
-        if (inFullTable) html += `</table></div>`;
-        if (inMiniTable) html += `</table></div>`;
-
-        contentContainer.innerHTML = html;
+        if (inFullTable || inMiniTable) html += `</table></div>`;
+        document.getElementById('content-container').innerHTML = html;
     }
 
-    fetchData();
+    // ==========================================
+    // РЕНДЕР: TAB 2 (CALENDAR - КАЛЕНДАРЬ)
+    // ==========================================
+    function renderCalendarContent() {
+        const rows = allData['Calendar'];
+        let html = '<div>';
+        
+        rows.forEach((row, idx) => {
+            if (idx === 0) return; // Пропуск строки 1 (Заголовки таблицы)
+            
+            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); // A(0) / C(2)
+            let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3); // B(1) / D(3)
+
+            if (!title && !value) return;
+
+            html += `<div class="cal-row">`;
+            if (title) html += `<h3 class="cal-title">${title}</h3>`;
+            
+            if (value) {
+                // Если значение - это ссылка (URL), делаем из неё кнопку
+                if (value.startsWith('http')) {
+                    html += `<a href="${value}" target="_blank" class="action-button">Открыть ссылку</a>`;
+                } else {
+                    html += `<div class="cal-text">${value.replace(/\n/g, '<br>')}</div>`;
+                }
+            }
+            html += `</div>`;
+        });
+        html += '</div>';
+        document.getElementById('content-container').innerHTML = html;
+    }
+
+    // ==========================================
+    // РЕНДЕР: TAB 3 (RULES - ПРАВИЛА)
+    // ==========================================
+    function renderRulesContent() {
+        const rows = allData['Rules'];
+        let html = '<div>';
+        
+        rows.forEach((row, idx) => {
+            if (idx === 0) return; // Пропуск строки 1 (Заголовки таблицы)
+            
+            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); // A(0) / C(2)
+            let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);  // B(1) / D(3)
+
+            if (!title && !text) return;
+
+            // Строка 2 (idx 1): Главный заголовок (A2 / C2)
+            if (idx === 1) {
+                html += `<h2 class="main-title">${title}</h2>`;
+                if (text) html += `<div class="rule-text" style="margin-bottom:20px;">${text.replace(/\n/g, '<br>')}</div>`;
+            } else {
+                // Остальные правила
+                html += `<div class="rule-block">`;
+                if (title) html += `<h3 class="cal-title">${title}</h3>`;
+                if (text) html += `<div class="rule-text">${text.replace(/\n/g, '<br>')}</div>`;
+                html += `</div>`;
+            }
+        });
+        html += '</div>';
+        document.getElementById('content-container').innerHTML = html;
+    }
+
+    // Запуск!
+    fetchAllData();
 </script>
 </body>
 </html>
