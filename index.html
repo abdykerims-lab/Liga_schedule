@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейная Лига - Информация</title>
+    <title>Семейная Лига - Награды</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -26,34 +26,65 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 28px;
+        /* Шапка и переключатель языков */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Tabs (Уровень 1) */
-        .tabs {
+        .lang-switcher {
+            display: flex;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 4px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Табы и Сабтабы */
+        .tabs, .subtabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
         }
 
         .tab-btn {
-            background: transparent;
+            background: var(--card-bg);
             color: var(--text-muted);
-            border: none;
-            font-size: 18px;
+            border: 1px solid var(--border-color);
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             padding: 10px 20px;
@@ -61,47 +92,28 @@
             transition: all 0.3s ease;
         }
 
-        .tab-btn:hover {
-            color: var(--text-main);
-            background-color: rgba(255,255,255,0.05);
-        }
-
-        .tab-btn.active {
-            color: #fff;
-            background-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-
-        /* Subtabs (Уровень 2) */
-        .subtabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+        .tab-btn:hover { border-color: var(--primary-hover); color: var(--text-main); }
+        .tab-btn.active { background-color: var(--primary); border-color: var(--primary); color: #fff; }
 
         .subtab-btn {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 6px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s ease;
         }
-
-        .subtab-btn:hover {
-            border-color: var(--primary-hover);
-        }
-
+        
+        .subtab-btn:hover { color: var(--text-main); }
         .subtab-btn.active {
             background-color: rgba(59, 130, 246, 0.1);
             border-color: var(--primary);
             color: var(--primary-hover);
         }
 
-        /* Content Area */
+        /* Контентная область */
         .content-area {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -111,78 +123,44 @@
             animation: fadeIn 0.4s ease;
         }
 
-        /* Карточки с правилами */
-        .rule-block {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .rule-block:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .rule-title {
-            font-size: 18px;
-            color: var(--primary-hover);
-            margin: 0 0 10px 0;
-        }
-        .rule-text {
-            white-space: pre-wrap; /* Сохраняет переносы строк из таблицы */
-            color: #cbd5e1;
-        }
-        .rule-text a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .rule-text a:hover {
-            text-decoration: underline;
-        }
+        /* Блоки Текста */
+        .rule-block { margin-top: 25px; margin-bottom: 25px; }
+        .rule-title { font-size: 18px; color: var(--primary-hover); margin: 0 0 8px 0; }
+        .rule-text { color: #cbd5e1; font-size: 15px; }
 
-        /* Таблицы (для наград) */
-        .data-table-wrapper {
-            overflow-x: auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+        /* Таблицы */
+        .data-table-wrapper { overflow-x: auto; margin-top: 15px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .data-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); }
         .data-table th, .data-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
         }
-        .data-table th {
-            background-color: rgba(255,255,255,0.05);
-            color: var(--primary-hover);
-            font-weight: 600;
-        }
-        .data-table tr:hover {
-            background-color: rgba(255,255,255,0.02);
-        }
+        .data-table th { background-color: rgba(255,255,255,0.05); color: var(--accent); font-weight: 600; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover { background-color: rgba(255,255,255,0.03); }
 
-        /* Загрузка */
-        #loader {
-            text-align: center;
-            font-size: 18px;
-            color: var(--text-muted);
-            padding: 50px;
-        }
+        /* Картинки внутри ячеек */
+        .cell-img { max-width: 60px; max-height: 60px; border-radius: 8px; object-fit: contain; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        #loader { text-align: center; color: var(--text-muted); padding: 50px; font-size: 18px;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>👑 Семейная Лига BIGO</h1>
+    <div class="header">
+        <h1>🏆 Награды Лиги</h1>
+        
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('RU')">RU</button>
+            <button class="lang-btn" onclick="setLang('UZ')">UZ</button>
+        </div>
+    </div>
     
-    <div id="loader">Загрузка данных из таблицы... ⏳</div>
+    <div id="loader">Синхронизация с базой данных... ⏳</div>
 
     <div class="tabs" id="tabs-container" style="display: none;"></div>
     <div class="subtabs" id="subtabs-container" style="display: none;"></div>
@@ -190,14 +168,26 @@
 </div>
 
 <script>
-    // ID вашей Гугл-таблицы из ссылки
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
     const gid = '1082140898'; 
     const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
 
-    let siteData = {}; // Здесь будет храниться структурированная таблица
+    let siteData = {}; 
+    let currentLang = 'RU';
+    let currentActiveTab = '';
+    let currentActiveSubtab = '';
 
-    // 1. Функция скачивания и обработки CSV
+    // Меняем язык и перерисовываем страницу
+    function setLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        if (currentActiveTab && currentActiveSubtab) {
+            renderContent(currentActiveTab, currentActiveSubtab);
+        }
+    }
+
+    // Скачивание базы
     async function fetchData() {
         try {
             const response = await fetch(csvUrl);
@@ -205,55 +195,39 @@
             parseCSVtoObject(csvText);
             initUI();
         } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Убедитесь, что таблица имеет доступ "Все, у кого есть ссылка - Читатель".';
-            console.error(error);
+            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Проверьте доступы таблицы.';
         }
     }
 
-    // Правильный парсер CSV (учитывает переносы строк и кавычки внутри ячеек)
+    // Парсер таблицы
     function parseCSVtoObject(csv) {
         const rows = [];
         let row = [], col = "", inQuotes = false;
-        
         for (let i = 0; i < csv.length; i++) {
             let char = csv[i], nextChar = csv[i+1];
-            if (char === '"' && inQuotes && nextChar === '"') {
-                col += '"'; i++; // экранированные кавычки
-            } else if (char === '"') {
-                inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
-                row.push(col.trim()); col = "";
-            } else if ((char === '\n' || char === '\r') && !inQuotes) {
-                if (char === '\r' && nextChar === '\n') i++; // Windows newline
-                row.push(col.trim());
-                rows.push(row);
-                row = []; col = "";
-            } else {
-                col += char;
-            }
+            if (char === '"' && inQuotes && nextChar === '"') { col += '"'; i++; }
+            else if (char === '"') inQuotes = !inQuotes;
+            else if (char === ',' && !inQuotes) { row.push(col.trim()); col = ""; }
+            else if ((char === '\n' || char === '\r') && !inQuotes) {
+                if (char === '\r' && nextChar === '\n') i++;
+                row.push(col.trim()); rows.push(row); row = []; col = "";
+            } else col += char;
         }
-        if (col || row.length) {
-            row.push(col.trim());
-            rows.push(row);
-        }
+        if (col || row.length) { row.push(col.trim()); rows.push(row); }
 
-        // Структурируем: siteData[Tab][Subtab] = [Строка1, Строка2...]
-        // Пропускаем первую строку (заголовки таблицы: Сабтаб, Саб-сабтаб и тд)
         for (let i = 1; i < rows.length; i++) {
             const r = rows[i];
-            if (r.length < 3 || !r[0]) continue; // Пропуск пустых строк
-
-            const tab = r[0]; // Колонка A
-            const subtab = r[1]; // Колонка B
+            if (r.length < 2 || (!r[0] && !r[1])) continue; 
+            const tab = r[0]; // Семьям / Ведущим
+            const subtab = r[1]; // Награды в бобах / Вирт награды
             
             if (!siteData[tab]) siteData[tab] = {};
             if (!siteData[tab][subtab]) siteData[tab][subtab] = [];
-            
             siteData[tab][subtab].push(r);
         }
     }
 
-    // 2. Создание интерфейса (Табы)
+    // Меню первого уровня (Семьям / Ведущим)
     function initUI() {
         document.getElementById('loader').style.display = 'none';
         const tabsContainer = document.getElementById('tabs-container');
@@ -269,16 +243,17 @@
             btn.onclick = () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                currentActiveTab = tab;
                 renderSubtabs(tab);
             };
             tabsContainer.appendChild(btn);
         });
 
-        // Открываем первую вкладку по умолчанию
+        currentActiveTab = tabs[0];
         renderSubtabs(tabs[0]);
     }
 
-    // 3. Создание Сабтабов (Уровень 2)
+    // Меню второго уровня (Бобы / Картинки)
     function renderSubtabs(tabName) {
         const subtabsContainer = document.getElementById('subtabs-container');
         subtabsContainer.innerHTML = '';
@@ -289,71 +264,99 @@
         subtabs.forEach((subtab, index) => {
             const btn = document.createElement('button');
             btn.className = 'subtab-btn' + (index === 0 ? ' active' : '');
-            btn.innerText = subtab || 'Основное'; // Если колонка B пустая
+            btn.innerText = subtab;
             btn.onclick = () => {
                 document.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                currentActiveSubtab = subtab;
                 renderContent(tabName, subtab);
             };
             subtabsContainer.appendChild(btn);
         });
 
-        // Открываем первый сабтаб по умолчанию
+        currentActiveSubtab = subtabs[0];
         renderContent(tabName, subtabs[0]);
     }
 
-    // 4. Отрисовка контента (Текст или Таблица)
+    // Главная логика: Рисуем контент!
     function renderContent(tabName, subtabName) {
         const contentContainer = document.getElementById('content-container');
         contentContainer.style.display = 'block';
         contentContainer.innerHTML = '';
         
         const rows = siteData[tabName][subtabName];
+        let html = '';
+        let inFullTable = false; // Для таблицы из 3 колонок
+        let inMiniTable = false; // Для таблицы из 2 колонок
 
-        // Проверяем, таблица это или просто текст. 
-        // Если в 3-й строке данных есть Колонка E (индекс 4) - рисуем как HTML таблицу
-        // Проверяем 2-ю строку, т.к. 1-я может быть заголовком
-        let isTable = false;
-        if (rows.length > 1 && rows[1].length >= 5 && rows[1][4] !== "") {
-            isTable = true;
-        }
+        // Функция форматирования: если ссылка - делаем картинку, если текст - сохраняем переносы
+        const formatCell = (text) => {
+            if (!text) return '';
+            if (text.startsWith('http://') || text.startsWith('https://')) {
+                return `<img src="${text}" class="cell-img" alt="Награда">`;
+            }
+            return text.replace(/\n/g, '<br>');
+        };
 
-        if (isTable) {
-            // Отрисовка ТАБЛИЦЫ (Награды, Рейтинги)
-            let html = '<div class="data-table-wrapper"><table class="data-table">';
-            rows.forEach((row, index) => {
-                if (index === 0) {
-                    html += `<tr><th>${row[2]}</th><th>${row[3]}</th><th>${row[4]}</th></tr>`;
+        rows.forEach((row, index) => {
+            // Выбираем колонки в зависимости от языка
+            let col1 = currentLang === 'RU' ? row[2] : row[5];
+            let col2 = currentLang === 'RU' ? row[3] : row[6];
+            let col3 = currentLang === 'RU' ? row[4] : row[7];
+
+            col1 = col1 ? col1.trim() : '';
+            col2 = col2 ? col2.trim() : '';
+            col3 = col3 ? col3.trim() : '';
+
+            // Если строка пустая в текущем языке - пропускаем
+            if (!col1 && !col2 && !col3) return;
+
+            // ЛОГИКА 1: Заполнены все 3 колонки -> Это БОЛЬШАЯ ТАБЛИЦА
+            if (col1 && col2 && col3) {
+                if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
+                if (!inFullTable) {
+                    html += `<div class="data-table-wrapper"><table class="data-table">`;
+                    inFullTable = true;
+                }
+                
+                // Если это первая строка блока, делаем её шапкой таблицы (теги <th>)
+                if (index === 0 || (rows[index-1] && (!rows[index-1][2] || !rows[index-1][4]))) {
+                    html += `<tr><th>${formatCell(col1)}</th><th>${formatCell(col2)}</th><th>${formatCell(col3)}</th></tr>`;
                 } else {
-                    html += `<tr><td>${row[2] || ''}</td><td>${row[3] || ''}</td><td>${row[4] || ''}</td></tr>`;
+                    html += `<tr><td>${formatCell(col1)}</td><td>${formatCell(col2)}</td><td>${formatCell(col3)}</td></tr>`;
                 }
-            });
-            html += '</table></div>';
-            contentContainer.innerHTML = html;
-        } else {
-            // Отрисовка ТЕКСТА (Правила)
-            rows.forEach(row => {
-                const title = row[2] || '';
-                const text = row[3] || '';
-                
-                // Обработка HTML ссылок внутри текста (чтобы <a> теги работали)
-                let formattedText = text;
-                
-                if (title || text) {
-                    contentContainer.innerHTML += `
-                        <div class="rule-block">
-                            ${title ? `<h3 class="rule-title">${title}</h3>` : ''}
-                            ${text ? `<div class="rule-text">${formattedText}</div>` : ''}
-                        </div>
-                    `;
+            } 
+            // ЛОГИКА 2: Col 1 пустая, Col 2 и Col 3 заполнены -> Это МИНИ-ТАБЛИЦА (для картинок)
+            else if (!col1 && col2 && col3) {
+                if (inFullTable) { html += '</table></div>'; inFullTable = false; }
+                if (!inMiniTable) {
+                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width: 500px;">`;
+                    inMiniTable = true;
                 }
-            });
-        }
+                html += `<tr><td>${formatCell(col2)}</td><td>${formatCell(col3)}</td></tr>`;
+            } 
+            // ЛОГИКА 3: Заполнено только Col 1 и/или Col 2 (Col 3 пустая) -> Это ТЕКСТ (Заголовок + Описание)
+            else {
+                if (inFullTable) { html += '</table></div>'; inFullTable = false; }
+                if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
+                
+                if (col1 || col2) {
+                    html += `<div class="rule-block">`;
+                    if (col1) html += `<h3 class="rule-title">${col1}</h3>`;
+                    if (col2) html += `<div class="rule-text">${formatCell(col2)}</div>`;
+                    html += `</div>`;
+                }
+            }
+        });
+
+        // Закрываем таблицы, если цикл закончился, а таблица не закрылась
+        if (inFullTable) html += `</table></div>`;
+        if (inMiniTable) html += `</table></div>`;
+
+        contentContainer.innerHTML = html;
     }
 
-    // Запускаем магию!
     fetchData();
-
 </script>
 </body>
 </html>
