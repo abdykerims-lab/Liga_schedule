@@ -3,253 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Лига - Расписание и Результаты</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+<title>Семейная Лига BIGO - Расписание и Результаты</title>
 
+<!-- ШРИФТ EXO 2 -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
   :root {
-    --bg-main: #3c126f;
-    --bg-gradient: linear-gradient(135deg, #4f1893 0%, #3c126f 100%);
-    --accent-color: #38bdf8;
-    --accent-bg: rgba(56, 189, 248, 0.15);
-    --accent-border: rgba(56, 189, 248, 0.4);
+    --bg-page: #0d1115;       
+    --bg-table: rgba(33, 38, 45, 0.8); 
+    --teal-dark: rgba(18, 63, 69, 0.9);     
+    --teal-light: rgba(24, 108, 114, 0.9);    
+    --orange: #f5a631;        
+    --orange-bg: linear-gradient(135deg, #f5a631, #ff7a00);    
+    --text-main: #ffffff;   
+    --text-muted: #c9d1d9; 
+    --border-line: rgba(245, 166, 49, 0.3);
   }
 
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: var(--bg-gradient);
-    background-color: var(--bg-main);
-    color: #fff;
-    min-height: 100vh;
-    box-sizing: border-box;
+  body { 
+    background-image: linear-gradient(rgba(13, 17, 21, 0.8), rgba(13, 17, 21, 0.95)), url('https://i.ibb.co/xqnNLxj4/1vs1-1.jpg'); 
+    background-size: cover;          
+    background-position: center;     
+    background-attachment: fixed;    
+    background-repeat: no-repeat;
+    background-color: var(--bg-page); 
+    color: var(--text-main); 
+    margin: 0; 
+    padding: 20px 10px; 
+    font-family: 'Exo 2', sans-serif;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
   }
 
   * { box-sizing: border-box; }
 
-  /* --- СТЕКЛО --- */
-  .glass {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
+  .container { max-width: 1200px; margin: 0 auto; }
 
-  /* --- ШАПКА И ТАБЫ --- */
-  .header { padding: 20px; text-align: center; }
-  .tab-container { 
-    display: inline-flex; 
-    gap: 10px; 
-    padding: 6px; 
-    border-radius: 20px; 
-    flex-wrap: wrap; 
-    justify-content: center;
+  /* --- ГЛАВНОЕ МЕНЮ --- */
+  .main-menu { 
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; 
   }
-  
-  .tab {
-    padding: 10px 20px;
-    border-radius: 15px;
-    font-weight: 600;
-    font-size: 14px;
+  .main-btn { 
+    background-color: rgba(31, 41, 55, 0.8); 
+    color: var(--text-muted); 
+    border: none; 
+    font-size: 16px; 
+    font-weight: 800; 
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
+    cursor: pointer; 
+    padding: 14px 20px; 
+    border-radius: 8px; 
+    transition: 0.3s; 
+    text-align: center; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.05);
+    flex: 1;
+    min-width: 200px;
+  }
+  .main-btn:hover { color: #fff; background-color: rgba(255,255,255,0.1); }
+  .main-btn.active { 
+    background-color: var(--teal-dark); 
+    color: var(--orange); 
+    border-bottom: 4px solid var(--orange);
+    text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);
   }
 
-  .tab:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
-  .tab.active {
-    color: #fff;
-    background: var(--accent-bg);
-    border: 1px solid var(--accent-border);
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-    cursor: default;
-  }
-
-  /* --- СЕТКА --- */
+  /* --- СЕТКА ОСНОВНОГО КОНТЕНТА --- */
   .main-layout {
-    display: flex; max-width: 1200px; margin: 0 auto;
-    padding: 10px 20px 40px; gap: 20px; align-items: flex-start;
+    display: flex; gap: 20px; align-items: flex-start;
   }
 
   /* --- БОКОВОЕ МЕНЮ (ДАТЫ) --- */
-  .sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; transition: 0.3s;}
+  .sidebar { flex: 0 0 200px; display: flex; flex-direction: column; gap: 10px; transition: 0.3s; }
   
   .date-btn {
-    padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 15px;
-    font-weight: 600; color: rgba(255, 255, 255, 0.7); transition: all 0.3s ease;
-    border: 1px solid transparent; text-align: left;
+    background-color: rgba(24, 29, 35, 0.85);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 12px 15px; border-radius: 8px; cursor: pointer; font-size: 15px;
+    font-weight: 800; color: var(--text-muted); transition: all 0.3s ease;
+    text-align: center; letter-spacing: 1px;
   }
   .date-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
   .date-btn.active {
-    background: var(--accent-bg); 
-    border: 1px solid var(--accent-border);
-    color: #fff; 
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    background: var(--teal-light); 
+    border: 1px solid var(--border-line);
+    color: var(--orange); 
+    box-shadow: 0 0 15px rgba(245, 166, 49, 0.15);
   }
 
-  /* --- ОСНОВНОЙ КОНТЕНТ --- */
+  /* --- ЦЕНТРАЛЬНАЯ ЧАСТЬ --- */
   .content { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
   /* --- ПОИСК --- */
-  .search-box { padding: 12px 20px; border-radius: 15px; display: flex; align-items: center; }
+  .search-box { 
+    background-color: rgba(24, 29, 35, 0.85); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-line); 
+    border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; 
+  }
   .search-box input {
     width: 100%; background: transparent; border: none;
     color: #fff; font-size: 16px; outline: none;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Exo 2', sans-serif;
   }
-  .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+  .search-box input::placeholder { color: rgba(255,255,255,0.4); }
 
-  /* --- ТЕКСТОВЫЕ СТИЛИ --- */
-  .player-name { 
-    font-weight: 700; font-size: 17px; color: #ffffff; display: block; 
-    margin-bottom: 4px; letter-spacing: 0.5px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
+  /* --- СПИСКИ --- */
+  .data-list { display: flex; flex-direction: column; gap: 15px; }
+
+  .data-row {
+    background-color: rgba(24, 29, 35, 0.85); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);      
+    border: 1px solid var(--border-line); 
+    border-radius: 12px; padding: 15px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    transition: transform 0.2s, box-shadow 0.2s; position: relative;
+    display: flex; align-items: center; gap: 15px;
   }
-  .clan-name { 
-    font-size: 13px; color: #cbd5e1; display: block; margin-bottom: 6px; font-weight: 400;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
-  }
+  .data-row:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+  
+  .match-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px; }
+
+  /* ТЕКСТЫ */
+  .player-name { font-weight: 800; font-size: 18px; color: var(--text-main); display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+  .clan-name { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-transform: uppercase;}
+  
   .clan-id { 
-    font-family: monospace; font-size: 12px; color: var(--accent-color); 
-    background: rgba(56, 189, 248, 0.15); padding: 3px 8px; 
-    border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3);
+    font-family: monospace; font-size: 12px; color: var(--text-main); 
+    background: var(--teal-dark); padding: 3px 8px; 
+    border-radius: 6px; border: 1px solid var(--border-line);
     display: inline-block; font-weight: 600; letter-spacing: 0.5px;
-    max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  
   .date-badge { 
-    position: absolute; top: -10px; right: 15px; 
-    background: var(--accent-color); color: #000; font-size: 11px; 
+    position: absolute; top: -12px; right: 15px; 
+    background: var(--orange-bg); color: #000; font-size: 11px; 
     padding: 4px 10px; border-radius: 8px; font-weight: 800;
   }
 
-  /* --- СПИСКИ МАТЧЕЙ И РЕЗУЛЬТАТОВ --- */
-  .schedule-list, .results-list { display: flex; flex-direction: column; gap: 12px; }
-  
-  .match-row, .result-row {
-    padding: 15px 20px; border-radius: 15px; transition: transform 0.2s, background 0.2s; position: relative;
-  }
-  .match-row:hover, .result-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.1); }
-  
-  .match-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px; }
-  .result-row { display: flex; align-items: center; gap: 15px; }
-
+  /* БЛОК МАТЧА (VS) */
   .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .team-block { display: flex; flex-direction: column; line-height: 1.4; min-width: 0; }
   .team-block.left { text-align: left; align-items: flex-start; }
   .team-block.right { text-align: right; align-items: flex-end; }
 
   .time-badge {
-    background: rgba(0, 0, 0, 0.5); padding: 6px 14px; border-radius: 8px;
-    font-family: monospace; font-size: 15px; font-weight: bold;
-    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
+    background: rgba(0, 0, 0, 0.6); padding: 6px 14px; border-radius: 8px;
+    font-size: 15px; font-weight: 800; color: var(--text-main); border: 1px solid rgba(255,255,255,0.1); 
   }
   .vs-text { 
-    text-align: center; margin-top: 8px; font-style: normal; 
-    color: #f43f5e; font-size: 14px; font-weight: 800; 
-    text-transform: uppercase; letter-spacing: 1px;
+    text-align: center; margin-top: 8px; color: var(--orange); font-size: 14px; font-weight: 800; 
   }
 
-  .rank-box { font-size: 18px; font-weight: 800; color: #94a3b8; min-width: 45px; text-align: center; flex-shrink: 0; }
-  .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
-  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); }
-  .rank-3 { color: #d97706; font-size: 20px; text-shadow: 0 0 10px rgba(217, 119, 6, 0.4); }
+  /* РЕЙТИНГИ */
+  .rank-box { font-size: 18px; font-weight: 800; color: var(--text-muted); min-width: 40px; text-align: center; flex-shrink: 0; }
+  .rank-1 { color: #facc15; font-size: 26px; text-shadow: 0 0 15px rgba(250, 204, 21, 0.5); }
+  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.3); }
+  .rank-3 { color: #f97316; font-size: 20px; text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
 
   .result-details { flex-grow: 1; text-align: left; min-width: 0; }
   .result-score-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
   
-  .score-label { font-size: 11px; color: var(--accent-color); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px; }
+  .score-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px; }
   .score-value { 
-    font-family: monospace; font-size: 18px; font-weight: 800; color: #4ade80; 
-    background: rgba(74, 222, 128, 0.15); padding: 4px 10px; 
-    border-radius: 8px; border: 1px solid rgba(74, 222, 128, 0.3);
+    font-size: 20px; font-weight: 800; color: var(--orange); 
+    text-shadow: 0 0 10px rgba(245, 166, 49, 0.2);
   }
 
-  .eagle-img { height: 24px; width: auto; object-fit: contain; margin-top: 6px; border-radius: 4px; }
-  .loading { text-align: center; padding: 40px; color: var(--accent-color); font-size: 18px; width: 100%; font-weight: 600; }
+  .eagle-img { height: 26px; width: auto; object-fit: contain; margin-top: 6px; }
+  .loading { text-align: center; padding: 40px; color: var(--orange); font-size: 18px; width: 100%; font-weight: 800; }
 
-  /* ========================================= */
-  /* --- МОБИЛЬНАЯ АДАПТАЦИЯ ---               */
-  /* ========================================= */
+  /* =========================================
+     МОБИЛЬНАЯ АДАПТАЦИЯ
+     ========================================= */
   @media (max-width: 768px) {
-    .header { padding: 15px 10px; }
-    .tab-container { gap: 6px; border-radius: 15px;}
-    .tab { width: calc(50% - 6px); padding: 10px 5px; font-size: 11px; letter-spacing: 0; flex: none;}
+    .container { padding: 0; }
+    .main-menu { gap: 6px; border-radius: 12px; margin-bottom: 15px;}
+    .main-btn { min-width: unset; width: calc(50% - 3px); flex: none; padding: 12px 5px; font-size: 12px; border-radius: 8px;}
     
-    .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
+    .main-layout { flex-direction: column; gap: 15px; }
     
-    /* --- БОКОВОЕ МЕНЮ (ДАТЫ) НА МОБИЛКЕ --- */
+    /* Идеальный скролл дат (таблетки) */
     .sidebar { 
-      width: 100%; 
-      flex-direction: row; 
-      overflow-x: auto; 
-      padding-bottom: 10px; 
-      gap: 10px; 
-      scroll-snap-type: x mandatory; 
-      -webkit-overflow-scrolling: touch;
-      align-items: flex-start; /* ВАЖНО: Запрещает кнопкам тянуться вниз */
+      width: 100%; flex-direction: row; overflow-x: auto; 
+      padding-bottom: 10px; gap: 10px; scroll-snap-type: x mandatory; 
+      -webkit-overflow-scrolling: touch; align-items: flex-start; 
     }
     .sidebar::-webkit-scrollbar { display: none; }
     
     .date-btn { 
-      flex: 0 0 auto; 
-      height: max-content; /* ВАЖНО: Кнопка будет ровно по размеру текста + отступы */
-      scroll-snap-align: start; 
-      white-space: nowrap; 
-      text-align: center; 
-      padding: 8px 20px; /* ВАЖНО: Уменьшил верх/низ, увеличил бока. Будет вытянутая "таблетка" */
-      font-size: 13px; 
-      border-radius: 12px; 
+      flex: 0 0 auto; height: max-content; scroll-snap-align: start; 
+      white-space: nowrap; padding: 10px 22px; font-size: 13px; border-radius: 20px; 
     }
-    /* ---------------------------------------- */
-
+    
     .content { gap: 12px; }
-    .search-box { padding: 10px 15px; }
-    .search-box input { font-size: 13px; }
+    .search-box { padding: 10px 15px; border-radius: 10px;}
+    .search-box input { font-size: 14px; }
 
-    .match-row { padding: 12px 10px; gap: 6px; }
-    .player-name { font-size: 14px; }
+    .data-row { padding: 15px 12px; border-radius: 10px; gap: 8px; }
+    .match-row { gap: 6px; }
+    
+    .player-name { font-size: 15px; }
     .clan-name { font-size: 11px; margin-bottom: 4px;}
     .clan-id { font-size: 10px; padding: 2px 6px; }
     .time-badge { font-size: 13px; padding: 4px 8px; }
     .vs-text { font-size: 11px; margin-top: 4px; }
     
-    .result-row { padding: 12px 10px; gap: 10px; }
-    .rank-box { min-width: 35px; width: auto; font-size: 14px; }
-    .rank-1 { font-size: 20px; }
-    .rank-2 { font-size: 18px; }
-    .rank-3 { font-size: 16px; }
+    .rank-box { min-width: 35px; font-size: 15px; }
+    .rank-1 { font-size: 22px; }
+    .rank-2 { font-size: 19px; }
+    .rank-3 { font-size: 17px; }
     
-    .score-value { font-size: 14px; padding: 3px 8px; }
+    .score-value { font-size: 16px; }
     .score-label { font-size: 9px; }
-    .eagle-img { height: 18px; margin-top: 4px; } 
+    .eagle-img { height: 20px; margin-top: 4px; } 
   }
 </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="glass tab-container">
-      <div id="tab-schedule" class="tab active" onclick="switchTab('schedule')">Расписание</div>
-      <div id="tab-results" class="tab" onclick="switchTab('results')">Результаты</div>
-      <div id="tab-families" class="tab" onclick="switchTab('families')">Рейтинг Семей</div>
-      <div id="tab-participants" class="tab" onclick="switchTab('participants')">Рейтинг Участников</div>
+  <div class="container">
+    <div class="main-menu">
+      <button id="tab-schedule" class="main-btn active" onclick="switchTab('schedule')">Расписание ПК</button>
+      <button id="tab-results" class="main-btn" onclick="switchTab('results')">Результаты ПК</button>
+      <button id="tab-families" class="main-btn" onclick="switchTab('families')">Рейтинг Семей</button>
+      <button id="tab-participants" class="main-btn" onclick="switchTab('participants')">Рейтинг Участников</button>
     </div>
-  </div>
 
-  <div class="main-layout">
-    <div class="sidebar" id="sidebar"></div>
-    <div class="content">
-      <div class="search-box glass">
-        <input type="text" id="searchInput" placeholder="Поиск (Имя, ID, Название)..." onkeyup="handleSearch()">
-      </div>
-      <div id="data-container">
-        <div class="loading">Загрузка данных...</div>
+    <div class="main-layout">
+      <div class="sidebar" id="sidebar"></div>
+      <div class="content">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Поиск (Имя, ID, Семья)..." onkeyup="handleSearch()">
+        </div>
+        <div id="data-container">
+          <div class="loading">Загрузка данных... ⏳</div>
+        </div>
       </div>
     </div>
   </div>
@@ -276,7 +268,8 @@ function getVal(row, index) {
 function getNum(row, index) {
   if (!row || !row.c || !row.c[index]) return 0;
   const val = row.c[index].v;
-  return typeof val === 'number' ? val : (Number(val) || 0);
+  if (typeof val === 'string') return Number(val.replace(/\s/g, '')) || 0;
+  return typeof val === 'number' ? val : 0;
 }
 
 function parseDate(val) {
@@ -309,11 +302,12 @@ function switchTab(tabName) {
   
   document.getElementById("searchInput").value = "";
 
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.main-btn').forEach(t => t.classList.remove('active'));
   document.getElementById(`tab-${tabName}`).classList.add("active");
 
   const sidebar = document.getElementById("sidebar");
   
+  // Для общих рейтингов скрываем даты
   if (tabName === "families" || tabName === "participants") {
     sidebar.style.display = "none";
   } else {
@@ -321,7 +315,7 @@ function switchTab(tabName) {
     sidebar.innerHTML = "";
   }
 
-  document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+  document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных... ⏳</div>`;
 
   if (cache[tabName].loaded) {
     if (tabName === "schedule" || tabName === "results") buildSidebar(false);
@@ -339,18 +333,20 @@ function startAutoRefresh() {
 }
 
 async function fetchData(tabName, isBackground = false) {
-  let url = "";
-  if (tabName === "schedule") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent("Расписание")}`;
-  else if (tabName === "results") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent("Результаты 2.0")}`;
-  else if (tabName === "families") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=1648616096`;
-  else if (tabName === "participants") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=1546318279`;
+  let gid = "";
+  if (tabName === "schedule") gid = "0";
+  else if (tabName === "results") gid = "1571908657";
+  else if (tabName === "families") gid = "1648616096";
+  else if (tabName === "participants") gid = "1546318279";
+
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=${gid}&_=${Date.now()}`;
 
   if (!isBackground) {
-    document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+    document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных... ⏳</div>`;
   }
 
   try {
-    const res = await fetch(url + "&_=" + Date.now());
+    const res = await fetch(url);
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows || [];
@@ -369,52 +365,78 @@ async function fetchData(tabName, isBackground = false) {
       else renderContent();
     }
   } catch (e) {
-    if (!isBackground) document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
+    if (!isBackground) document.getElementById("data-container").innerHTML = `<div class="loading" style="color:var(--orange);">❌ Ошибка загрузки</div>`;
   }
 }
 
+/* --- ПАРСЕРЫ (С учетом структуры колонок из запроса) --- */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
-  rows.forEach(r => {
-    let date = parseDate(getVal(r, 0));
-    if (!date || date.toLowerCase() === "дата") return;
-    let time = formatTime(getVal(r, 1)) || "--:--";
-    let colD = getVal(r, 3), colE = getVal(r, 4), colF = getVal(r, 5);
-    let c2_name = getVal(r, 8) || "Без клана", c2_id = getVal(r, 9) || "0000", p2 = getVal(r, 10) || "Неизвестно";    
-    let searchStr = `${colD} ${colE} ${colF} ${p2} ${c2_id} ${c2_name}`.toLowerCase();
+  rows.forEach((r, idx) => {
+    if (idx === 0) return; // Пропуск заголовка
+    let date = parseDate(getVal(r, 0)); // Col A
+    if (!date) return;
+    
+    let time = formatTime(getVal(r, 1)) || "--:--"; // Col B
+    let p1 = getVal(r, 3); // Col D
+    let c1_id = getVal(r, 4); // Col E
+    let c1_name = getVal(r, 5); // Col F
+    let vs = getVal(r, 6) || "VS"; // Col G
+    let c2_name = getVal(r, 8); // Col I
+    let c2_id = getVal(r, 9); // Col J
+    let p2 = getVal(r, 10); // Col K
+    
+    if (!p1 && !p2) return;
+
+    let searchStr = `${p1} ${c1_id} ${c1_name} ${c2_name} ${c2_id} ${p2}`.toLowerCase();
 
     if (!cache.schedule.byDate[date]) { cache.schedule.byDate[date] = []; cache.schedule.dates.push(date); }
-    cache.schedule.byDate[date].push({ time, p1: colD || "Неизвестно", c1_id: colE || "0000", c1_name: colF || "Без клана", p2, c2_id, c2_name, searchStr });
+    cache.schedule.byDate[date].push({ time, p1, c1_id, c1_name, vs, p2, c2_id, c2_name, searchStr });
   });
+  
+  // Сортировка дат по убыванию, времени по возрастанию
   cache.schedule.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
   for (let d in cache.schedule.byDate) cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
 }
 
 function parseResults(rows) {
   cache.results.dates = []; cache.results.byDate = {};
-  rows.forEach(r => {
-    let date = parseDate(getVal(r, 0));
-    if (!date || date.toLowerCase() === "дата") return;
-    let colC = getVal(r, 2), colF = getVal(r, 5), colG = getVal(r, 6);
-    let scoreNum = Number(getVal(r, 7)) || 0, scoreStr = getVal(r, 7) || "0"; 
+  rows.forEach((r, idx) => {
+    if (idx === 0) return;
+    let date = parseDate(getVal(r, 0)); // Col A
+    if (!date) return;
     
-    let eagleImgSrc = scoreNum >= 500000 ? "https://i.ibb.co/p6fLVxMk/Golden-1.png" : (scoreNum >= 50000 ? "https://i.ibb.co/m5fQzxRp/Silver-1.png" : "https://i.ibb.co/zWmzPJJg/no-eagel.jpg");
-    let searchStr = `${colC} ${colF} ${colG}`.toLowerCase();
+    let fam_id = getVal(r, 2); // Col C
+    let fam_name = getVal(r, 5); // Col F
+    let player = getVal(r, 6); // Col G
+    let scoreNum = getNum(r, 7); // Col H
+    let scoreStr = getVal(r, 7) || "0"; 
+    
+    if (!player) return;
+
+    let eagleImgSrc = "";
+    if (scoreNum >= 500000) eagleImgSrc = "https://i.ibb.co/p6fLVxMk/Golden-1.png";
+    else if (scoreNum >= 50000) eagleImgSrc = "https://i.ibb.co/m5fQzxRp/Silver-1.png";
+    else eagleImgSrc = "https://i.ibb.co/zWmzPJJg/no-eagel.jpg";
+    
+    let searchStr = `${fam_id} ${fam_name} ${player}`.toLowerCase();
 
     if (!cache.results.byDate[date]) { cache.results.byDate[date] = []; cache.results.dates.push(date); }
-    cache.results.byDate[date].push({ colC, colF, colG, scoreNum, scoreStr, eagleImgSrc, searchStr });
+    cache.results.byDate[date].push({ fam_id, fam_name, player, scoreNum, scoreStr, eagleImgSrc, searchStr });
   });
+  
+  // Сортировка дат по убыванию, очков по убыванию
   cache.results.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
   for (let d in cache.results.byDate) cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
 }
 
 function parseFamilies(rows) {
   cache.families.data = [];
-  rows.forEach((r, index) => {
-    if (index === 0) return; 
-    let id = getVal(r, 1);   
-    let name = getVal(r, 2); 
-    let score = getVal(r, 3); 
+  rows.forEach((r, idx) => {
+    if (idx === 0) return; 
+    let id = getVal(r, 1);   // Col B
+    let name = getVal(r, 2); // Col C
+    let score = getVal(r, 3); // Col D
     let scoreNum = getNum(r, 3); 
     if (!name && !id) return;
     
@@ -423,19 +445,16 @@ function parseFamilies(rows) {
   });
 
   cache.families.data.sort((a, b) => b.scoreNum - a.scoreNum);
-  
-  cache.families.data.forEach((item, idx) => {
-    item.globalRank = idx + 1;
-  });
+  cache.families.data.forEach((item, idx) => item.globalRank = idx + 1);
 }
 
 function parseParticipants(rows) {
   cache.participants.data = [];
-  rows.forEach((r, index) => {
-    if (index === 0) return; 
-    let name = getVal(r, 2);   
-    let family = getVal(r, 4); 
-    let score = getVal(r, 3);  
+  rows.forEach((r, idx) => {
+    if (idx === 0) return; 
+    let name = getVal(r, 2);   // Col C
+    let score = getVal(r, 3);  // Col D
+    let family = getVal(r, 4); // Col E
     let scoreNum = getNum(r, 3); 
     if (!name) return;
     
@@ -444,12 +463,10 @@ function parseParticipants(rows) {
   });
 
   cache.participants.data.sort((a, b) => b.scoreNum - a.scoreNum);
-
-  cache.participants.data.forEach((item, idx) => {
-    item.globalRank = idx + 1;
-  });
+  cache.participants.data.forEach((item, idx) => item.globalRank = idx + 1);
 }
 
+/* --- ОТОБРАЖЕНИЕ UI --- */
 function buildSidebar(isBackground = false) {
   const dataRef = cache[currentTab];
   const sidebar = document.getElementById("sidebar");
@@ -464,7 +481,7 @@ function buildSidebar(isBackground = false) {
 
   dataRef.dates.forEach((date) => {
     const btn = document.createElement("div");
-    btn.className = "date-btn glass";
+    btn.className = "date-btn";
     if (date === selectedDate) btn.classList.add("active");
     btn.innerText = date;
     btn.onclick = () => selectDate(date);
@@ -517,71 +534,68 @@ function renderContent(searchQuery = "") {
   }
 
   if (itemsToRender.length === 0) {
-    container.innerHTML = `<div class="loading">Ничего не найдено</div>`;
+    container.innerHTML = `<div class="loading">Ничего не найдено 🤷‍♂️</div>`;
     return;
   }
 
+  html += `<div class="data-list">`;
+
   if (currentTab === "schedule") {
-    html += `<div class="schedule-list">`;
     itemsToRender.forEach(m => {
       let dateBadge = searchQuery !== "" ? `<div class="date-badge">${m.dateLabel}</div>` : "";
       html += `
-        <div class="match-row glass">
+        <div class="data-row match-row">
           ${dateBadge}
           <div class="team-block left">
-            <span class="player-name">${m.p1}</span>
-            <span class="clan-name">${m.c1_name}</span>
-            <span class="clan-id">ID: ${m.c1_id}</span>
+            <span class="player-name">${m.p1 || '—'}</span>
+            <span class="clan-name">${m.c1_name || 'Без семьи'}</span>
+            <span class="clan-id">ID: ${m.c1_id || '0000'}</span>
           </div>
           <div class="match-center">
             <div class="time-badge">${m.time}</div>
-            <div class="vs-text">VS</div>
+            <div class="vs-text">${m.vs}</div>
           </div>
           <div class="team-block right">
-            <span class="player-name">${m.p2}</span>
-            <span class="clan-name">${m.c2_name}</span>
-            <span class="clan-id">ID: ${m.c2_id}</span>
+            <span class="player-name">${m.p2 || '—'}</span>
+            <span class="clan-name">${m.c2_name || 'Без семьи'}</span>
+            <span class="clan-id">ID: ${m.c2_id || '0000'}</span>
           </div>
         </div>`;
     });
-    html += `</div>`;
   } 
   
   else if (currentTab === "results") {
-    html += `<div class="results-list">`;
     itemsToRender.forEach((m, index) => {
       let dateBadge = searchQuery !== "" ? `<div class="date-badge">${m.dateLabel}</div>` : "";
       let rankClass = index === 0 ? "rank-1" : (index === 1 ? "rank-2" : (index === 2 ? "rank-3" : ""));
       html += `
-        <div class="result-row glass">
+        <div class="data-row">
           ${dateBadge}
           <div class="rank-box ${rankClass}">#${index + 1}</div>
           <div class="result-details">
-            <span class="player-name">${m.colF}</span>
-            <span class="clan-name">BIGO ID: ${m.colG}</span>
-            <span class="clan-id">ID: ${m.colC}</span>
+            <span class="player-name">${m.player}</span>
+            <span class="clan-name">${m.fam_name ? "Семья: " + m.fam_name : "Без семьи"}</span>
+            <span class="clan-id">ID: ${m.fam_id || '0000'}</span>
           </div>
           <div class="result-score-box">
             <span class="score-label">ПК Очки</span>
             <span class="score-value">${m.scoreStr}</span>
-            <img src="${m.eagleImgSrc}" class="eagle-img" loading="lazy" alt="Eagle">
+            <img src="${m.eagleImgSrc}" class="eagle-img" loading="lazy" alt="Rank">
           </div>
         </div>`;
     });
-    html += `</div>`;
   }
 
   else if (currentTab === "families") {
-    html += `<div class="results-list">`;
     itemsToRender.forEach((m) => {
       let r = m.globalRank; 
       let rankClass = r === 1 ? "rank-1" : (r === 2 ? "rank-2" : (r === 3 ? "rank-3" : ""));
       html += `
-        <div class="result-row glass">
+        <div class="data-row">
           <div class="rank-box ${rankClass}">#${r}</div>
           <div class="result-details">
             <span class="player-name">${m.name}</span>
-            <span class="clan-id">ID: ${m.id}</span>
+            <span class="clan-id" style="margin-top: 4px;">Семья ID: ${m.id}</span>
           </div>
           <div class="result-score-box">
             <span class="score-label">Очки Семьи</span>
@@ -589,16 +603,14 @@ function renderContent(searchQuery = "") {
           </div>
         </div>`;
     });
-    html += `</div>`;
   }
 
   else if (currentTab === "participants") {
-    html += `<div class="results-list">`;
     itemsToRender.forEach((m) => {
       let r = m.globalRank;
       let rankClass = r === 1 ? "rank-1" : (r === 2 ? "rank-2" : (r === 3 ? "rank-3" : ""));
       html += `
-        <div class="result-row glass">
+        <div class="data-row">
           <div class="rank-box ${rankClass}">#${r}</div>
           <div class="result-details">
             <span class="player-name">${m.name}</span>
@@ -610,9 +622,9 @@ function renderContent(searchQuery = "") {
           </div>
         </div>`;
     });
-    html += `</div>`;
   }
 
+  html += `</div>`;
   container.innerHTML = html;
 }
 
