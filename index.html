@@ -155,7 +155,6 @@
     text-transform: uppercase; letter-spacing: 1px;
   }
 
-  /* Исправлен min-width вместо жесткого width, чтобы цифры не налезали на текст */
   .rank-box { font-size: 18px; font-weight: 800; color: #94a3b8; min-width: 45px; text-align: center; flex-shrink: 0; }
   .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
   .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); }
@@ -184,12 +183,31 @@
     
     .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
     
-    /* ИСПРАВЛЕНО: добавлено align-items: center, чтобы кнопки дат не вытягивались по высоте */
-    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 5px; gap: 8px; scroll-snap-type: x mandatory; align-items: center; }
+    /* --- БОКОВОЕ МЕНЮ (ДАТЫ) НА МОБИЛКЕ --- */
+    .sidebar { 
+      width: 100%; 
+      flex-direction: row; 
+      overflow-x: auto; 
+      padding-bottom: 10px; 
+      gap: 10px; 
+      scroll-snap-type: x mandatory; 
+      -webkit-overflow-scrolling: touch;
+      align-items: flex-start; /* ВАЖНО: Запрещает кнопкам тянуться вниз */
+    }
     .sidebar::-webkit-scrollbar { display: none; }
-    /* ИСПРАВЛЕНО: добавлено flex: 0 0 auto, чтобы кнопки не вытягивались в ширину */
-    .date-btn { flex: 0 0 auto; scroll-snap-align: start; white-space: nowrap; text-align: center; padding: 10px 16px; font-size: 13px; border-radius: 10px; }
     
+    .date-btn { 
+      flex: 0 0 auto; 
+      height: max-content; /* ВАЖНО: Кнопка будет ровно по размеру текста + отступы */
+      scroll-snap-align: start; 
+      white-space: nowrap; 
+      text-align: center; 
+      padding: 8px 20px; /* ВАЖНО: Уменьшил верх/низ, увеличил бока. Будет вытянутая "таблетка" */
+      font-size: 13px; 
+      border-radius: 12px; 
+    }
+    /* ---------------------------------------- */
+
     .content { gap: 12px; }
     .search-box { padding: 10px 15px; }
     .search-box input { font-size: 13px; }
@@ -202,7 +220,6 @@
     .vs-text { font-size: 11px; margin-top: 4px; }
     
     .result-row { padding: 12px 10px; gap: 10px; }
-    /* ИСПРАВЛЕНО: min-width вместо жесткого width, чтобы ранги не накладывались на имя */
     .rank-box { min-width: 35px; width: auto; font-size: 14px; }
     .rank-1 { font-size: 20px; }
     .rank-2 { font-size: 18px; }
@@ -356,7 +373,6 @@ async function fetchData(tabName, isBackground = false) {
   }
 }
 
-/* --- ПАРСЕРЫ --- */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
   rows.forEach(r => {
@@ -396,10 +412,10 @@ function parseFamilies(rows) {
   cache.families.data = [];
   rows.forEach((r, index) => {
     if (index === 0) return; 
-    let id = getVal(r, 1);   // B
-    let name = getVal(r, 2); // C
-    let score = getVal(r, 3); // D 
-    let scoreNum = getNum(r, 3); // D 
+    let id = getVal(r, 1);   
+    let name = getVal(r, 2); 
+    let score = getVal(r, 3); 
+    let scoreNum = getNum(r, 3); 
     if (!name && !id) return;
     
     let searchStr = `${id} ${name}`.toLowerCase();
@@ -417,10 +433,10 @@ function parseParticipants(rows) {
   cache.participants.data = [];
   rows.forEach((r, index) => {
     if (index === 0) return; 
-    let name = getVal(r, 2);   // C
-    let family = getVal(r, 4); // E
-    let score = getVal(r, 3);  // D 
-    let scoreNum = getNum(r, 3); // D 
+    let name = getVal(r, 2);   
+    let family = getVal(r, 4); 
+    let score = getVal(r, 3);  
+    let scoreNum = getNum(r, 3); 
     if (!name) return;
     
     let searchStr = `${name} ${family}`.toLowerCase();
@@ -434,7 +450,6 @@ function parseParticipants(rows) {
   });
 }
 
-/* --- ОТОБРАЖЕНИЕ UI --- */
 function buildSidebar(isBackground = false) {
   const dataRef = cache[currentTab];
   const sidebar = document.getElementById("sidebar");
