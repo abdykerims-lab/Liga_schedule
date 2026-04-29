@@ -12,18 +12,18 @@
         /* === НОВАЯ КИБЕРПАНК ПАЛИТРА === */
         :root {
             --bg-page: #0a0314;       
-            --bg-table: rgba(25, 10, 45, 0.6); /* Фиолетовое стекло для таблиц */
+            --bg-table: rgba(25, 10, 45, 0.6); 
             
-            --teal-dark: rgba(35, 10, 60, 0.7); /* Темно-фиолетовые кнопки */     
-            --teal-light: rgba(70, 15, 110, 0.8); /* Светло-фиолетовые блоки */    
+            --teal-dark: rgba(35, 10, 60, 0.7);     
+            --teal-light: rgba(70, 15, 110, 0.8);    
             
-            --orange: #ff2a85; /* Неоново-розовый акцент */        
-            --orange-bg: linear-gradient(135deg, #ff2a85, #b814ff); /* Градиент для кнопок */     
+            --orange: #ff2a85; 
+            --orange-bg: linear-gradient(135deg, #ff2a85, #b814ff);     
             
             --text-main: #ffffff;     
-            --text-muted: #b59bd4; /* Светло-сиреневый для неактивного текста */    
-            --border-line: rgba(255, 42, 133, 0.3); /* Розовые границы */   
-            --glow: 0 0 15px rgba(255, 42, 133, 0.6); /* Неоновое свечение */
+            --text-muted: #b59bd4;    
+            --border-line: rgba(255, 42, 133, 0.3);   
+            --glow: 0 0 15px rgba(255, 42, 133, 0.6); 
         }
         
         * { box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
@@ -153,6 +153,86 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
+           КАРТОЧКА ПРОФИЛЯ BIGO (ВИДЖЕТ ВНИЗУ)
+           ========================================= */
+        .bigo-profile-card {
+            background-color: rgba(15, 5, 30, 0.7); 
+            backdrop-filter: blur(15px);              
+            -webkit-backdrop-filter: blur(15px);      
+            border: 1px solid rgba(255, 42, 133, 0.2); 
+            border-radius: 16px; 
+            padding: 20px; 
+            margin-top: 30px; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 42, 133, 0.05); 
+            transition: 0.3s;
+            animation: fadeIn 0.8s ease; 
+        }
+
+        .bigo-profile-card:hover {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(255, 42, 133, 0.2); 
+            border-color: var(--orange);
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--teal-dark);
+            border-radius: 50%;
+            border: 2px solid var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--glow);
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 800;
+            text-shadow: var(--glow);
+            letter-spacing: 1px;
+        }
+
+        .profile-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .profile-btn {
+            background: var(--orange-bg);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: var(--glow);
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.8);
+        }
+
+        /* =========================================
            МОБИЛЬНАЯ АДАПТАЦИЯ
            ========================================= */
         @media (max-width: 600px) {
@@ -174,6 +254,20 @@
             .data-table th { font-size: 11px; padding: 10px 5px;}
             .data-table td { padding: 12px 5px; }
             .data-table-wrapper { padding: 0 10px; border-radius: 8px;}
+
+            .bigo-profile-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .profile-left {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .profile-btn {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -204,10 +298,22 @@
         </div>
         <div id="dynamic-content"></div>
     </div>
+
+    <!-- ВИДЖЕТ ПРОФИЛЯ BIGO -->
+    <div class="bigo-profile-card" id="bigo-widget" style="display: none;">
+        <div class="profile-left">
+            <div class="profile-avatar">💎</div>
+            <div class="profile-info">
+                <div class="profile-name">big.olives</div>
+                <div class="profile-desc" id="widget-desc">Официальный аккаунт BIGO</div>
+            </div>
+        </div>
+        <a href="https://www.bigo.tv/user/big.olives" target="_blank" class="profile-btn" id="widget-btn">ПЕРЕЙТИ</a>
+    </div>
+
 </div>
 
 <script>
-    // ВАШ JS КОД ОСТАЛСЯ БЕЗ ИЗМЕНЕНИЙ!
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
     const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0' };
 
@@ -289,6 +395,7 @@
     function initUI() {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('main-menu').style.display = 'flex';
+        document.getElementById('bigo-widget').style.display = 'flex'; // Показываем виджет после загрузки
         switchMainTab('Rewards');
     }
 
@@ -303,6 +410,10 @@
         mainBtns[0].innerText = lang === 'RU' ? 'НАГРАДЫ' : 'MUKOFOTLAR';
         mainBtns[1].innerText = lang === 'RU' ? 'КАЛЕНДАРЬ' : 'KALENDAR';
         mainBtns[2].innerText = lang === 'RU' ? 'ПРАВИЛА' : 'QOIDALAR';
+
+        // Перевод виджета профиля
+        document.getElementById('widget-desc').innerText = lang === 'RU' ? 'Официальный аккаунт BIGO' : 'BIGO rasmiy akkaunti';
+        document.getElementById('widget-btn').innerText = lang === 'RU' ? 'ПЕРЕЙТИ' : "O'TISH";
 
         if (currentMainTab === 'Rewards') {
             const oldTabs = Object.keys(parsedRewards[oldLang] || {});
