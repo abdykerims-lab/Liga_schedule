@@ -546,7 +546,7 @@
                 let alignClass = (idx === 1) ? 'text-left' : 'text-center';
 
                 if (value.startsWith('http')) {
-                    const btnText = currentLang === 'RU' ? 'Открыть ссылку' : 'Havolani ochish';
+                    const btnText = currentLang === 'RU' ? 'перейти на страницу' : 'sahifaga o'tish';
                     html += `<div class="${alignClass}"><a href="${value}" target="_blank" class="action-button">${btnText}</a></div>`;
                 } else {
                     html += `<div class="cal-text ${alignClass}">${value.replace(/\n/g, '<br>')}</div>`;
