@@ -5,72 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Семейная Лига BIGO</title>
     
-    <!-- === ПОДКЛЮЧАЕМ ФУТУРИСТИЧНЫЙ ШРИФТ === -->
+    <!-- === ШРИФТ EXO 2 === -->
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        /* === НОВАЯ КИБЕРПАНК ПАЛИТРА === */
+        /* Цветовая палитра - Улучшена читабельность */
         :root {
-            --bg-page: #0a0314;       
-            --bg-table: rgba(25, 10, 45, 0.6); 
+            --bg-page: #0d1115;       
+            --bg-table: rgba(33, 38, 45, 0.8); 
             
-            --teal-dark: rgba(35, 10, 60, 0.7);     
-            --teal-light: rgba(70, 15, 110, 0.8);    
+            --teal-dark: rgba(18, 63, 69, 0.9);     
+            --teal-light: rgba(24, 108, 114, 0.9);    
             
-            --orange: #ff2a85; 
-            --orange-bg: linear-gradient(135deg, #ff2a85, #b814ff);     
+            --orange: #f5a631;        
+            --orange-bg: linear-gradient(135deg, #f5a631, #ff7a00); /* Градиент для кнопок */    
             
-            --text-main: #ffffff;     
-            --text-muted: #b59bd4;    
-            --border-line: rgba(255, 42, 133, 0.3);   
-            --glow: 0 0 15px rgba(255, 42, 133, 0.6); 
+            --text-main: #ffffff; /* Чистый белый для главного текста */    
+            --text-muted: #c9d1d9; /* Сделал серый светлее для отличной читабельности */   
+            --border-line: rgba(245, 166, 49, 0.3); /* Оранжевые рамки */
         }
         
         * { box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
         
         body { 
             background-image: 
-                linear-gradient(rgba(10, 2, 20, 0.6), rgba(10, 2, 20, 0.8)), 
+                linear-gradient(rgba(13, 17, 21, 0.7), rgba(13, 17, 21, 0.85)), 
                 url('https://i.ibb.co/TxgCVK6n/Untitled-design-1.jpg'); 
-            
             background-size: cover;          
             background-position: center;     
             background-attachment: fixed;    
             background-repeat: no-repeat;
             background-color: var(--bg-page); 
-
             color: var(--text-main); 
             margin: 0; 
             padding: 20px 10px; 
-            line-height: 1.5; 
+            line-height: 1.6; 
         }
         
         .container { max-width: 800px; margin: 0 auto; }
         
         /* Шапка и Языки */
         .header { display: flex; justify-content: flex-end; margin-bottom: 15px; }
-        .lang-switcher { display: flex; background: rgba(20, 5, 40, 0.8); border-radius: 20px; padding: 4px; border: 1px solid var(--border-line); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);}
-        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 5px 15px; border-radius: 16px; cursor: pointer; font-weight: 800; font-size: 14px; transition: 0.3s; }
-        .lang-btn.active { background: var(--orange-bg); color: #fff; box-shadow: var(--glow); }
+        .lang-switcher { display: flex; background: rgba(31, 41, 55, 0.8); border-radius: 20px; padding: 4px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);}
+        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 18px; border-radius: 16px; cursor: pointer; font-weight: 800; font-size: 14px; transition: 0.3s; }
+        .lang-btn.active { background: var(--orange-bg); color: #000; box-shadow: 0 0 10px rgba(245, 166, 49, 0.5);}
+
+        /* =========================================
+           НОВОЕ: ВЕРХНЯЯ КНОПКА (БАННЕР)
+           ========================================= */
+        #top-banner-container { margin-bottom: 25px; }
+        .top-action-btn {
+            display: block;
+            background: var(--orange-bg);
+            color: #000;
+            padding: 16px 20px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 18px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(245, 166, 49, 0.4);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+            animation: fadeIn 0.5s ease;
+        }
+        .top-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(245, 166, 49, 0.7);
+        }
 
         /* =========================================
            ГЛАВНОЕ МЕНЮ 
            ========================================= */
-        .main-menu { 
-            display: flex; 
-            justify-content: center; 
-            flex-wrap: wrap;
-            gap: 15px; 
-            margin-bottom: 25px; 
-        }
+        .main-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
         .main-btn { 
             background-color: var(--teal-dark); 
             color: var(--text-muted); 
-            border: 1px solid transparent; 
+            border: none; 
             font-size: 20px; 
             font-weight: 800; 
             text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer; 
             padding: 16px 40px; 
             border-radius: 8px; 
@@ -80,48 +95,47 @@
             min-width: 200px; 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .main-btn.active { 
             background-color: var(--teal-light); 
-            color: var(--text-main); 
+            color: var(--orange); 
             border-bottom: 5px solid var(--orange);
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);
         }
 
-        /* Основная карточка - ЭФФЕКТ СТЕКЛА */
+        /* Основная карточка */
         .content-area { 
-            background-color: rgba(15, 5, 30, 0.7); 
-            backdrop-filter: blur(15px);              
-            -webkit-backdrop-filter: blur(15px);      
-            border: 1px solid rgba(255, 42, 133, 0.2); 
+            background-color: rgba(24, 29, 35, 0.85); 
+            backdrop-filter: blur(12px);              
+            -webkit-backdrop-filter: blur(12px);      
+            border: 1px solid var(--border-line); 
             border-radius: 16px; 
             padding: 30px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 42, 133, 0.05); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
             animation: fadeIn 0.4s ease; 
         }
 
         /* =========================================
-           ПОДМЕНЮ (ТАБЫ)
+           ПОДМЕНЮ 
            ========================================= */
         .tabs-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 15px; }
-        #tabs-container { display: inline-flex; background-color: var(--teal-light); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); font-size: 18px; font-weight: 800; padding: 14px 45px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .tab-btn.active { background: var(--orange-bg); color: #ffffff; box-shadow: var(--glow); }
+        #tabs-container { display: inline-flex; background-color: var(--teal-light); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);}
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); font-size: 16px; font-weight: 800; padding: 14px 45px; cursor: pointer; transition: 0.3s; text-align: center; }
+        .tab-btn.active { background: var(--orange-bg); color: #000; text-shadow: none;}
 
         #subtabs-container { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
-        .subtab-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; text-align: center; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: 0.3s;}
-        .subtab-btn.active { border-color: var(--orange); color: var(--orange); box-shadow: inset 0 0 10px rgba(255, 42, 133, 0.3); }
+        .subtab-btn { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; text-align: center; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: 0.3s;}
+        .subtab-btn.active { border-color: var(--orange); color: var(--orange); box-shadow: inset 0 0 10px rgba(245, 166, 49, 0.2);}
 
         /* =========================================
            ЗАГОЛОВКИ И ТЕКСТ 
            ========================================= */
-        .cal-title { color: var(--orange); font-size: 22px; margin: 20px 0 15px 0; font-weight: 800; text-align: left; text-shadow: var(--glow); letter-spacing: 1px;}
-        .rule-text, .cal-text { color: #e0d4f5; font-size: 16px; margin-bottom: 15px; text-align: left; font-weight: 400; line-height: 1.6;}
-        
-        .main-title { font-size: 24px; color: var(--text-main); margin-bottom: 20px; text-align: center; font-weight: 800; text-shadow: var(--glow); text-transform: uppercase; }
-        
+        .cal-title { color: var(--orange); font-size: 22px; margin: 20px 0 15px 0; font-weight: 800; text-align: left; }
+        .rule-text, .cal-text { color: var(--text-main); font-size: 16px; margin-bottom: 15px; text-align: left; font-weight: 400;}
+        .main-title { font-size: 24px; color: var(--orange); margin-bottom: 20px; text-align: center; font-weight: 800; text-transform: uppercase;}
         .text-center { text-align: center !important; }
         .text-left { text-align: left !important; }
 
@@ -135,102 +149,48 @@
             overflow-x: auto; 
             margin-bottom: 25px;
             padding: 5px 15px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
         }
         .data-table { width: 100%; border-collapse: collapse; font-size: 16px; }
-        .data-table th, .data-table td { padding: 14px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); white-space: nowrap; text-align: center; vertical-align: middle; }
+        .data-table th, .data-table td { padding: 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; text-align: center; vertical-align: middle; }
         .data-table tr:last-child td { border-bottom: none; }
-        .data-table th { color: var(--orange); font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
-        .data-table td:nth-child(3) { color: var(--text-main); font-weight: 800; text-shadow: 0 0 5px rgba(255,255,255,0.3);}
-        .data-table td:nth-child(1), .data-table td:nth-child(2) { color: var(--text-muted); }
+        .data-table th { color: var(--orange); font-size: 13px; font-weight: 800; text-transform: uppercase;}
+        .data-table td:nth-child(3) { color: var(--text-main); font-weight: 800; }
+        .data-table td:nth-child(1), .data-table td:nth-child(2) { color: var(--text-muted); font-weight: 600;}
         
         .cell-img { max-width: 40px; max-height: 40px; vertical-align: middle; margin: 0 auto; display: block;}
+        .action-button { display: inline-block; text-align: center; background: var(--teal-light); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 800; margin-top: 10px; border: 1px solid rgba(255,255,255,0.2);}
         
-        .action-button { display: inline-block; text-align: center; background: var(--orange-bg); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 800; margin-top: 10px; box-shadow: var(--glow); transition: 0.3s; text-transform: uppercase;}
-        .action-button:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255, 42, 133, 0.8); }
-        
-        #loader { text-align: center; color: var(--orange); padding: 50px; font-size: 18px; font-weight: 800; text-shadow: var(--glow); letter-spacing: 2px;}
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #loader { text-align: center; color: var(--orange); padding: 50px; font-size: 18px; font-weight: 800; letter-spacing: 1px;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
-           КАРТОЧКА ПРОФИЛЯ BIGO (ВИДЖЕТ ВНИЗУ)
+           НОВОЕ: КАРТОЧКА СЕМЬИ (ВНИЗУ)
            ========================================= */
-        .bigo-profile-card {
-            background-color: rgba(15, 5, 30, 0.7); 
-            backdrop-filter: blur(15px);              
-            -webkit-backdrop-filter: blur(15px);      
-            border: 1px solid rgba(255, 42, 133, 0.2); 
+        #bottom-card-container { margin-top: 30px; }
+        .family-card {
+            background-color: rgba(24, 29, 35, 0.85); 
+            backdrop-filter: blur(12px);              
+            -webkit-backdrop-filter: blur(12px);      
+            border: 1px solid var(--border-line); 
             border-radius: 16px; 
             padding: 20px; 
-            margin-top: 30px; 
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 42, 133, 0.05); 
-            transition: 0.3s;
-            animation: fadeIn 0.8s ease; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 15px rgba(245, 166, 49, 0.05); 
+            animation: fadeIn 0.8s ease;
         }
-
-        .bigo-profile-card:hover {
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(255, 42, 133, 0.2); 
-            border-color: var(--orange);
-        }
-
-        .profile-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .profile-avatar {
-            width: 50px;
-            height: 50px;
-            background: var(--teal-dark);
+        .family-avatar {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 2px solid var(--orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: var(--glow);
+            object-fit: cover;
+            margin-right: 20px;
+            background-color: var(--teal-dark);
         }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-name {
-            color: var(--text-main);
-            font-size: 18px;
-            font-weight: 800;
-            text-shadow: var(--glow);
-            letter-spacing: 1px;
-        }
-
-        .profile-desc {
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .profile-btn {
-            background: var(--orange-bg);
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 14px;
-            box-shadow: var(--glow);
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .profile-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255, 42, 133, 0.8);
-        }
+        .family-info { display: flex; flex-direction: column; justify-content: center;}
+        .family-desc { color: var(--text-muted); font-size: 14px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;}
+        .family-name { color: var(--orange); font-size: 22px; font-weight: 800; text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);}
 
         /* =========================================
            МОБИЛЬНАЯ АДАПТАЦИЯ
@@ -240,7 +200,7 @@
             .content-area { padding: 20px 15px; border-radius: 12px; }
             
             .main-menu { gap: 6px; flex-wrap: nowrap; }
-            .main-btn { font-size: 13px; padding: 12px 5px; border-bottom-width: 4px; min-width: unset; flex: 1; letter-spacing: 0px;}
+            .main-btn { font-size: 13px; padding: 12px 5px; border-bottom-width: 4px; min-width: unset; flex: 1; }
             
             .tabs-wrapper { display: flex; }
             #tabs-container { display: flex; width: 100%; }
@@ -248,26 +208,16 @@
             
             .cal-title { font-size: 18px; }
             .rule-text, .cal-text { font-size: 14px; }
-            .main-title { font-size: 20px; }
             
             .data-table { font-size: 13px; }
             .data-table th { font-size: 11px; padding: 10px 5px;}
             .data-table td { padding: 12px 5px; }
             .data-table-wrapper { padding: 0 10px; border-radius: 8px;}
 
-            .bigo-profile-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            .profile-left {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .profile-btn {
-                width: 100%;
-                text-align: center;
-            }
+            .top-action-btn { font-size: 15px; padding: 14px 10px; }
+            .family-avatar { width: 55px; height: 55px; margin-right: 15px;}
+            .family-name { font-size: 18px; }
+            .family-desc { font-size: 12px; }
         }
     </style>
 </head>
@@ -281,13 +231,16 @@
         </div>
     </div>
 
+    <!-- НОВОЕ: ВЕРХНИЙ БАННЕР -->
+    <div id="top-banner-container"></div>
+
     <div class="main-menu" id="main-menu" style="display: none;">
         <button class="main-btn active" onclick="switchMainTab('Rewards')">Награды</button>
         <button class="main-btn" onclick="switchMainTab('Calendar')">Календарь</button>
         <button class="main-btn" onclick="switchMainTab('Rules')">Правила</button>
     </div>
     
-    <div id="loader">ЗАГРУЗКА... ⏳</div>
+    <div id="loader">Загрузка данных... ⏳</div>
 
     <div class="content-area" id="content-container" style="display: none;">
         <div id="rewards-nav" style="display: none;">
@@ -299,25 +252,16 @@
         <div id="dynamic-content"></div>
     </div>
 
-    <!-- ВИДЖЕТ ПРОФИЛЯ BIGO -->
-    <div class="bigo-profile-card" id="bigo-widget" style="display: none;">
-        <div class="profile-left">
-            <div class="profile-avatar">💎</div>
-            <div class="profile-info">
-                <div class="profile-name">big.olives</div>
-                <div class="profile-desc" id="widget-desc">Официальный аккаунт BIGO</div>
-            </div>
-        </div>
-        <a href="https://www.bigo.tv/user/big.olives" target="_blank" class="profile-btn" id="widget-btn">ПЕРЕЙТИ</a>
-    </div>
-
+    <!-- НОВОЕ: КАРТОЧКА СЕМЬИ ВНИЗУ -->
+    <div id="bottom-card-container"></div>
 </div>
 
 <script>
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0' };
+    // ДОБАВЛЕН НОВЫЙ GID ДЛЯ НАСТРОЕК СВЕРХУ И СНИЗУ
+    const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0', 'Settings': '1122641331' };
 
-    let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [] };
+    let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [], 'Settings': [] };
     let parsedRewards = { 'RU': {}, 'UZ': {} }; 
     
     let currentLang = 'RU';
@@ -395,7 +339,7 @@
     function initUI() {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('main-menu').style.display = 'flex';
-        document.getElementById('bigo-widget').style.display = 'flex'; // Показываем виджет после загрузки
+        renderStaticElements(); // Отрисовываем новые кнопку и карточку
         switchMainTab('Rewards');
     }
 
@@ -411,9 +355,7 @@
         mainBtns[1].innerText = lang === 'RU' ? 'КАЛЕНДАРЬ' : 'KALENDAR';
         mainBtns[2].innerText = lang === 'RU' ? 'ПРАВИЛА' : 'QOIDALAR';
 
-        // Перевод виджета профиля
-        document.getElementById('widget-desc').innerText = lang === 'RU' ? 'Официальный аккаунт BIGO' : 'BIGO rasmiy akkaunti';
-        document.getElementById('widget-btn').innerText = lang === 'RU' ? 'ПЕРЕЙТИ' : "O'TISH";
+        renderStaticElements(); // Обновляем язык для кнопки и карточки
 
         if (currentMainTab === 'Rewards') {
             const oldTabs = Object.keys(parsedRewards[oldLang] || {});
@@ -431,6 +373,52 @@
             renderRewardsNav();
         } else {
             renderCurrentView();
+        }
+    }
+
+    // ==========================================
+    // ФУНКЦИЯ ДЛЯ ВЕРХНЕЙ КНОПКИ И НИЖНЕЙ КАРТОЧКИ
+    // ==========================================
+    function renderStaticElements() {
+        const rows = allData['Settings'];
+        if (!rows || rows.length < 6) return; // Проверка, что данные загрузились
+
+        const isRU = currentLang === 'RU';
+
+        // 1. ВЕРХНЯЯ КНОПКА
+        // Массив rows: индекс 0 это строка 1. Значит строка 2 это rows[1].
+        // Колонка A это 0, колонка B это 1, колонка C это 2.
+        const topText = isRU ? getCol(rows[1], 1) : getCol(rows[1], 2); // B2 / C2
+        const topLink = isRU ? getCol(rows[2], 1) : getCol(rows[2], 2); // B3 / C3
+
+        const topContainer = document.getElementById('top-banner-container');
+        if (topText && topLink) {
+            topContainer.innerHTML = `<a href="${topLink}" target="_blank" class="top-action-btn">${topText}</a>`;
+        } else {
+            topContainer.innerHTML = ''; // Скрыть, если пусто
+        }
+
+        // 2. НИЖНЯЯ КАРТОЧКА СЕМЬИ
+        const cardDesc = isRU ? getCol(rows[3], 1) : getCol(rows[3], 2); // B4 / C4
+        const cardName = isRU ? getCol(rows[4], 1) : getCol(rows[4], 2); // B5 / C5
+        const cardImg  = isRU ? getCol(rows[5], 1) : getCol(rows[5], 2); // B6 / C6
+
+        const bottomContainer = document.getElementById('bottom-card-container');
+        if (cardDesc || cardName) {
+            // Если картинка не указана, ставим прозрачный пиксель или иконку по умолчанию
+            const imgSrc = cardImg || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; 
+            
+            bottomContainer.innerHTML = `
+                <div class="family-card">
+                    <img src="${imgSrc}" class="family-avatar" alt="Avatar" onerror="this.style.display='none'">
+                    <div class="family-info">
+                        <div class="family-desc">${cardDesc}</div>
+                        <div class="family-name">${cardName}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            bottomContainer.innerHTML = ''; // Скрыть, если пусто
         }
     }
 
