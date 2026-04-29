@@ -1,589 +1,592 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Семейная Лига BIGO</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Лига - Расписание и Результаты</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg-main: #3c126f;
+    --bg-gradient: linear-gradient(135deg, #4f1893 0%, #3c126f 100%);
+    --accent-color: #38bdf8;
+    --accent-bg: rgba(56, 189, 248, 0.15);
+    --accent-border: rgba(56, 189, 248, 0.4);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    background-color: var(--bg-main);
+    color: #fff;
+    min-height: 100vh;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * { box-sizing: border-box; }
+
+  /* --- СТЕКЛО --- */
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  /* --- ШАПКА И ТАБЫ --- */
+  .header { padding: 20px; text-align: center; }
+  .tab-container { 
+    display: inline-flex; 
+    gap: 10px; 
+    padding: 6px; 
+    border-radius: 20px; 
+    flex-wrap: wrap; /* Для мобилок */
+    justify-content: center;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .tab:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+  .tab.active {
+    color: #fff;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    cursor: default;
+  }
+
+  /* --- СЕТКА --- */
+  .main-layout {
+    display: flex; max-width: 1200px; margin: 0 auto;
+    padding: 10px 20px 40px; gap: 20px; align-items: flex-start;
+  }
+
+  /* --- БОКОВОЕ МЕНЮ (ДАТЫ) --- */
+  .sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; transition: 0.3s;}
+  
+  .date-btn {
+    padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 15px;
+    font-weight: 600; color: rgba(255, 255, 255, 0.7); transition: all 0.3s ease;
+    border: 1px solid transparent; text-align: left;
+  }
+  .date-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .date-btn.active {
+    background: var(--accent-bg); 
+    border: 1px solid var(--accent-border);
+    color: #fff; 
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+  }
+
+  /* --- ОСНОВНОЙ КОНТЕНТ --- */
+  .content { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+  /* --- ПОИСК --- */
+  .search-box { padding: 12px 20px; border-radius: 15px; display: flex; align-items: center; }
+  .search-box input {
+    width: 100%; background: transparent; border: none;
+    color: #fff; font-size: 16px; outline: none;
+    font-family: 'Poppins', sans-serif;
+  }
+  .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+
+  /* --- ТЕКСТОВЫЕ СТИЛИ --- */
+  .player-name { 
+    font-weight: 700; font-size: 17px; color: #ffffff; display: block; 
+    margin-bottom: 4px; letter-spacing: 0.5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
+  }
+  .clan-name { 
+    font-size: 13px; color: #cbd5e1; display: block; margin-bottom: 6px; font-weight: 400;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
+  }
+  .clan-id { 
+    font-family: monospace; font-size: 12px; color: var(--accent-color); 
+    background: rgba(56, 189, 248, 0.15); padding: 3px 8px; 
+    border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3);
+    display: inline-block; font-weight: 600; letter-spacing: 0.5px;
+    max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .date-badge { 
+    position: absolute; top: -10px; right: 15px; 
+    background: var(--accent-color); color: #000; font-size: 11px; 
+    padding: 4px 10px; border-radius: 8px; font-weight: 800;
+  }
+
+  /* --- СПИСКИ МАТЧЕЙ И РЕЗУЛЬТАТОВ --- */
+  .schedule-list, .results-list { display: flex; flex-direction: column; gap: 12px; }
+  
+  .match-row, .result-row {
+    padding: 15px 20px; border-radius: 15px; transition: transform 0.2s, background 0.2s; position: relative;
+  }
+  .match-row:hover, .result-row:hover { transform: translateX(5px); background: rgba(255, 255, 255, 0.1); }
+  
+  .match-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 15px; }
+  .result-row { display: flex; align-items: center; gap: 15px; }
+
+  .match-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .team-block { display: flex; flex-direction: column; line-height: 1.4; min-width: 0; }
+  .team-block.left { text-align: left; align-items: flex-start; }
+  .team-block.right { text-align: right; align-items: flex-end; }
+
+  .time-badge {
+    background: rgba(0, 0, 0, 0.5); padding: 6px 14px; border-radius: 8px;
+    font-family: monospace; font-size: 15px; font-weight: bold;
+    color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); 
+  }
+  .vs-text { 
+    text-align: center; margin-top: 8px; font-style: normal; 
+    color: #f43f5e; font-size: 14px; font-weight: 800; 
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  .rank-box { font-size: 18px; font-weight: 800; color: #94a3b8; width: 40px; text-align: center; flex-shrink: 0; }
+  .rank-1 { color: #fbbf24; font-size: 26px; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
+  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.4); }
+  .rank-3 { color: #d97706; font-size: 20px; text-shadow: 0 0 10px rgba(217, 119, 6, 0.4); }
+
+  .result-details { flex-grow: 1; text-align: left; min-width: 0; }
+  .result-score-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+  
+  .score-label { font-size: 11px; color: var(--accent-color); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px; }
+  .score-value { 
+    font-family: monospace; font-size: 18px; font-weight: 800; color: #4ade80; 
+    background: rgba(74, 222, 128, 0.15); padding: 4px 10px; 
+    border-radius: 8px; border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+
+  .eagle-img { height: 24px; width: auto; object-fit: contain; margin-top: 6px; border-radius: 4px; }
+  .loading { text-align: center; padding: 40px; color: var(--accent-color); font-size: 18px; width: 100%; font-weight: 600; }
+
+  /* ========================================= */
+  /* --- МОБИЛЬНАЯ АДАПТАЦИЯ ---               */
+  /* ========================================= */
+  @media (max-width: 768px) {
+    .header { padding: 15px 10px; }
+    /* На телефонах табы встают в 2 ряда */
+    .tab-container { gap: 6px; border-radius: 15px;}
+    .tab { width: calc(50% - 6px); padding: 10px 5px; font-size: 11px; letter-spacing: 0; flex: none;}
     
-    <!-- === ШРИФТ EXO 2 === -->
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+    .main-layout { flex-direction: column; padding: 10px; gap: 15px; }
+    
+    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 5px; gap: 8px; scroll-snap-type: x mandatory; }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .date-btn { scroll-snap-align: start; white-space: nowrap; text-align: center; padding: 10px 16px; font-size: 13px; border-radius: 10px; }
+    
+    .content { gap: 12px; }
+    .search-box { padding: 10px 15px; }
+    .search-box input { font-size: 13px; }
 
-    <style>
-        /* Цветовая палитра - Улучшена читабельность */
-        :root {
-            --bg-page: #0d1115;       
-            --bg-table: rgba(33, 38, 45, 0.8); 
-            
-            --teal-dark: rgba(18, 63, 69, 0.9);     
-            --teal-light: rgba(24, 108, 114, 0.9);    
-            
-            --orange: #f5a631;        
-            --orange-bg: linear-gradient(135deg, #f5a631, #ff7a00); /* Градиент для кнопок */    
-            
-            --text-main: #ffffff; /* Чистый белый для главного текста */    
-            --text-muted: #c9d1d9; /* Сделал серый светлее для отличной читабельности */   
-            --border-line: rgba(245, 166, 49, 0.3); /* Оранжевые рамки */
-        }
-        
-        * { box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
-        
-        body { 
-            background-image: 
-                linear-gradient(rgba(13, 17, 21, 0.7), rgba(13, 17, 21, 0.85)), 
-                url('https://i.ibb.co/xqnNLxj4/1vs1-1.jpg'); 
-            background-size: cover;          
-            background-position: center;     
-            background-attachment: fixed;    
-            background-repeat: no-repeat;
-            background-color: var(--bg-page); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 20px 10px; 
-            line-height: 1.6; 
-        }
-        
-        .container { max-width: 800px; margin: 0 auto; }
-        
-        /* Шапка и Языки */
-        .header { display: flex; justify-content: flex-end; margin-bottom: 15px; }
-        .lang-switcher { display: flex; background: rgba(31, 41, 55, 0.8); border-radius: 20px; padding: 4px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);}
-        .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 18px; border-radius: 16px; cursor: pointer; font-weight: 800; font-size: 14px; transition: 0.3s; }
-        .lang-btn.active { background: var(--orange-bg); color: #000; box-shadow: 0 0 10px rgba(245, 166, 49, 0.5);}
-
-        /* =========================================
-           НОВОЕ: ВЕРХНЯЯ КНОПКА (БАННЕР)
-           ========================================= */
-        #top-banner-container { margin-bottom: 25px; }
-        .top-action-btn {
-            display: block;
-            background: var(--orange-bg);
-            color: #000;
-            padding: 16px 20px;
-            border-radius: 12px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 18px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(245, 166, 49, 0.4);
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: 0.3s;
-            animation: fadeIn 0.5s ease;
-        }
-        .top-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(245, 166, 49, 0.7);
-        }
-
-        /* =========================================
-           ГЛАВНОЕ МЕНЮ 
-           ========================================= */
-        .main-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
-        .main-btn { 
-            background-color: var(--teal-dark); 
-            color: var(--text-muted); 
-            border: none; 
-            font-size: 20px; 
-            font-weight: 800; 
-            text-transform: uppercase;
-            cursor: pointer; 
-            padding: 16px 40px; 
-            border-radius: 8px; 
-            transition: 0.3s; 
-            text-align: center; 
-            position: relative;
-            min-width: 200px; 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .main-btn.active { 
-            background-color: var(--teal-light); 
-            color: var(--orange); 
-            border-bottom: 5px solid var(--orange);
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-            text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);
-        }
-
-        /* Основная карточка */
-        .content-area { 
-            background-color: rgba(24, 29, 35, 0.85); 
-            backdrop-filter: blur(12px);              
-            -webkit-backdrop-filter: blur(12px);      
-            border: 1px solid var(--border-line); 
-            border-radius: 16px; 
-            padding: 30px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            animation: fadeIn 0.4s ease; 
-        }
-
-        /* =========================================
-           ПОДМЕНЮ 
-           ========================================= */
-        .tabs-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 15px; }
-        #tabs-container { display: inline-flex; background-color: var(--teal-light); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);}
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); font-size: 16px; font-weight: 800; padding: 14px 45px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .tab-btn.active { background: var(--orange-bg); color: #000; text-shadow: none;}
-
-        #subtabs-container { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
-        .subtab-btn { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; text-align: center; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: 0.3s;}
-        .subtab-btn.active { border-color: var(--orange); color: var(--orange); box-shadow: inset 0 0 10px rgba(245, 166, 49, 0.2);}
-
-        /* =========================================
-           ЗАГОЛОВКИ И ТЕКСТ 
-           ========================================= */
-        .cal-title { color: var(--orange); font-size: 22px; margin: 20px 0 15px 0; font-weight: 800; text-align: left; }
-        .rule-text, .cal-text { color: var(--text-main); font-size: 16px; margin-bottom: 15px; text-align: left; font-weight: 400;}
-        .main-title { font-size: 24px; color: var(--orange); margin-bottom: 20px; text-align: center; font-weight: 800; text-transform: uppercase;}
-        .text-center { text-align: center !important; }
-        .text-left { text-align: left !important; }
-
-        /* =========================================
-           ТАБЛИЦЫ 
-           ========================================= */
-        .data-table-wrapper { 
-            background-color: var(--bg-table); 
-            border: 1px solid var(--border-line);
-            border-radius: 12px; 
-            overflow-x: auto; 
-            margin-bottom: 25px;
-            padding: 5px 15px;
-        }
-        .data-table { width: 100%; border-collapse: collapse; font-size: 16px; }
-        .data-table th, .data-table td { padding: 14px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); white-space: nowrap; text-align: center; vertical-align: middle; }
-        .data-table tr:last-child td { border-bottom: none; }
-        .data-table th { color: var(--orange); font-size: 13px; font-weight: 800; text-transform: uppercase;}
-        .data-table td:nth-child(3) { color: var(--text-main); font-weight: 800; }
-        .data-table td:nth-child(1), .data-table td:nth-child(2) { color: var(--text-muted); font-weight: 600;}
-        
-        .cell-img { max-width: 40px; max-height: 40px; vertical-align: middle; margin: 0 auto; display: block;}
-        .action-button { display: inline-block; text-align: center; background: var(--teal-light); color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 800; margin-top: 10px; border: 1px solid rgba(255,255,255,0.2);}
-        
-        #loader { text-align: center; color: var(--orange); padding: 50px; font-size: 18px; font-weight: 800; letter-spacing: 1px;}
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* =========================================
-           НОВОЕ: КАРТОЧКА СЕМЬИ (ВНИЗУ)
-           ========================================= */
-        #bottom-card-container { margin-top: 30px; }
-        .family-card {
-            background-color: rgba(24, 29, 35, 0.85); 
-            backdrop-filter: blur(12px);              
-            -webkit-backdrop-filter: blur(12px);      
-            border: 1px solid var(--border-line); 
-            border-radius: 16px; 
-            padding: 20px; 
-            display: flex;
-            align-items: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 15px rgba(245, 166, 49, 0.05); 
-            animation: fadeIn 0.8s ease;
-        }
-        
-        /* === УВЕЛИЧЕННАЯ КАРТИНКА === */
-        .family-avatar {
-            width: 100px;  /* Было 70px, стало 100px */
-            height: 100px; /* Было 70px, стало 100px */
-            border-radius: 50%;
-            border: 3px solid var(--orange); /* Сделал рамку чуть толще */
-            object-fit: cover;
-            margin-right: 25px; /* Немного увеличил отступ от текста */
-            background-color: var(--teal-dark);
-            box-shadow: 0 0 15px rgba(245, 166, 49, 0.4); /* Добавил легкое свечение */
-        }
-        
-        .family-info { display: flex; flex-direction: column; justify-content: center;}
-        .family-desc { color: var(--text-muted); font-size: 14px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;}
-        .family-name { color: var(--orange); font-size: 24px; font-weight: 800; text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);}
-
-        /* =========================================
-           МОБИЛЬНАЯ АДАПТАЦИЯ
-           ========================================= */
-        @media (max-width: 600px) {
-            body { padding: 15px 10px; }
-            .content-area { padding: 20px 15px; border-radius: 12px; }
-            
-            .main-menu { gap: 6px; flex-wrap: nowrap; }
-            .main-btn { font-size: 13px; padding: 12px 5px; border-bottom-width: 4px; min-width: unset; flex: 1; }
-            
-            .tabs-wrapper { display: flex; }
-            #tabs-container { display: flex; width: 100%; }
-            .tab-btn { font-size: 14px; padding: 10px 5px; flex: 1; }
-            
-            .cal-title { font-size: 18px; }
-            .rule-text, .cal-text { font-size: 14px; }
-            
-            .data-table { font-size: 13px; }
-            .data-table th { font-size: 11px; padding: 10px 5px;}
-            .data-table td { padding: 12px 5px; }
-            .data-table-wrapper { padding: 0 10px; border-radius: 8px;}
-
-            .top-action-btn { font-size: 15px; padding: 14px 10px; }
-            
-            /* === УВЕЛИЧЕННАЯ КАРТИНКА (МОБИЛЬНЫЕ) === */
-            .family-avatar { 
-                width: 80px;  /* Было 55px, стало 80px */
-                height: 80px; /* Было 55px, стало 80px */
-                margin-right: 15px;
-            }
-            .family-name { font-size: 20px; }
-            .family-desc { font-size: 12px; }
-        }
-    </style>
+    .match-row { padding: 12px 10px; gap: 6px; }
+    .player-name { font-size: 14px; }
+    .clan-name { font-size: 11px; margin-bottom: 4px;}
+    .clan-id { font-size: 10px; padding: 2px 6px; }
+    .time-badge { font-size: 13px; padding: 4px 8px; }
+    .vs-text { font-size: 11px; margin-top: 4px; }
+    
+    .result-row { padding: 12px 10px; gap: 10px; }
+    .rank-box { width: 25px; font-size: 14px; }
+    .rank-1 { font-size: 20px; }
+    .rank-2 { font-size: 18px; }
+    .rank-3 { font-size: 16px; }
+    
+    .score-value { font-size: 14px; padding: 3px 8px; }
+    .score-label { font-size: 9px; }
+    .eagle-img { height: 18px; margin-top: 4px; } 
+  }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('RU')">RU</button>
-            <button class="lang-btn" onclick="setLang('UZ')">UZ</button>
-        </div>
+  <div class="header">
+    <div class="glass tab-container">
+      <div id="tab-schedule" class="tab active" onclick="switchTab('schedule')">Расписание</div>
+      <div id="tab-results" class="tab" onclick="switchTab('results')">Результаты</div>
+      <div id="tab-families" class="tab" onclick="switchTab('families')">Рейтинг Семей</div>
+      <div id="tab-participants" class="tab" onclick="switchTab('participants')">Рейтинг Участников</div>
     </div>
+  </div>
 
-    <!-- НОВОЕ: ВЕРХНИЙ БАННЕР -->
-    <div id="top-banner-container"></div>
-
-    <div class="main-menu" id="main-menu" style="display: none;">
-        <button class="main-btn active" onclick="switchMainTab('Rewards')">Награды</button>
-        <button class="main-btn" onclick="switchMainTab('Calendar')">Календарь</button>
-        <button class="main-btn" onclick="switchMainTab('Rules')">Правила</button>
+  <div class="main-layout">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="content">
+      <div class="search-box glass">
+        <input type="text" id="searchInput" placeholder="Поиск (Имя, ID, Название)..." onkeyup="handleSearch()">
+      </div>
+      <div id="data-container">
+        <div class="loading">Загрузка данных...</div>
+      </div>
     </div>
-    
-    <div id="loader">Загрузка данных... ⏳</div>
-
-    <div class="content-area" id="content-container" style="display: none;">
-        <div id="rewards-nav" style="display: none;">
-            <div class="tabs-wrapper">
-                <div id="tabs-container"></div>
-            </div>
-            <div id="subtabs-container"></div>
-        </div>
-        <div id="dynamic-content"></div>
-    </div>
-
-    <!-- НОВОЕ: КАРТОЧКА СЕМЬИ ВНИЗУ -->
-    <div id="bottom-card-container"></div>
-</div>
+  </div>
 
 <script>
-    const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0', 'Settings': '1122641331' };
+const sheetID = "1ine1ZqJrbK9kok_s7QujVLXhzj5hJuoKcguw8bQT2Jo";
+let currentTab = "schedule"; 
+let selectedDate = null;
+let autoRefreshTimer = null;
 
-    let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [], 'Settings': [] };
-    let parsedRewards = { 'RU': {}, 'UZ': {} }; 
+const cache = {
+  schedule: { dates: [], byDate: {}, loaded: false },
+  results:  { dates: [], byDate: {}, loaded: false },
+  families: { data: [], loaded: false },
+  participants: { data: [], loaded: false }
+};
+
+function getVal(row, index) {
+  if (!row || !row.c || !row.c[index]) return "";
+  if (row.c[index].f) return String(row.c[index].f).trim();
+  return String(row.c[index].v || "").trim();
+}
+
+function parseDate(val) {
+  if (typeof val === "string" && val.startsWith("Date(")) {
+    const match = val.match(/Date\((\d+),(\d+),(\d+)/);
+    if (match) {
+      const y = match[1];
+      const m = String(Number(match[2]) + 1).padStart(2, "0");
+      const d = String(match[3]).padStart(2, "0");
+      return `${d}.${m}.${y}`;
+    }
+  }
+  return val;
+}
+
+function formatTime(val) {
+  if (Array.isArray(val)) return `${String(val[0]).padStart(2,"0")}:${String(val[1]).padStart(2,"0")}`;
+  return val;
+}
+
+function parseToDateObj(str) {
+  let parts = str.split('.');
+  if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
+  return new Date(0); 
+}
+
+function switchTab(tabName) {
+  if (currentTab === tabName && cache[tabName].loaded) return;
+  currentTab = tabName;
+  
+  document.getElementById("searchInput").value = "";
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`tab-${tabName}`).classList.add("active");
+
+  const sidebar = document.getElementById("sidebar");
+  
+  // Скрываем боковое меню для общих рейтингов (там нет дат)
+  if (tabName === "families" || tabName === "participants") {
+    sidebar.style.display = "none";
+  } else {
+    sidebar.style.display = "flex";
+    sidebar.innerHTML = "";
+  }
+
+  document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+
+  if (cache[tabName].loaded) {
+    if (tabName === "schedule" || tabName === "results") buildSidebar(false);
+    else renderContent();
+  } else {
+    fetchData(tabName, false);
+  }
+}
+
+function startAutoRefresh() {
+  if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+  autoRefreshTimer = setInterval(() => {
+    if (currentTab) fetchData(currentTab, true);
+  }, 60000);
+}
+
+async function fetchData(tabName, isBackground = false) {
+  let url = "";
+  if (tabName === "schedule") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent("Расписание")}`;
+  else if (tabName === "results") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&sheet=${encodeURIComponent("Результаты 2.0")}`;
+  else if (tabName === "families") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=1648616096`;
+  else if (tabName === "participants") url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=1546318279`;
+
+  if (!isBackground) {
+    document.getElementById("data-container").innerHTML = `<div class="loading">Загрузка данных...</div>`;
+  }
+
+  try {
+    const res = await fetch(url + "&_=" + Date.now());
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows || [];
+
+    if (tabName === "schedule") parseSchedule(rows);
+    else if (tabName === "results") parseResults(rows);
+    else if (tabName === "families") parseFamilies(rows);
+    else if (tabName === "participants") parseParticipants(rows);
+
+    cache[tabName].loaded = true;
     
-    let currentLang = 'RU';
-    let currentMainTab = 'Rewards';
-    let currentActiveTab = '';    
-    let currentActiveSubtab = ''; 
-
-    const getCol = (row, index) => (row && row[index]) ? row[index].trim() : '';
-
-    async function fetchAllData() {
-        try {
-            const promises = Object.keys(GIDS).map(async (tabName) => {
-                const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${GIDS[tabName]}`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error();
-                const text = await res.text();
-                allData[tabName] = parseCSV(text);
-            });
-
-            await Promise.all(promises);
-            prepareRewardsData(); 
-            initUI();
-        } catch (error) {
-            document.getElementById('loader').innerText = '❌ Ошибка загрузки. Обновите страницу.';
-        }
+    if (tabName === "schedule" || tabName === "results") {
+      buildSidebar(isBackground);
+    } else {
+      if (document.getElementById("searchInput").value.trim() !== "") handleSearch();
+      else renderContent();
     }
+  } catch (e) {
+    if (!isBackground) document.getElementById("data-container").innerHTML = `<div class="loading" style="color:#f43f5e;">Ошибка загрузки</div>`;
+  }
+}
 
-    function parseCSV(csv) {
-        const rows = [];
-        let row = [], col = "", inQ = false;
-        for (let i = 0; i < csv.length; i++) {
-            let c = csv[i], nc = csv[i+1];
-            if (c === '"' && inQ && nc === '"') { col += '"'; i++; }
-            else if (c === '"') inQ = !inQ;
-            else if (c === ',' && !inQ) { row.push(col.trim()); col = ""; }
-            else if ((c === '\n' || c === '\r') && !inQ) {
-                if (c === '\r' && nc === '\n') i++;
-                row.push(col.trim()); rows.push(row); row = []; col = "";
-            } else col += c;
-        }
-        if (col || row.length) { row.push(col.trim()); rows.push(row); }
-        return rows;
-    }
+/* --- ПАРСЕРЫ --- */
+function parseSchedule(rows) {
+  cache.schedule.dates = []; cache.schedule.byDate = {};
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase() === "дата") return;
+    let time = formatTime(getVal(r, 1)) || "--:--";
+    let colD = getVal(r, 3), colE = getVal(r, 4), colF = getVal(r, 5);
+    let c2_name = getVal(r, 8) || "Без клана", c2_id = getVal(r, 9) || "0000", p2 = getVal(r, 10) || "Неизвестно";    
+    let searchStr = `${colD} ${colE} ${colF} ${p2} ${c2_id} ${c2_name}`.toLowerCase();
 
-    function prepareRewardsData() {
-        const rows = allData['Rewards'];
-        let lastRuTab = '', lastRuSub = '';
-        let lastUzTab = '', lastUzSub = '';
+    if (!cache.schedule.byDate[date]) { cache.schedule.byDate[date] = []; cache.schedule.dates.push(date); }
+    cache.schedule.byDate[date].push({ time, p1: colD || "Неизвестно", c1_id: colE || "0000", c1_name: colF || "Без клана", p2, c2_id, c2_name, searchStr });
+  });
+  cache.schedule.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
+  for (let d in cache.schedule.byDate) cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
+}
 
-        for (let i = 1; i < rows.length; i++) { 
-            const r = rows[i];
-            
-            let rTab = getCol(r, 0); if (rTab) lastRuTab = rTab;
-            let rSub = getCol(r, 1); if (rSub) lastRuSub = rSub;
-            let rC1 = getCol(r, 2), rC2 = getCol(r, 3), rC3 = getCol(r, 4);
-            
-            if (lastRuTab && lastRuSub && (rC1 || rC2 || rC3)) {
-                if (!parsedRewards['RU'][lastRuTab]) parsedRewards['RU'][lastRuTab] = {};
-                if (!parsedRewards['RU'][lastRuTab][lastRuSub]) parsedRewards['RU'][lastRuTab][lastRuSub] = [];
-                parsedRewards['RU'][lastRuTab][lastRuSub].push({ c1: rC1, c2: rC2, c3: rC3 });
-            }
+function parseResults(rows) {
+  cache.results.dates = []; cache.results.byDate = {};
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase() === "дата") return;
+    let colC = getVal(r, 2), colF = getVal(r, 5), colG = getVal(r, 6);
+    let scoreNum = Number(getVal(r, 7)) || 0, scoreStr = getVal(r, 7) || "0"; 
+    
+    let eagleImgSrc = scoreNum >= 500000 ? "https://i.ibb.co/p6fLVxMk/Golden-1.png" : (scoreNum >= 50000 ? "https://i.ibb.co/m5fQzxRp/Silver-1.png" : "https://i.ibb.co/zWmzPJJg/no-eagel.jpg");
+    let searchStr = `${colC} ${colF} ${colG}`.toLowerCase();
 
-            let uTab = getCol(r, 5); if (uTab) lastUzTab = uTab;
-            let uSub = getCol(r, 6); if (uSub) lastUzSub = uSub;
-            let uC1 = getCol(r, 7), uC2 = getCol(r, 8), uC3 = getCol(r, 9);
-            
-            if (lastUzTab && lastUzSub && (uC1 || uC2 || uC3)) {
-                if (!parsedRewards['UZ'][lastUzTab]) parsedRewards['UZ'][lastUzTab] = {};
-                if (!parsedRewards['UZ'][lastUzTab][lastUzSub]) parsedRewards['UZ'][lastUzTab][lastUzSub] = [];
-                parsedRewards['UZ'][lastUzTab][lastUzSub].push({ c1: uC1, c2: uC2, c3: uC3 });
-            }
-        }
-    }
+    if (!cache.results.byDate[date]) { cache.results.byDate[date] = []; cache.results.dates.push(date); }
+    cache.results.byDate[date].push({ colC, colF, colG, scoreNum, scoreStr, eagleImgSrc, searchStr });
+  });
+  cache.results.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
+  for (let d in cache.results.byDate) cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
+}
 
-    function initUI() {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('main-menu').style.display = 'flex';
-        renderStaticElements(); 
-        switchMainTab('Rewards');
-    }
+function parseFamilies(rows) {
+  cache.families.data = [];
+  rows.forEach((r, index) => {
+    if (index === 0) return; // Пропуск заголовка
+    let rank = getVal(r, 0); // A
+    let id = getVal(r, 1);   // B
+    let name = getVal(r, 2); // C
+    let score = getVal(r, 3);// D
+    if (!name && !id) return;
+    
+    let searchStr = `${id} ${name}`.toLowerCase();
+    cache.families.data.push({ rank, id, name, score, searchStr });
+  });
+}
 
-    function setLang(lang) {
-        const oldLang = currentLang;
-        currentLang = lang;
-        
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        const mainBtns = document.querySelectorAll('.main-btn');
-        mainBtns[0].innerText = lang === 'RU' ? 'НАГРАДЫ' : 'MUKOFOTLAR';
-        mainBtns[1].innerText = lang === 'RU' ? 'КАЛЕНДАРЬ' : 'KALENDAR';
-        mainBtns[2].innerText = lang === 'RU' ? 'ПРАВИЛА' : 'QOIDALAR';
+function parseParticipants(rows) {
+  cache.participants.data = [];
+  rows.forEach((r, index) => {
+    if (index === 0) return; // Пропуск заголовка
+    let rank = getVal(r, 0);   // A
+    let name = getVal(r, 2);   // C
+    let family = getVal(r, 4); // E
+    let score = getVal(r, 3);  // D
+    if (!name) return;
+    
+    let searchStr = `${name} ${family}`.toLowerCase();
+    cache.participants.data.push({ rank, name, family, score, searchStr });
+  });
+}
 
-        renderStaticElements(); 
+/* --- ОТОБРАЖЕНИЕ UI --- */
+function buildSidebar(isBackground = false) {
+  const dataRef = cache[currentTab];
+  const sidebar = document.getElementById("sidebar");
+  sidebar.innerHTML = "";
 
-        if (currentMainTab === 'Rewards') {
-            const oldTabs = Object.keys(parsedRewards[oldLang] || {});
-            const newTabs = Object.keys(parsedRewards[lang] || {});
-            const tabIdx = oldTabs.indexOf(currentActiveTab);
-            
-            currentActiveTab = (tabIdx !== -1 && newTabs[tabIdx]) ? newTabs[tabIdx] : newTabs[0];
+  if (dataRef.dates.length === 0) {
+    document.getElementById("data-container").innerHTML = `<div class="loading">Нет данных</div>`;
+    return;
+  }
 
-            if (currentActiveTab) {
-                const oldSubtabs = Object.keys(parsedRewards[oldLang][oldTabs[tabIdx]] || {});
-                const newSubtabs = Object.keys(parsedRewards[lang][currentActiveTab] || {});
-                const subIdx = oldSubtabs.indexOf(currentActiveSubtab);
-                currentActiveSubtab = (subIdx !== -1 && newSubtabs[subIdx]) ? newSubtabs[subIdx] : newSubtabs[0];
-            }
-            renderRewardsNav();
-        } else {
-            renderCurrentView();
-        }
-    }
+  if (!isBackground || !dataRef.dates.includes(selectedDate)) selectedDate = dataRef.dates[0];
 
-    // ==========================================
-    // ФУНКЦИЯ ДЛЯ ВЕРХНЕЙ КНОПКИ И НИЖНЕЙ КАРТОЧКИ
-    // ==========================================
-    function renderStaticElements() {
-        const rows = allData['Settings'];
-        if (!rows || rows.length < 6) return; 
+  dataRef.dates.forEach((date) => {
+    const btn = document.createElement("div");
+    btn.className = "date-btn glass";
+    if (date === selectedDate) btn.classList.add("active");
+    btn.innerText = date;
+    btn.onclick = () => selectDate(date);
+    sidebar.appendChild(btn);
+  });
+  
+  if (document.getElementById("searchInput").value.trim() !== "") handleSearch();
+  else renderContent();
+}
 
-        const isRU = currentLang === 'RU';
+function selectDate(date) {
+  selectedDate = date;
+  document.getElementById("searchInput").value = ""; 
+  document.querySelectorAll(".date-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.innerText === selectedDate);
+  });
+  renderContent();
+}
 
-        // 1. ВЕРХНЯЯ КНОПКА
-        const topText = isRU ? getCol(rows[1], 1) : getCol(rows[1], 2); // B2 / C2
-        const topLink = isRU ? getCol(rows[2], 1) : getCol(rows[2], 2); // B3 / C3
+function handleSearch() {
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  renderContent(q);
+}
 
-        const topContainer = document.getElementById('top-banner-container');
-        if (topText && topLink) {
-            topContainer.innerHTML = `<a href="${topLink}" target="_blank" class="top-action-btn">${topText}</a>`;
-        } else {
-            topContainer.innerHTML = ''; 
-        }
+function renderContent(searchQuery = "") {
+  const container = document.getElementById("data-container");
+  const dataRef = cache[currentTab];
+  let html = "";
+  let itemsToRender = [];
 
-        // 2. НИЖНЯЯ КАРТОЧКА СЕМЬИ
-        const cardDesc = isRU ? getCol(rows[3], 1) : getCol(rows[3], 2); // B4 / C4
-        const cardName = isRU ? getCol(rows[4], 1) : getCol(rows[4], 2); // B5 / C5
-        const cardImg  = isRU ? getCol(rows[5], 1) : getCol(rows[5], 2); // B6 / C6
-
-        const bottomContainer = document.getElementById('bottom-card-container');
-        if (cardDesc || cardName) {
-            const imgSrc = cardImg || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; 
-            
-            bottomContainer.innerHTML = `
-                <div class="family-card">
-                    <img src="${imgSrc}" class="family-avatar" alt="Avatar" onerror="this.style.display='none'">
-                    <div class="family-info">
-                        <div class="family-desc">${cardDesc}</div>
-                        <div class="family-name">${cardName}</div>
-                    </div>
-                </div>
-            `;
-        } else {
-            bottomContainer.innerHTML = ''; 
-        }
-    }
-
-    function switchMainTab(tab) {
-        currentMainTab = tab;
-        document.querySelectorAll('.main-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        document.getElementById('content-container').style.display = 'block';
-        document.getElementById('rewards-nav').style.display = (tab === 'Rewards') ? 'block' : 'none';
-        
-        if (tab === 'Rewards') {
-            const tabs = Object.keys(parsedRewards[currentLang] || {});
-            if (!currentActiveTab || !tabs.includes(currentActiveTab)) currentActiveTab = tabs[0];
-            renderRewardsNav();
-        } else {
-            renderCurrentView();
-        }
-    }
-
-    function renderCurrentView() {
-        if (currentMainTab === 'Rewards') renderRewardsContent();
-        else if (currentMainTab === 'Calendar') renderCalendarContent();
-        else if (currentMainTab === 'Rules') renderRulesContent();
-    }
-
-    function renderRewardsNav() {
-        const tabsContainer = document.getElementById('tabs-container');
-        const subtabsContainer = document.getElementById('subtabs-container');
-        tabsContainer.innerHTML = ''; subtabsContainer.innerHTML = '';
-
-        const tabs = Object.keys(parsedRewards[currentLang] || {});
-        tabs.forEach(tab => {
-            const btn = document.createElement('button');
-            btn.className = 'tab-btn' + (tab === currentActiveTab ? ' active' : '');
-            btn.innerText = tab;
-            btn.onclick = () => { currentActiveTab = tab; currentActiveSubtab = Object.keys(parsedRewards[currentLang][tab])[0]; renderRewardsNav(); };
-            tabsContainer.appendChild(btn);
+  // Определение данных для рендера
+  if (currentTab === "schedule" || currentTab === "results") {
+    if (searchQuery !== "") {
+      const searchTerms = searchQuery.split(" ").filter(t => t !== "");
+      dataRef.dates.forEach(d => {
+        dataRef.byDate[d].forEach(item => {
+          if (searchTerms.every(term => item.searchStr.includes(term))) itemsToRender.push({ ...item, dateLabel: d });
         });
-
-        if (currentActiveTab && parsedRewards[currentLang][currentActiveTab]) {
-            const subtabs = Object.keys(parsedRewards[currentLang][currentActiveTab]);
-            if (!currentActiveSubtab || !subtabs.includes(currentActiveSubtab)) currentActiveSubtab = subtabs[0];
-            
-            if (!(subtabs.length === 1 && subtabs[0] === "")) {
-                subtabs.forEach(sub => {
-                    const btn = document.createElement('button');
-                    btn.className = 'subtab-btn' + (sub === currentActiveSubtab ? ' active' : '');
-                    btn.innerText = sub;
-                    btn.onclick = () => { currentActiveSubtab = sub; renderRewardsNav(); };
-                    subtabsContainer.appendChild(btn);
-                });
-            }
-        }
-        renderCurrentView();
+      });
+      document.querySelectorAll(".date-btn").forEach(btn => btn.classList.remove("active"));
+    } else {
+      itemsToRender = dataRef.byDate[selectedDate] || [];
     }
-
-    function renderRewardsContent() {
-        const tabData = parsedRewards[currentLang][currentActiveTab] || {};
-        const rows = tabData[currentActiveSubtab] || [];
-        
-        let html = '';
-        let inFullTable = false, inMiniTable = false;
-
-        const fmt = (text) => {
-            if (!text) return '';
-            if (text.startsWith('http')) return `<img src="${text}" class="cell-img" alt="img">`;
-            return text.replace(/\n/g, '<br>');
-        };
-
-        rows.forEach((row) => {
-            let { c1, c2, c3 } = row;
-
-            if (c1 && c2 && c3) {
-                if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                if (!inFullTable) { 
-                    html += `<div class="data-table-wrapper"><table class="data-table">`; 
-                    inFullTable = true;
-                    html += `<tr><th>${fmt(c1)}</th><th>${fmt(c2)}</th><th>${fmt(c3)}</th></tr>`;
-                } else {
-                    html += `<tr><td>${fmt(c1)}</td><td>${fmt(c2)}</td><td>${fmt(c3)}</td></tr>`;
-                }
-            } else if (!c1 && c2 && c3) {
-                if (inFullTable) { html += '</table></div>'; inFullTable = false; }
-                if (!inMiniTable) { 
-                    html += `<div class="data-table-wrapper"><table class="data-table" style="max-width:500px; margin: 0 auto;">`; 
-                    inMiniTable = true; 
-                }
-                html += `<tr><td style="border-bottom:none;">${fmt(c2)}</td><td style="border-bottom:none;">${fmt(c3)}</td></tr>`;
-            } else {
-                if (inFullTable) { html += '</table></div>'; inFullTable = false; }
-                if (inMiniTable) { html += '</table></div>'; inMiniTable = false; }
-                
-                if (c1) html += `<div class="cal-title">${c1}</div>`;
-                if (c2) html += `<div class="rule-text">${fmt(c2)}</div>`;
-            }
-        });
-
-        if (inFullTable || inMiniTable) html += `</table></div>`;
-        document.getElementById('dynamic-content').innerHTML = html || `<div class="rule-text">Данные отсутствуют.</div>`;
+  } else {
+    // Вкладки без дат (рейтинги)
+    if (searchQuery !== "") {
+      const searchTerms = searchQuery.split(" ").filter(t => t !== "");
+      itemsToRender = dataRef.data.filter(item => searchTerms.every(term => item.searchStr.includes(term)));
+    } else {
+      itemsToRender = dataRef.data || [];
     }
+  }
 
-    function renderCalendarContent() {
-        const rows = allData['Calendar'];
-        let html = '';
-        let hasData = false;
-        
-        rows.forEach((row, idx) => {
-            if (idx === 0) return; 
-            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2);
-            let value = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
+  if (itemsToRender.length === 0) {
+    container.innerHTML = `<div class="loading">Ничего не найдено</div>`;
+    return;
+  }
 
-            if (!title && !value) return;
-            hasData = true;
+  // Рендеринг HTML в зависимости от вкладки
+  if (currentTab === "schedule") {
+    html += `<div class="schedule-list">`;
+    itemsToRender.forEach(m => {
+      let dateBadge = searchQuery !== "" ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      html += `
+        <div class="match-row glass">
+          ${dateBadge}
+          <div class="team-block left">
+            <span class="player-name">${m.p1}</span>
+            <span class="clan-name">${m.c1_name}</span>
+            <span class="clan-id">ID: ${m.c1_id}</span>
+          </div>
+          <div class="match-center">
+            <div class="time-badge">${m.time}</div>
+            <div class="vs-text">VS</div>
+          </div>
+          <div class="team-block right">
+            <span class="player-name">${m.p2}</span>
+            <span class="clan-name">${m.c2_name}</span>
+            <span class="clan-id">ID: ${m.c2_id}</span>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  } 
+  
+  else if (currentTab === "results") {
+    html += `<div class="results-list">`;
+    itemsToRender.forEach((m, index) => {
+      let dateBadge = searchQuery !== "" ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      let rankClass = index === 0 ? "rank-1" : (index === 1 ? "rank-2" : (index === 2 ? "rank-3" : ""));
+      html += `
+        <div class="result-row glass">
+          ${dateBadge}
+          <div class="rank-box ${rankClass}">#${index + 1}</div>
+          <div class="result-details">
+            <span class="player-name">${m.colF}</span>
+            <span class="clan-name">BIGO ID: ${m.colG}</span>
+            <span class="clan-id">ID: ${m.colC}</span>
+          </div>
+          <div class="result-score-box">
+            <span class="score-label">ПК Очки</span>
+            <span class="score-value">${m.scoreStr}</span>
+            <img src="${m.eagleImgSrc}" class="eagle-img" loading="lazy" alt="Eagle">
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
 
-            if (title) html += `<div class="cal-title text-center" style="font-size:18px;">${title}</div>`;
-            
-            if (value) {
-                let alignClass = (idx === 1) ? 'text-left' : 'text-center';
+  else if (currentTab === "families") {
+    html += `<div class="results-list">`;
+    itemsToRender.forEach((m, index) => {
+      // rank берем напрямую из таблицы (столбец А)
+      let r = m.rank || (index + 1);
+      let rankClass = r == 1 ? "rank-1" : (r == 2 ? "rank-2" : (r == 3 ? "rank-3" : ""));
+      html += `
+        <div class="result-row glass">
+          <div class="rank-box ${rankClass}">#${r}</div>
+          <div class="result-details">
+            <span class="player-name">${m.name}</span>
+            <span class="clan-id">Family ID: ${m.id}</span>
+          </div>
+          <div class="result-score-box">
+            <span class="score-label">Очки Семьи</span>
+            <span class="score-value">${m.score}</span>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
 
-                if (value.startsWith('http')) {
-                    const btnText = currentLang === 'RU' ? 'перейти на страницу' : 'sahifaga otish';
-                    html += `<div class="${alignClass}"><a href="${value}" target="_blank" class="action-button">${btnText}</a></div>`;
-                } else {
-                    html += `<div class="cal-text ${alignClass}">${value.replace(/\n/g, '<br>')}</div>`;
-                }
-            }
-            html += `<hr style="border: 0; border-bottom: 1px solid var(--border-line); margin: 15px 0;">`;
-        });
-        
-        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text text-center">Календарь пока пуст.</div>`;
-    }
+  else if (currentTab === "participants") {
+    html += `<div class="results-list">`;
+    itemsToRender.forEach((m, index) => {
+      let r = m.rank || (index + 1);
+      let rankClass = r == 1 ? "rank-1" : (r == 2 ? "rank-2" : (r == 3 ? "rank-3" : ""));
+      html += `
+        <div class="result-row glass">
+          <div class="rank-box ${rankClass}">#${r}</div>
+          <div class="result-details">
+            <span class="player-name">${m.name}</span>
+            <span class="clan-name">${m.family ? "Семья: " + m.family : "Без семьи"}</span>
+          </div>
+          <div class="result-score-box">
+            <span class="score-label">Очки Участника</span>
+            <span class="score-value">${m.score}</span>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
 
-    function renderRulesContent() {
-        const rows = allData['Rules'];
-        let html = '';
-        let hasData = false;
-        
-        rows.forEach((row, idx) => {
-            if (idx === 0) return; 
-            let title = currentLang === 'RU' ? getCol(row, 0) : getCol(row, 2); 
-            let text = currentLang === 'RU' ? getCol(row, 1) : getCol(row, 3);
+  container.innerHTML = html;
+}
 
-            if (!title && !text) return;
-            hasData = true;
-
-            if (idx === 1) { 
-                html += `<div class="main-title">${title}</div>`;
-                if (text) html += `<div class="rule-text" style="margin-bottom:25px;">${text.replace(/\n/g, '<br>')}</div>`;
-            } else {
-                if (title) html += `<div class="cal-title" style="font-size:18px;">${title}</div>`;
-                if (text) html += `<div class="rule-text">${text.replace(/\n/g, '<br>')}</div>`;
-            }
-        });
-        
-        document.getElementById('dynamic-content').innerHTML = hasData ? html : `<div class="rule-text">Правила формируются.</div>`;
-    }
-
-    fetchAllData();
+switchTab("schedule");
+startAutoRefresh();
 </script>
 </body>
 </html>
