@@ -179,18 +179,22 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 15px rgba(245, 166, 49, 0.05); 
             animation: fadeIn 0.8s ease;
         }
+        
+        /* === УВЕЛИЧЕННАЯ КАРТИНКА === */
         .family-avatar {
-            width: 70px;
-            height: 70px;
+            width: 100px;  /* Было 70px, стало 100px */
+            height: 100px; /* Было 70px, стало 100px */
             border-radius: 50%;
-            border: 2px solid var(--orange);
+            border: 3px solid var(--orange); /* Сделал рамку чуть толще */
             object-fit: cover;
-            margin-right: 20px;
+            margin-right: 25px; /* Немного увеличил отступ от текста */
             background-color: var(--teal-dark);
+            box-shadow: 0 0 15px rgba(245, 166, 49, 0.4); /* Добавил легкое свечение */
         }
+        
         .family-info { display: flex; flex-direction: column; justify-content: center;}
         .family-desc { color: var(--text-muted); font-size: 14px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;}
-        .family-name { color: var(--orange); font-size: 22px; font-weight: 800; text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);}
+        .family-name { color: var(--orange); font-size: 24px; font-weight: 800; text-shadow: 0 0 10px rgba(245, 166, 49, 0.3);}
 
         /* =========================================
            МОБИЛЬНАЯ АДАПТАЦИЯ
@@ -215,8 +219,14 @@
             .data-table-wrapper { padding: 0 10px; border-radius: 8px;}
 
             .top-action-btn { font-size: 15px; padding: 14px 10px; }
-            .family-avatar { width: 55px; height: 55px; margin-right: 15px;}
-            .family-name { font-size: 18px; }
+            
+            /* === УВЕЛИЧЕННАЯ КАРТИНКА (МОБИЛЬНЫЕ) === */
+            .family-avatar { 
+                width: 80px;  /* Было 55px, стало 80px */
+                height: 80px; /* Было 55px, стало 80px */
+                margin-right: 15px;
+            }
+            .family-name { font-size: 20px; }
             .family-desc { font-size: 12px; }
         }
     </style>
@@ -258,7 +268,6 @@
 
 <script>
     const sheetId = '1P_2Vko2-RA4VXFCqzMYE20hp5MjJsQ4zh_bU0ohYbII';
-    // ДОБАВЛЕН НОВЫЙ GID ДЛЯ НАСТРОЕК СВЕРХУ И СНИЗУ
     const GIDS = { 'Rewards': '1090262398', 'Calendar': '691237427', 'Rules': '0', 'Settings': '1122641331' };
 
     let allData = { 'Rewards': [], 'Calendar': [], 'Rules': [], 'Settings': [] };
@@ -339,7 +348,7 @@
     function initUI() {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('main-menu').style.display = 'flex';
-        renderStaticElements(); // Отрисовываем новые кнопку и карточку
+        renderStaticElements(); 
         switchMainTab('Rewards');
     }
 
@@ -355,7 +364,7 @@
         mainBtns[1].innerText = lang === 'RU' ? 'КАЛЕНДАРЬ' : 'KALENDAR';
         mainBtns[2].innerText = lang === 'RU' ? 'ПРАВИЛА' : 'QOIDALAR';
 
-        renderStaticElements(); // Обновляем язык для кнопки и карточки
+        renderStaticElements(); 
 
         if (currentMainTab === 'Rewards') {
             const oldTabs = Object.keys(parsedRewards[oldLang] || {});
@@ -381,13 +390,11 @@
     // ==========================================
     function renderStaticElements() {
         const rows = allData['Settings'];
-        if (!rows || rows.length < 6) return; // Проверка, что данные загрузились
+        if (!rows || rows.length < 6) return; 
 
         const isRU = currentLang === 'RU';
 
         // 1. ВЕРХНЯЯ КНОПКА
-        // Массив rows: индекс 0 это строка 1. Значит строка 2 это rows[1].
-        // Колонка A это 0, колонка B это 1, колонка C это 2.
         const topText = isRU ? getCol(rows[1], 1) : getCol(rows[1], 2); // B2 / C2
         const topLink = isRU ? getCol(rows[2], 1) : getCol(rows[2], 2); // B3 / C3
 
@@ -395,7 +402,7 @@
         if (topText && topLink) {
             topContainer.innerHTML = `<a href="${topLink}" target="_blank" class="top-action-btn">${topText}</a>`;
         } else {
-            topContainer.innerHTML = ''; // Скрыть, если пусто
+            topContainer.innerHTML = ''; 
         }
 
         // 2. НИЖНЯЯ КАРТОЧКА СЕМЬИ
@@ -405,7 +412,6 @@
 
         const bottomContainer = document.getElementById('bottom-card-container');
         if (cardDesc || cardName) {
-            // Если картинка не указана, ставим прозрачный пиксель или иконку по умолчанию
             const imgSrc = cardImg || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; 
             
             bottomContainer.innerHTML = `
@@ -418,7 +424,7 @@
                 </div>
             `;
         } else {
-            bottomContainer.innerHTML = ''; // Скрыть, если пусто
+            bottomContainer.innerHTML = ''; 
         }
     }
 
