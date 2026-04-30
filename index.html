@@ -186,14 +186,13 @@
     
     .main-layout { flex-direction: column; gap: 15px; }
     
-    /* ИСПРАВЛЕНО: Даты выстраиваются по левому краю и переносятся на новую строку (как теги) */
     .sidebar { 
       flex: none; 
       height: auto; 
       width: 100%; 
       flex-direction: row; 
-      flex-wrap: wrap;             /* Включает перенос строк */
-      justify-content: flex-start; /* Строго по левому краю */
+      flex-wrap: wrap;             
+      justify-content: flex-start; 
       padding-bottom: 0; 
       gap: 8px; 
     }
@@ -201,9 +200,9 @@
     .date-btn { 
       flex: 0 0 auto; 
       height: max-content; 
-      padding: 8px 18px;          /* Чуть более компактные отступы */
+      padding: 8px 18px;          
       font-size: 13px; 
-      border-radius: 20px;        /* Форма красивой таблетки */
+      border-radius: 20px;        
     }
     
     .content { gap: 12px; }
@@ -376,13 +375,12 @@ async function fetchData(tabName, isBackground = false) {
   }
 }
 
+/* === УМНЫЙ ПАРСЕР РАСПИСАНИЯ === */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
   let currentGroupDate = ""; 
   
-  rows.forEach((r, idx) => {
-    if (idx === 0) return; 
-    
+  rows.forEach((r) => {
     let rawDate = parseDate(getVal(r, 0)); 
     if (rawDate && rawDate.toLowerCase() !== "дата" && rawDate.toLowerCase() !== "date") {
       currentGroupDate = rawDate;
@@ -412,13 +410,12 @@ function parseSchedule(rows) {
   for (let d in cache.schedule.byDate) cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
 }
 
+/* === УМНЫЙ ПАРСЕР РЕЗУЛЬТАТОВ === */
 function parseResults(rows) {
   cache.results.dates = []; cache.results.byDate = {};
   let currentGroupDate = ""; 
   
-  rows.forEach((r, idx) => {
-    if (idx === 0) return;
-    
+  rows.forEach((r) => {
     let rawDate = parseDate(getVal(r, 0)); 
     if (rawDate && rawDate.toLowerCase() !== "дата" && rawDate.toLowerCase() !== "date") {
       currentGroupDate = rawDate;
@@ -452,8 +449,7 @@ function parseResults(rows) {
 
 function parseFamilies(rows) {
   cache.families.data = [];
-  rows.forEach((r, idx) => {
-    if (idx === 0) return; 
+  rows.forEach((r) => {
     let id = getVal(r, 1);   
     let name = getVal(r, 2); 
     let score = getVal(r, 3); 
@@ -470,8 +466,7 @@ function parseFamilies(rows) {
 
 function parseParticipants(rows) {
   cache.participants.data = [];
-  rows.forEach((r, idx) => {
-    if (idx === 0) return; 
+  rows.forEach((r) => {
     let name = getVal(r, 2);   
     let score = getVal(r, 3);  
     let family = getVal(r, 4); 
