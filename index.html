@@ -186,24 +186,24 @@
     
     .main-layout { flex-direction: column; gap: 15px; }
     
-    /* ИСПРАВЛЕНИЕ: flex: none и height: auto убирают пустую дыру высотой 200px */
+    /* ИСПРАВЛЕНО: Даты выстраиваются по левому краю и переносятся на новую строку (как теги) */
     .sidebar { 
       flex: none; 
       height: auto; 
       width: 100%; 
       flex-direction: row; 
-      overflow-x: auto; 
-      padding-bottom: 5px; 
-      gap: 10px; 
-      scroll-snap-type: x mandatory; 
-      -webkit-overflow-scrolling: touch; 
-      align-items: flex-start; 
+      flex-wrap: wrap;             /* Включает перенос строк */
+      justify-content: flex-start; /* Строго по левому краю */
+      padding-bottom: 0; 
+      gap: 8px; 
     }
-    .sidebar::-webkit-scrollbar { display: none; }
     
     .date-btn { 
-      flex: 0 0 auto; height: max-content; scroll-snap-align: start; 
-      white-space: nowrap; padding: 10px 22px; font-size: 13px; border-radius: 20px; 
+      flex: 0 0 auto; 
+      height: max-content; 
+      padding: 8px 18px;          /* Чуть более компактные отступы */
+      font-size: 13px; 
+      border-radius: 20px;        /* Форма красивой таблетки */
     }
     
     .content { gap: 12px; }
@@ -376,7 +376,6 @@ async function fetchData(tabName, isBackground = false) {
   }
 }
 
-/* === УМНЫЙ ПАРСЕР РАСПИСАНИЯ === */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
   let currentGroupDate = ""; 
@@ -413,7 +412,6 @@ function parseSchedule(rows) {
   for (let d in cache.schedule.byDate) cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
 }
 
-/* === УМНЫЙ ПАРСЕР РЕЗУЛЬТАТОВ === */
 function parseResults(rows) {
   cache.results.dates = []; cache.results.byDate = {};
   let currentGroupDate = ""; 
