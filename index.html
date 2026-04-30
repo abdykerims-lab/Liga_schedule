@@ -186,10 +186,18 @@
     
     .main-layout { flex-direction: column; gap: 15px; }
     
+    /* ИСПРАВЛЕНИЕ: flex: none и height: auto убирают пустую дыру высотой 200px */
     .sidebar { 
-      width: 100%; flex-direction: row; overflow-x: auto; 
-      padding-bottom: 10px; gap: 10px; scroll-snap-type: x mandatory; 
-      -webkit-overflow-scrolling: touch; align-items: flex-start; 
+      flex: none; 
+      height: auto; 
+      width: 100%; 
+      flex-direction: row; 
+      overflow-x: auto; 
+      padding-bottom: 5px; 
+      gap: 10px; 
+      scroll-snap-type: x mandatory; 
+      -webkit-overflow-scrolling: touch; 
+      align-items: flex-start; 
     }
     .sidebar::-webkit-scrollbar { display: none; }
     
@@ -371,19 +379,18 @@ async function fetchData(tabName, isBackground = false) {
 /* === УМНЫЙ ПАРСЕР РАСПИСАНИЯ === */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
-  let currentGroupDate = ""; // Запоминает последнюю прочитанную дату
+  let currentGroupDate = ""; 
   
   rows.forEach((r, idx) => {
     if (idx === 0) return; 
     
-    let rawDate = parseDate(getVal(r, 0)); // Читаем столбец А
-    // Если клетка заполнена и это не текст-заголовок, обновляем текущую дату
+    let rawDate = parseDate(getVal(r, 0)); 
     if (rawDate && rawDate.toLowerCase() !== "дата" && rawDate.toLowerCase() !== "date") {
       currentGroupDate = rawDate;
     }
     
     let date = currentGroupDate;
-    if (!date) return; // Если дата еще ни разу не встретилась, пропускаем
+    if (!date) return; 
     
     let time = formatTime(getVal(r, 1)) || "--:--"; 
     let p1 = getVal(r, 3); 
@@ -394,7 +401,6 @@ function parseSchedule(rows) {
     let c2_id = getVal(r, 9); 
     let p2 = getVal(r, 10); 
     
-    // Если строка полностью пустая (нет участников), пропускаем ее
     if (!p1 && !p2) return;
 
     let searchStr = `${p1} ${c1_id} ${c1_name} ${c2_name} ${c2_id} ${p2}`.toLowerCase();
@@ -429,7 +435,6 @@ function parseResults(rows) {
     let scoreNum = getNum(r, 7); 
     let scoreStr = getVal(r, 7) || "0"; 
     
-    // Если строка пустая (нет ни имени, ни ID), пропускаем
     if (!player && !fam_id) return;
 
     let eagleImgSrc = "";
