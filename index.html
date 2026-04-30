@@ -186,23 +186,29 @@
     
     .main-layout { flex-direction: column; gap: 15px; }
     
+    /* Вернули горизонтальную прокрутку, сохранив фикс с высотой */
     .sidebar { 
       flex: none; 
       height: auto; 
       width: 100%; 
       flex-direction: row; 
-      flex-wrap: wrap;             
-      justify-content: flex-start; 
-      padding-bottom: 0; 
-      gap: 8px; 
+      overflow-x: auto; 
+      padding-bottom: 5px; 
+      gap: 10px; 
+      scroll-snap-type: x mandatory; 
+      -webkit-overflow-scrolling: touch; 
+      align-items: flex-start; 
     }
+    .sidebar::-webkit-scrollbar { display: none; }
     
     .date-btn { 
       flex: 0 0 auto; 
       height: max-content; 
-      padding: 8px 18px;          
+      scroll-snap-align: start; 
+      white-space: nowrap; /* Важно: чтобы текст кнопки не переносился */
+      padding: 10px 20px; 
       font-size: 13px; 
-      border-radius: 20px;        
+      border-radius: 20px; 
     }
     
     .content { gap: 12px; }
