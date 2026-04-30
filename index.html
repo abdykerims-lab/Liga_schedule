@@ -186,7 +186,6 @@
     
     .main-layout { flex-direction: column; gap: 15px; }
     
-    /* Идеальный скролл дат (таблетки) */
     .sidebar { 
       width: 100%; flex-direction: row; overflow-x: auto; 
       padding-bottom: 10px; gap: 10px; scroll-snap-type: x mandatory; 
@@ -273,6 +272,7 @@ function getNum(row, index) {
 }
 
 function parseDate(val) {
+  if (!val) return "";
   if (typeof val === "string" && val.startsWith("Date(")) {
     const match = val.match(/Date\((\d+),(\d+),(\d+)/);
     if (match) {
@@ -292,8 +292,8 @@ function formatTime(val) {
 
 function parseToDateObj(str) {
   let parts = str.split('.');
-  if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
-  return new Date(0); 
+  if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]).getTime();
+  return 0; 
 }
 
 function switchTab(tabName) {
@@ -307,7 +307,6 @@ function switchTab(tabName) {
 
   const sidebar = document.getElementById("sidebar");
   
-  // Для общих рейтингов скрываем даты
   if (tabName === "families" || tabName === "participants") {
     sidebar.style.display = "none";
   } else {
@@ -369,23 +368,33 @@ async function fetchData(tabName, isBackground = false) {
   }
 }
 
-/* --- ПАРСЕРЫ (С учетом структуры колонок из запроса) --- */
+/* === УМНЫЙ ПАРСЕР РАСПИСАНИЯ === */
 function parseSchedule(rows) {
   cache.schedule.dates = []; cache.schedule.byDate = {};
+  let currentGroupDate = ""; // Запоминает последнюю прочитанную дату
+  
   rows.forEach((r, idx) => {
-    if (idx === 0) return; // Пропуск заголовка
-    let date = parseDate(getVal(r, 0)); // Col A
-    if (!date) return;
+    if (idx === 0) return; 
     
-    let time = formatTime(getVal(r, 1)) || "--:--"; // Col B
-    let p1 = getVal(r, 3); // Col D
-    let c1_id = getVal(r, 4); // Col E
-    let c1_name = getVal(r, 5); // Col F
-    let vs = getVal(r, 6) || "VS"; // Col G
-    let c2_name = getVal(r, 8); // Col I
-    let c2_id = getVal(r, 9); // Col J
-    let p2 = getVal(r, 10); // Col K
+    let rawDate = parseDate(getVal(r, 0)); // Читаем столбец А
+    // Если клетка заполнена и это не текст-заголовок, обновляем текущую дату
+    if (rawDate && rawDate.toLowerCase() !== "дата" && rawDate.toLowerCase() !== "date") {
+      currentGroupDate = rawDate;
+    }
     
+    let date = currentGroupDate;
+    if (!date) return; // Если дата еще ни разу не встретилась, пропускаем
+    
+    let time = formatTime(getVal(r, 1)) || "--:--"; 
+    let p1 = getVal(r, 3); 
+    let c1_id = getVal(r, 4); 
+    let c1_name = getVal(r, 5); 
+    let vs = getVal(r, 6) || "VS"; 
+    let c2_name = getVal(r, 8); 
+    let c2_id = getVal(r, 9); 
+    let p2 = getVal(r, 10); 
+    
+    // Если строка полностью пустая (нет участников), пропускаем ее
     if (!p1 && !p2) return;
 
     let searchStr = `${p1} ${c1_id} ${c1_name} ${c2_name} ${c2_id} ${p2}`.toLowerCase();
@@ -394,25 +403,34 @@ function parseSchedule(rows) {
     cache.schedule.byDate[date].push({ time, p1, c1_id, c1_name, vs, p2, c2_id, c2_name, searchStr });
   });
   
-  // Сортировка дат по убыванию, времени по возрастанию
   cache.schedule.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
   for (let d in cache.schedule.byDate) cache.schedule.byDate[d].sort((a, b) => a.time.localeCompare(b.time));
 }
 
+/* === УМНЫЙ ПАРСЕР РЕЗУЛЬТАТОВ === */
 function parseResults(rows) {
   cache.results.dates = []; cache.results.byDate = {};
+  let currentGroupDate = ""; 
+  
   rows.forEach((r, idx) => {
     if (idx === 0) return;
-    let date = parseDate(getVal(r, 0)); // Col A
+    
+    let rawDate = parseDate(getVal(r, 0)); 
+    if (rawDate && rawDate.toLowerCase() !== "дата" && rawDate.toLowerCase() !== "date") {
+      currentGroupDate = rawDate;
+    }
+    
+    let date = currentGroupDate;
     if (!date) return;
     
-    let fam_id = getVal(r, 2); // Col C
-    let fam_name = getVal(r, 5); // Col F
-    let player = getVal(r, 6); // Col G
-    let scoreNum = getNum(r, 7); // Col H
+    let fam_id = getVal(r, 2); 
+    let fam_name = getVal(r, 5); 
+    let player = getVal(r, 6); 
+    let scoreNum = getNum(r, 7); 
     let scoreStr = getVal(r, 7) || "0"; 
     
-    if (!player) return;
+    // Если строка пустая (нет ни имени, ни ID), пропускаем
+    if (!player && !fam_id) return;
 
     let eagleImgSrc = "";
     if (scoreNum >= 500000) eagleImgSrc = "https://i.ibb.co/p6fLVxMk/Golden-1.png";
@@ -425,7 +443,6 @@ function parseResults(rows) {
     cache.results.byDate[date].push({ fam_id, fam_name, player, scoreNum, scoreStr, eagleImgSrc, searchStr });
   });
   
-  // Сортировка дат по убыванию, очков по убыванию
   cache.results.dates.sort((a, b) => parseToDateObj(b) - parseToDateObj(a));
   for (let d in cache.results.byDate) cache.results.byDate[d].sort((a, b) => b.scoreNum - a.scoreNum);
 }
@@ -434,9 +451,9 @@ function parseFamilies(rows) {
   cache.families.data = [];
   rows.forEach((r, idx) => {
     if (idx === 0) return; 
-    let id = getVal(r, 1);   // Col B
-    let name = getVal(r, 2); // Col C
-    let score = getVal(r, 3); // Col D
+    let id = getVal(r, 1);   
+    let name = getVal(r, 2); 
+    let score = getVal(r, 3); 
     let scoreNum = getNum(r, 3); 
     if (!name && !id) return;
     
@@ -452,9 +469,9 @@ function parseParticipants(rows) {
   cache.participants.data = [];
   rows.forEach((r, idx) => {
     if (idx === 0) return; 
-    let name = getVal(r, 2);   // Col C
-    let score = getVal(r, 3);  // Col D
-    let family = getVal(r, 4); // Col E
+    let name = getVal(r, 2);   
+    let score = getVal(r, 3);  
+    let family = getVal(r, 4); 
     let scoreNum = getNum(r, 3); 
     if (!name) return;
     
