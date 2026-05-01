@@ -46,27 +46,33 @@
   .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; margin-top: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
   .promo-image { width: 100%; border-radius: 12px; border: 1px solid var(--border-line); box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
 
-  /* === НОВЫЙ БЛОК: Текст + Картинка (text-image) === */
-  .text-image-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-top: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-  .text-image-content { flex: 1; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; text-align: left;}
-  .text-image-img { max-width: 150px; border-radius: 10px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4)); }
-  @media (max-width: 768px) {
-    .text-image-block { flex-direction: column; text-align: center; }
-    .text-image-img { max-width: 100%; height: auto; max-height: 120px; }
-    .text-image-content { text-align: center; }
-  }
-
   /* Карточки и Подарки */
   .cards-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
   .simple-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-left: 4px solid var(--orange); border-radius: 10px; padding: 15px 20px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 16px; }
   
   .gifts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 10px; }
-  .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 15px; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-  .gift-card:hover { transform: translateY(-5px); background: rgba(18, 63, 69, 0.6); }
+  .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 15px; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
   .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
   .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #fff;}
+  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
+  .gift-stat { font-size: 12px; color: var(--text-muted); background: rgba(0,0,0,0.4); border-radius: 4px; padding: 4px 0; margin-bottom: 5px; font-weight: 600; }
+  .gift-stat span { color: var(--orange); font-weight: 800; }
+
+  /* === НОВОЕ: ТАБЛИЦА-ФОТО (СТРОГО 5 В РЯД НА ТЕЛЕФОНЕ) === */
+  .photo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 15px; width: 100%; }
+  .photo-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s;}
+  .photo-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.05); }
+  .photo-img { width: 100%; height: 45px; object-fit: contain; margin-bottom: 6px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
+  .photo-title { font-weight: 800; font-size: 11px; color: #fff; line-height: 1.2; word-wrap: break-word; }
   
+  /* Делаем шрифт и отступы еще меньше для очень узких экранов */
+  @media (max-width: 400px) {
+    .photo-grid { gap: 4px; }
+    .photo-card { padding: 6px 2px; }
+    .photo-title { font-size: 9px; }
+    .photo-img { height: 35px; }
+  }
+
   /* === СИСТЕМА ВКЛАДОК (TABS) === */
   .tabs-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
   .tab-btn { background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 16px; font-weight: 800; text-transform: uppercase; padding: 14px 25px; border-radius: 8px; cursor: pointer; transition: 0.3s; flex: 1; min-width: 150px; text-align: center; }
@@ -211,48 +217,45 @@ function renderLanding(rows) {
     else if (type === "text") appendHtml(`<div class="text-block">${content}</div>`);
     else if (type === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
     
-    // === НОВОЕ: Текст + Картинка (разделитель |) ===
-    else if (type === "text-image") {
-      let parts = content.split("|");
-      let textPart = parts[0] ? parts[0].trim() : "";
-      let imgPart = parts[1] ? parts[1].trim() : "";
-      
-      appendHtml(`
-        <div class="text-image-block">
-          ${imgPart ? `<img src="${imgPart}" class="text-image-img" alt="img">` : ''}
-          <div class="text-image-content">${textPart}</div>
-        </div>
-      `);
-    }
-
     // 4. Карточки (Группы)
     else if (type === "карточка") {
       if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
       appendHtml(`<div class="simple-card">${content}</div>`);
     }
 
-    // === ОБНОВЛЕНО: Подарки (Витрина). Читает Название<br>Ссылка ===
+    // 5. Подарки (Витрина с ценой/баллами)
     else if (type === "таблица-карточка") {
       if (!inGifts) { appendHtml(`<div class="gifts-grid">`); inGifts = true; }
-      
-      let items = content.split(","); // Разбиваем по запятой на отдельные подарки
-      let cardsHtml = "";
+      let p = content.split(",");
+      appendHtml(`
+        <div class="gift-card">
+          <img src="${p[3]||''}" class="gift-img">
+          <div class="gift-title">${p[0]||'Подарок'}</div>
+          <div class="gift-stat">Цена: <span>${p[1]||'-'}</span></div>
+          <div class="gift-stat">Баллы: <span>${p[2]||'-'}</span></div>
+        </div>`);
+    }
+
+    // 5.5 НОВОЕ: Таблица-фото (Строго 5 в ряд на телефоне: Имя<br>Ссылка)
+    else if (type === "таблица-фото") {
+      let items = content.split(","); // разбиваем по запятой 
+      let cardsHtml = `<div class="photo-grid">`;
       
       items.forEach(item => {
-        let parts = item.split("<br>"); // Разделяем название и картинку
+        let parts = item.split("<br>"); // разделяем название и картинку
         let name = parts[0] ? parts[0].trim() : "";
         let imgUrl = parts[1] ? parts[1].trim() : "";
         
         if (name || imgUrl) {
           cardsHtml += `
-            <div class="gift-card">
-              ${imgUrl ? `<img src="${imgUrl}" class="gift-img">` : ''}
-              <div class="gift-title">${name}</div>
+            <div class="photo-card">
+              ${imgUrl ? `<img src="${imgUrl}" class="photo-img">` : ''}
+              <div class="photo-title">${name}</div>
             </div>`;
         }
       });
-      
-      appendHtml(cardsHtml);
+      cardsHtml += `</div>`;
+      appendHtml(cardsHtml); // Выводим сразу весь блок
     }
 
     // 6. ВКЛАДКИ (Tab1, Tab2...)
