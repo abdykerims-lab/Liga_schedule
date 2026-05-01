@@ -1,1 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Семейный Май-Фест</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #0d1115;
+    --orange: #f5a631;        
+    --border-line: rgba(245, 166, 49, 0.3);
+    --text-main: #ffffff;
+    --text-muted: #c9d1d9;
+    --teal-light: rgba(24, 108, 114, 0.15);
+    --glass-bg: rgba(24, 29, 35, 0.7);
+  }
 
+  body {
+    margin: 0; padding: 0;
+    background-image: linear-gradient(rgba(13, 17, 21, 0.85), rgba(13, 17, 21, 0.95)), url('https://i.ibb.co/xqnNLxj4/1vs1-1.jpg'); 
+    background-size: cover; background-position: center; background-attachment: fixed;
+    background-color: var(--bg-page); font-family: 'Exo 2', sans-serif;
+    color: var(--text-main); min-height: 100vh; padding: 30px 15px 60px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+  /* Загрузка */
+  .loading { text-align: center; color: var(--orange); font-size: 20px; font-weight: 800; padding: 50px; }
+
+  /* Главный Заголовок */
+  .hero-header { text-align: center; padding: 20px; position: relative; background: radial-gradient(circle at top center, var(--teal-light) 0%, transparent 70%); margin-bottom: 10px; }
+  .hero-title { margin: 0 0 12px 0; font-size: 46px; font-weight: 800; text-transform: uppercase; background: linear-gradient(135deg, #ffffff 0%, var(--orange) 70%, #ff7a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
+  .hero-subtitle { font-size: 14px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 3px; background: rgba(24, 29, 35, 0.6); backdrop-filter: blur(10px); border-top: 1px solid var(--border-line); border-bottom: 1px solid rgba(245, 166, 49, 0.1); padding: 8px 24px; border-radius: 8px; display: inline-block; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+  /* Заголовки разделов */
+  .section-title { text-align: center; font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 20px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
+  .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-line), transparent); max-width: 150px; }
+  
+  .sub-title { font-size: 20px; color: var(--orange); font-weight: 800; text-transform: uppercase; margin: 10px 0 0; text-align: center; }
+
+  /* Текст */
+  .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; }
+
+  /* Карточки (Группы) */
+  .cards-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+  .simple-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-left: 4px solid var(--orange); border-radius: 10px; padding: 15px 20px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 16px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+  /* Баннер */
+  .promo-image { width: 100%; border-radius: 12px; border: 1px solid var(--border-line); box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
+
+  /* Витрина Подарков (Таблица-карточка) */
+  .gifts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 10px; }
+  .gift-card { background: rgba(18, 63, 69, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+  .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
+  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #fff; }
+  .gift-stat { font-size: 12px; color: var(--text-muted); background: rgba(0,0,0,0.4); border-radius: 4px; padding: 4px 0; margin-bottom: 5px; font-weight: 600; }
+  .gift-stat span { color: var(--orange); font-weight: 800; }
+
+  /* Таблицы (Награды) */
+  .table-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+  .styled-table { width: 100%; border-collapse: collapse; background: var(--glass-bg); text-align: center; }
+  .styled-table th { background: rgba(245, 166, 49, 0.15); color: var(--orange); padding: 12px; font-size: 14px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); }
+  .styled-table td { padding: 10px; font-size: 14px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .styled-table tr:last-child td { border-bottom: none; }
+  .styled-table img { height: 30px; object-fit: contain; vertical-align: middle; }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 32px; }
+    .hero-subtitle { font-size: 11px; }
+    .section-title { font-size: 22px; }
+    .gifts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="landing-content">
+  <div class="loading" id="loader">Загрузка Фестиваля... 🚀</div>
+</div>
+
+<script>
+// ID вашей таблицы и GID страницы
+const sheetID = "1ENDx5Flv0Gs-lMOx_oNn_CsgV8euE-lJpgDa5knyFHM";
+const gid = "2053212498"; 
+
+async function loadLandingData() {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=${gid}&_=${Date.now()}`;
+  
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+    
+    renderLanding(rows);
+  } catch (error) {
+    document.getElementById("loader").innerHTML = "❌ Ошибка загрузки данных. Проверьте ссылку на таблицу.";
+  }
+}
+
+function getVal(row, index) {
+  if (!row || !row.c || !row.c[index]) return "";
+  return String(row.c[index].v || "").trim();
+}
+
+function renderLanding(rows) {
+  let html = "";
+  let isFirstTitle = true;
+  
+  let inTable = false;
+  let inGifts = false;
+  let inCards = false;
+  
+  // Вспомогательная функция для закрытия группировок
+  function closeGroups(currentStyle) {
+    if (inTable && !currentStyle.includes("table")) { html += `</tbody></table></div>`; inTable = false; }
+    if (inGifts && currentStyle !== "таблица-карточка") { html += `</div>`; inGifts = false; }
+    if (inCards && currentStyle !== "карточка") { html += `</div>`; inCards = false; }
+  }
+
+  rows.forEach((row, index) => {
+    // Пропускаем самую первую строку с заголовками (Lang, LangStyle, RU)
+    if (index === 0 && getVal(row, 0).includes("Lang")) return;
+
+    let style = getVal(row, 1).toLowerCase();
+    let content = getVal(row, 2);
+    
+    if (!style && !content) return; // пустая строка
+
+    closeGroups(style);
+
+    // 1. ГЛАВНЫЙ ЗАГОЛОВОК И ПОДЗАГОЛОВОК (Hero)
+    if (style === "title" && isFirstTitle) {
+      let nextRowStyle = getVal(rows[index+1], 1).toLowerCase();
+      let subtitleHtml = "";
+      if (nextRowStyle === "subtitle") {
+         subtitleHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 2)}</div>`;
+         rows[index+1].processed = true; // помечаем, чтобы не дублировать
+      }
+      html += `
+        <div class="hero-header">
+          <h1 class="hero-title">${content}</h1>
+          ${subtitleHtml}
+        </div>`;
+      isFirstTitle = false;
+    }
+    else if (style === "subtitle" && row.processed) {
+      // Пропускаем подзаголовок, если он уже отрисован в Hero
+      return;
+    }
+
+    // 2. ОБЫЧНЫЕ ЗАГОЛОВКИ
+    else if (style === "title" && !isFirstTitle) {
+      html += `<h2 class="section-title">${content}</h2>`;
+    }
+    else if (style === "subtitle" || style.startsWith("tab") || style.startsWith("subtab") && !style.includes("table")) {
+      html += `<h3 class="sub-title">${content}</h3>`;
+    }
+
+    // 3. ТЕКСТ
+    else if (style === "text") {
+      html += `<div class="text-block">${content}</div>`;
+    }
+
+    // 4. БОЛЬШАЯ КАРТИНКА (Баннер)
+    else if (style === "image") {
+      html += `<img src="${content}" class="promo-image" alt="Promo">`;
+    }
+
+    // 5. КАРТОЧКИ (Группы)
+    else if (style === "карточка") {
+      if (!inCards) { html += `<div class="cards-wrapper">`; inCards = true; }
+      html += `<div class="simple-card">${content}</div>`;
+    }
+
+    // 6. ПОДАРКИ (Таблица-карточка)
+    else if (style === "таблица-карточка") {
+      if (!inGifts) { html += `<div class="gifts-grid">`; inGifts = true; }
+      
+      let parts = content.split(",");
+      let name = parts[0] ? parts[0].trim() : "Подарок";
+      let price = parts[1] ? parts[1].trim() : "-";
+      let points = parts[2] ? parts[2].trim() : "-";
+      let imgUrl = parts[3] ? parts[3].trim() : "";
+
+      html += `
+        <div class="gift-card">
+          <img src="${imgUrl}" class="gift-img" alt="${name}">
+          <div class="gift-title">${name}</div>
+          <div class="gift-stat">Цена: <span>${price}</span></div>
+          <div class="gift-stat">Дает: <span>${points}</span></div>
+        </div>`;
+    }
+
+    // 7. ТАБЛИЦЫ (Награды)
+    else if (style.includes("table")) {
+      if (!inTable) { 
+        html += `<div class="table-wrapper"><table class="styled-table">`; 
+        inTable = true; 
+        
+        // Рисуем заголовок таблицы
+        let cols = content.split(",");
+        html += `<thead><tr>`;
+        cols.forEach(col => {
+          if (col.trim()) html += `<th>${col.trim()}</th>`;
+        });
+        html += `</tr></thead><tbody>`;
+      } else {
+        // Рисуем строки таблицы
+        let cols = content.split(",");
+        html += `<tr>`;
+        cols.forEach(col => {
+          let c = col.trim();
+          if (c.startsWith("http")) {
+            html += `<td><img src="${c}" alt="icon"></td>`;
+          } else if (c) {
+            html += `<td>${c}</td>`;
+          }
+        });
+        html += `</tr>`;
+      }
+    }
+  });
+
+  // Закрываем тэги, если конец документа попал на таблицу или группу
+  closeGroups(""); 
+
+  document.getElementById("landing-content").innerHTML = html;
+}
+
+// Запускаем парсер
+loadLandingData();
+</script>
+
+</body>
+</html>
