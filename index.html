@@ -24,7 +24,10 @@
     color: var(--text-main); min-height: 100vh; padding: 30px 15px 60px;
   }
 
-  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+
+  /* Секции сайта (Блоки) */
+  .page-block { display: flex; flex-direction: column; gap: 20px; width: 100%; }
 
   /* Загрузка */
   .loading { text-align: center; color: var(--orange); font-size: 20px; font-weight: 800; padding: 50px; }
@@ -56,7 +59,7 @@
   .gift-stat span { color: var(--orange); font-weight: 800; }
 
   /* === СИСТЕМА ВКЛАДОК (TABS) === */
-  .tabs-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 30px 0 10px; }
+  .tabs-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
   .tab-btn { background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 16px; font-weight: 800; text-transform: uppercase; padding: 14px 25px; border-radius: 8px; cursor: pointer; transition: 0.3s; flex: 1; min-width: 150px; text-align: center; }
   .tab-btn.active { background: var(--teal-light); color: var(--orange); border-bottom: 4px solid var(--orange); }
   
@@ -108,7 +111,7 @@ async function loadLandingData() {
   }
 }
 
-// Теперь берем индексы: 1 (Раздел), 2 (Тип), 3 (Текст)
+// Теперь индексы сместились: 1 (Block), 2 (Parent), 3 (Type), 4 (Content)
 function getVal(row, index) {
   if (!row || !row.c || !row.c[index]) return "";
   return String(row.c[index].v || "").trim();
@@ -116,17 +119,20 @@ function getVal(row, index) {
 
 function renderLanding(rows) {
   let mainHtml = "";
+  let currentBlock = null;
+
+  // Переменные для вкладок
+  let inTabs = false;
   let tabsMenuHtml = "";
   let tabsContentHtml = "";
-  
-  let inTabs = false;
   let tabCount = 0;
 
+  // Переменные для открытых элементов
   let inTable = false;
   let inGifts = false;
   let inCards = false;
 
-  // Функция для записи HTML либо внутрь вкладки, либо в основной поток
+  // Куда писать HTML (если во вкладке - пишем во вкладку, иначе в общий поток текущего блока)
   function appendHtml(str) {
     if (inTabs) tabsContentHtml += str;
     else mainHtml += str;
@@ -139,31 +145,50 @@ function renderLanding(rows) {
     if (inCards && newType !== "карточка") { appendHtml(`</div>`); inCards = false; }
   }
 
+  // Принудительное закрытие вкладок и сборка их в HTML
+  function flushTabs() {
+    if (inTabs) {
+      closeGroups(""); 
+      tabsContentHtml += `</div>`; // Закрываем контейнер последней вкладки
+      mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
+      inTabs = false;
+      tabsMenuHtml = "";
+      tabsContentHtml = "";
+    }
+  }
+
   rows.forEach((row, index) => {
     // Пропускаем шапку таблицы
     if (index === 0 && getVal(row, 0).includes("Lang")) return; 
 
-    // Считываем новую 4-х столбцовую структуру
-    let parent = getVal(row, 1).toLowerCase().replace(/\s+/g, ''); // Родитель (Например: title3)
-    let type = getVal(row, 2).toLowerCase().trim();                 // Тип (Например: text, tab1)
-    let content = getVal(row, 3);                                   // Контент (Русский текст)
+    // Считываем 5-ти столбцовую структуру
+    let block = getVal(row, 1);                                     // НОВОЕ: ID Блока (1, 2, 3...)
+    let parent = getVal(row, 2).toLowerCase().replace(/\s+/g, '');  // LangStyle1 (Родитель)
+    let type = getVal(row, 3).toLowerCase().trim();                 // LangStyle2 (Тип)
+    let content = getVal(row, 4);                                   // RU (Контент)
     
     if (!type && !content) return; // пустая строка
 
-    // === МАГИЯ ВЫХОДА ИЗ ВКЛАДОК ===
-    // Если мы внутри вкладок, но текущая строка к ним НЕ относится (например, Parent = title3, а мы в Tab3)
+    // === ЛОГИКА СМЕНЫ БЛОКОВ (LangBlock) ===
+    if (currentBlock !== block) {
+      flushTabs();   // Если меняется Блок, 100% закрываем вкладки
+      closeGroups(""); // И закрываем любые зависшие таблицы
+      
+      // Если это не самый первый блок, закрываем предыдущий <div class="page-block">
+      if (currentBlock !== null) {
+        mainHtml += `</div>`; 
+      }
+      
+      // Открываем новый Блок
+      mainHtml += `<div id="block-${block}" class="page-block">`;
+      currentBlock = block;
+    }
+
+    // Если мы остались в ТОМ ЖЕ Блоке, но вышли из логики вкладок (например, текст под вкладками в блоке 3)
     if (inTabs) {
       let isTabRow = type.startsWith("tab") || parent.startsWith("tab") || parent.startsWith("subtab");
       if (!isTabRow) {
-        // Выходим из системы вкладок!
-        closeGroups(""); 
-        tabsContentHtml += `</div>`; // Закрываем контейнер последней вкладки
-        // Собираем вкладки воедино и скидываем в основной поток
-        mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
-        
-        inTabs = false;
-        tabsMenuHtml = "";
-        tabsContentHtml = "";
+        flushTabs(); 
       }
     }
 
@@ -171,17 +196,17 @@ function renderLanding(rows) {
 
     // 1. Главный заголовок (Hero)
     if (type === "title 1") {
-      let nextType = getVal(rows[index+1], 2).toLowerCase().trim();
+      let nextType = getVal(rows[index+1], 3).toLowerCase().trim();
       let subHtml = "";
       if (nextType === "subtitle") {
-        subHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 3)}</div>`;
+        subHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 4)}</div>`;
         rows[index+1].processed = true;
       }
       appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
     }
     else if (type === "subtitle" && row.processed) return;
     
-    // 2. Обычные заголовки разделов
+    // 2. Обычные заголовки
     else if (type.includes("title") && type !== "title 1") appendHtml(`<h2 class="section-title">${content}</h2>`);
     else if (type === "subtitle") appendHtml(`<h3 class="sub-title">${content}</h3>`);
     
@@ -189,7 +214,7 @@ function renderLanding(rows) {
     else if (type === "text") appendHtml(`<div class="text-block">${content}</div>`);
     else if (type === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
     
-    // 4. Карточки (Группы 1, 2, 3)
+    // 4. Карточки (Группы)
     else if (type === "карточка") {
       if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
       appendHtml(`<div class="simple-card">${content}</div>`);
@@ -218,18 +243,18 @@ function renderLanding(rows) {
       tabCount++;
       let activeClass = tabCount === 1 ? "active" : "";
       
-      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('tab-${tabCount}')">${content}</button>`;
+      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('tab-${currentBlock}-${tabCount}')">${content}</button>`;
       
       if (tabCount > 1) tabsContentHtml += `</div>`; // Закрываем предыдущую вкладку
-      tabsContentHtml += `<div id="tab-${tabCount}" class="tab-content ${activeClass}">`; // Открываем новую
+      tabsContentHtml += `<div id="tab-${currentBlock}-${tabCount}" class="tab-content ${activeClass}">`; // Открываем новую
     }
 
-    // 7. Subtabs (Награда в бобах и т.д.)
+    // 7. Subtabs
     else if (type.includes("subtab") && !type.includes("table")) {
       appendHtml(`<div class="subtab-title">${content}</div>`);
     }
 
-    // 8. ТАБЛИЦЫ НАГРАД
+    // 8. ТАБЛИЦЫ
     else if (type.includes("table")) {
       let cols = content.split(",");
       if (!inTable) {
@@ -251,22 +276,21 @@ function renderLanding(rows) {
     }
   });
 
-  // Если в конце документа остались открытые вкладки - закрываем их
-  if (inTabs) {
-    closeGroups("");
-    tabsContentHtml += `</div>`;
-    mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
-  } else {
-    closeGroups("");
-  }
+  // Завершение документа: закрываем всё, что осталось
+  flushTabs();
+  closeGroups("");
+  if (currentBlock !== null) mainHtml += `</div>`; // Закрываем последний Блок
 
   document.getElementById("landing-content").innerHTML = mainHtml;
 }
 
 // Функция переключения вкладок
 window.switchTab = function(tabId) {
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  // Ищем кнопки и контент только внутри того блока, где нажата кнопка (защита от багов, если вкладок будет много)
+  let blockWrapper = event.target.closest('.page-block');
+  
+  blockWrapper.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  blockWrapper.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
   
   event.target.classList.add('active');
   document.getElementById(tabId).classList.add('active');
