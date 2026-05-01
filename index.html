@@ -37,9 +37,10 @@
   /* Заголовки разделов */
   .section-title { text-align: center; font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 20px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
   .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-line), transparent); max-width: 150px; }
-  
+  .sub-title { font-size: 20px; color: var(--orange); font-weight: 800; text-transform: uppercase; margin: 10px 0 0; text-align: center; }
+
   /* Текст и Баннеры */
-  .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; }
+  .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; margin-top: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
   .promo-image { width: 100%; border-radius: 12px; border: 1px solid var(--border-line); box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
 
   /* Карточки и Подарки */
@@ -49,7 +50,7 @@
   .gifts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 10px; }
   .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 15px; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
   .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
-  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; }
+  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
   .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
   .gift-stat { font-size: 12px; color: var(--text-muted); background: rgba(0,0,0,0.4); border-radius: 4px; padding: 4px 0; margin-bottom: 5px; font-weight: 600; }
   .gift-stat span { color: var(--orange); font-weight: 800; }
@@ -62,10 +63,10 @@
   .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
   .tab-content.active { display: flex; }
 
-  /* Подзаголовки внутри вкладок (Subtabs) */
+  /* Подзаголовки внутри вкладок */
   .subtab-title { font-size: 18px; color: var(--orange); font-weight: 800; text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-top: 10px; }
 
-  /* Таблицы наград (в стиле скришота) */
+  /* Таблицы */
   .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
   .styled-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 400px; }
   .styled-table th { background: rgba(245, 166, 49, 0.1); color: var(--orange); padding: 15px 10px; font-size: 12px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); letter-spacing: 1px; }
@@ -88,7 +89,7 @@
 <body>
 
 <div class="container" id="landing-content">
-  <div class="loading" id="loader">Сборка интерфейса... 🚀</div>
+  <div class="loading" id="loader">Загрузка Базы Данных... 🚀</div>
 </div>
 
 <script>
@@ -107,73 +108,95 @@ async function loadLandingData() {
   }
 }
 
+// Теперь берем индексы: 1 (Раздел), 2 (Тип), 3 (Текст)
 function getVal(row, index) {
   if (!row || !row.c || !row.c[index]) return "";
   return String(row.c[index].v || "").trim();
 }
 
 function renderLanding(rows) {
-  let topHtml = ""; // HTML до вкладок
-  let tabsMenuHtml = '<div class="tabs-menu">';
-  let tabsContentHtml = '<div class="tab-content-container">';
+  let mainHtml = "";
+  let tabsMenuHtml = "";
+  let tabsContentHtml = "";
   
-  let currentTabId = null;
+  let inTabs = false;
   let tabCount = 0;
-  
+
   let inTable = false;
   let inGifts = false;
   let inCards = false;
-  let isFirstTitle = true;
 
-  // Функция для закрытия открытых тегов
-  function closeGroups(newStyle = "") {
-    if (inTable && !newStyle.includes("table")) { 
-      let closeHtml = `</tbody></table></div>`;
-      if (currentTabId) tabsContentHtml += closeHtml; else topHtml += closeHtml;
-      inTable = false; 
-    }
-    if (inGifts && newStyle !== "таблица-карточка") { topHtml += `</div>`; inGifts = false; }
-    if (inCards && newStyle !== "карточка") { topHtml += `</div>`; inCards = false; }
+  // Функция для записи HTML либо внутрь вкладки, либо в основной поток
+  function appendHtml(str) {
+    if (inTabs) tabsContentHtml += str;
+    else mainHtml += str;
   }
 
-  // Функция для добавления HTML в правильное место (в топ или внутрь активной вкладки)
-  function appendHtml(htmlString) {
-    if (currentTabId) tabsContentHtml += htmlString;
-    else topHtml += htmlString;
+  // Закрываем открытые таблицы и сетки
+  function closeGroups(newType = "") {
+    if (inTable && !newType.includes("table")) { appendHtml(`</tbody></table></div>`); inTable = false; }
+    if (inGifts && !newType.includes("таблица-карточка")) { appendHtml(`</div>`); inGifts = false; }
+    if (inCards && newType !== "карточка") { appendHtml(`</div>`); inCards = false; }
   }
 
   rows.forEach((row, index) => {
-    if (index === 0 && getVal(row, 0).includes("Lang")) return; // Пропуск заголовка
+    // Пропускаем шапку таблицы
+    if (index === 0 && getVal(row, 0).includes("Lang")) return; 
 
-    let style = getVal(row, 1).toLowerCase().replace(/\s+/g, ''); // убираем пробелы (subtab1.1 -> subtab1.1)
-    let content = getVal(row, 2);
-    if (!style && !content) return;
+    // Считываем новую 4-х столбцовую структуру
+    let parent = getVal(row, 1).toLowerCase().replace(/\s+/g, ''); // Родитель (Например: title3)
+    let type = getVal(row, 2).toLowerCase().trim();                 // Тип (Например: text, tab1)
+    let content = getVal(row, 3);                                   // Контент (Русский текст)
+    
+    if (!type && !content) return; // пустая строка
 
-    closeGroups(style);
-
-    // Главный заголовок
-    if (style === "title" && isFirstTitle) {
-      let nextStyle = getVal(rows[index+1], 1).toLowerCase();
-      let subHtml = nextStyle === "subtitle" ? `<div class="hero-subtitle">${getVal(rows[index+1], 2)}</div>` : "";
-      if(nextStyle === "subtitle") rows[index+1].processed = true;
-      appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
-      isFirstTitle = false;
+    // === МАГИЯ ВЫХОДА ИЗ ВКЛАДОК ===
+    // Если мы внутри вкладок, но текущая строка к ним НЕ относится (например, Parent = title3, а мы в Tab3)
+    if (inTabs) {
+      let isTabRow = type.startsWith("tab") || parent.startsWith("tab") || parent.startsWith("subtab");
+      if (!isTabRow) {
+        // Выходим из системы вкладок!
+        closeGroups(""); 
+        tabsContentHtml += `</div>`; // Закрываем контейнер последней вкладки
+        // Собираем вкладки воедино и скидываем в основной поток
+        mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
+        
+        inTabs = false;
+        tabsMenuHtml = "";
+        tabsContentHtml = "";
+      }
     }
-    else if (style === "subtitle" && row.processed) return;
+
+    closeGroups(type);
+
+    // 1. Главный заголовок (Hero)
+    if (type === "title 1") {
+      let nextType = getVal(rows[index+1], 2).toLowerCase().trim();
+      let subHtml = "";
+      if (nextType === "subtitle") {
+        subHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 3)}</div>`;
+        rows[index+1].processed = true;
+      }
+      appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
+    }
+    else if (type === "subtitle" && row.processed) return;
     
-    // Обычные заголовки
-    else if (style === "title" && !isFirstTitle) appendHtml(`<h2 class="section-title">${content}</h2>`);
-    else if (style === "text") appendHtml(`<div class="text-block">${content}</div>`);
-    else if (style === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
+    // 2. Обычные заголовки разделов
+    else if (type.includes("title") && type !== "title 1") appendHtml(`<h2 class="section-title">${content}</h2>`);
+    else if (type === "subtitle") appendHtml(`<h3 class="sub-title">${content}</h3>`);
     
-    // Карточки
-    else if (style === "карточка") {
+    // 3. Текст и Картинки
+    else if (type === "text") appendHtml(`<div class="text-block">${content}</div>`);
+    else if (type === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
+    
+    // 4. Карточки (Группы 1, 2, 3)
+    else if (type === "карточка") {
       if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
       appendHtml(`<div class="simple-card">${content}</div>`);
     }
 
-    // Подарки (Витрина)
-    else if (style === "таблица-карточка") {
+    // 5. Подарки (Витрина)
+    else if (type === "таблица-карточка") {
       if (!inGifts) { appendHtml(`<div class="gifts-grid">`); inGifts = true; }
       let p = content.split(",");
       appendHtml(`
@@ -185,68 +208,62 @@ function renderLanding(rows) {
         </div>`);
     }
 
-    // === ЛОГИКА ВКЛАДОК ===
-    else if (style.startsWith("tab") && !style.includes("subtab") && !style.includes("table")) {
-      // Это создание новой вкладки (Группа 1, Группа 2)
+    // 6. ВКЛАДКИ (Tab1, Tab2...)
+    else if (type.startsWith("tab") && !type.includes("subtab") && !type.includes("table")) {
+      if (!inTabs) {
+        inTabs = true;
+        tabCount = 0;
+        tabsMenuHtml = `<div class="tabs-menu">`;
+      }
       tabCount++;
-      currentTabId = `tab-${tabCount}`;
       let activeClass = tabCount === 1 ? "active" : "";
       
-      // Добавляем кнопку в меню
-      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('${currentTabId}')">${content}</button>`;
+      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('tab-${tabCount}')">${content}</button>`;
       
-      // Закрываем предыдущий контент вкладки, если он был
-      if (tabCount > 1) tabsContentHtml += `</div>`;
-      
-      // Открываем контейнер для новой вкладки
-      tabsContentHtml += `<div id="${currentTabId}" class="tab-content ${activeClass}">`;
+      if (tabCount > 1) tabsContentHtml += `</div>`; // Закрываем предыдущую вкладку
+      tabsContentHtml += `<div id="tab-${tabCount}" class="tab-content ${activeClass}">`; // Открываем новую
     }
 
-    // Subtab (Оранжевые заголовки внутри вкладок)
-    else if (style.includes("subtab") && !style.includes("table")) {
+    // 7. Subtabs (Награда в бобах и т.д.)
+    else if (type.includes("subtab") && !type.includes("table")) {
       appendHtml(`<div class="subtab-title">${content}</div>`);
     }
 
-    // === ТАБЛИЦЫ ===
-    else if (style.includes("table")) {
+    // 8. ТАБЛИЦЫ НАГРАД
+    else if (type.includes("table")) {
       let cols = content.split(",");
-      let rowHtml = "";
-
       if (!inTable) {
-        // Создаем шапку таблицы
-        rowHtml += `<div class="table-wrapper"><table class="styled-table"><thead><tr>`;
+        let rowHtml = `<div class="table-wrapper"><table class="styled-table"><thead><tr>`;
         cols.forEach(c => rowHtml += `<th>${c.trim()}</th>`);
         rowHtml += `</tr></thead><tbody>`;
+        appendHtml(rowHtml);
         inTable = true;
       } else {
-        // Создаем строки таблицы
-        rowHtml += `<tr>`;
+        let rowHtml = `<tr>`;
         cols.forEach(c => {
           let text = c.trim();
           if (text.startsWith("http")) rowHtml += `<td><img src="${text}" alt="icon"></td>`;
           else rowHtml += `<td>${text}</td>`;
         });
         rowHtml += `</tr>`;
+        appendHtml(rowHtml);
       }
-      appendHtml(rowHtml);
     }
   });
 
-  closeGroups("");
-  if (currentTabId) tabsContentHtml += `</div>`; // закрываем последнюю вкладку
-  tabsMenuHtml += `</div>`;
-  tabsContentHtml += `</div>`;
-
-  // Собираем весь HTML: Верхний блок + Меню вкладок + Контент вкладок (если они есть)
-  let finalHtml = topHtml;
-  if (tabCount > 0) {
-    finalHtml += tabsMenuHtml + tabsContentHtml;
+  // Если в конце документа остались открытые вкладки - закрываем их
+  if (inTabs) {
+    closeGroups("");
+    tabsContentHtml += `</div>`;
+    mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
+  } else {
+    closeGroups("");
   }
 
-  document.getElementById("landing-content").innerHTML = finalHtml;
+  document.getElementById("landing-content").innerHTML = mainHtml;
 }
 
-// Переключатель вкладок
+// Функция переключения вкладок
 window.switchTab = function(tabId) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
