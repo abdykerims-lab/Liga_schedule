@@ -13,7 +13,7 @@
     --text-main: #ffffff;
     --text-muted: #c9d1d9;
     --teal-light: rgba(24, 108, 114, 0.15);
-    --glass-bg: rgba(24, 29, 35, 0.7);
+    --glass-bg: rgba(24, 29, 35, 0.8);
   }
 
   body {
@@ -38,66 +38,72 @@
   .section-title { text-align: center; font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 20px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
   .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-line), transparent); max-width: 150px; }
   
-  .sub-title { font-size: 20px; color: var(--orange); font-weight: 800; text-transform: uppercase; margin: 10px 0 0; text-align: center; }
-
-  /* Текст */
+  /* Текст и Баннеры */
   .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; }
-
-  /* Карточки (Группы) */
-  .cards-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-  .simple-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-left: 4px solid var(--orange); border-radius: 10px; padding: 15px 20px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 16px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
-  /* Баннер */
   .promo-image { width: 100%; border-radius: 12px; border: 1px solid var(--border-line); box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
 
-  /* Витрина Подарков (Таблица-карточка) */
+  /* Карточки и Подарки */
+  .cards-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+  .simple-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-left: 4px solid var(--orange); border-radius: 10px; padding: 15px 20px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 16px; }
+  
   .gifts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 10px; }
-  .gift-card { background: rgba(18, 63, 69, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+  .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 15px; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
   .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
-  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #fff; }
+  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; }
+  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
   .gift-stat { font-size: 12px; color: var(--text-muted); background: rgba(0,0,0,0.4); border-radius: 4px; padding: 4px 0; margin-bottom: 5px; font-weight: 600; }
   .gift-stat span { color: var(--orange); font-weight: 800; }
 
-  /* Таблицы (Награды) */
-  .table-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-  .styled-table { width: 100%; border-collapse: collapse; background: var(--glass-bg); text-align: center; }
-  .styled-table th { background: rgba(245, 166, 49, 0.15); color: var(--orange); padding: 12px; font-size: 14px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); }
-  .styled-table td { padding: 10px; font-size: 14px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  /* === СИСТЕМА ВКЛАДОК (TABS) === */
+  .tabs-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 30px 0 10px; }
+  .tab-btn { background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 16px; font-weight: 800; text-transform: uppercase; padding: 14px 25px; border-radius: 8px; cursor: pointer; transition: 0.3s; flex: 1; min-width: 150px; text-align: center; }
+  .tab-btn.active { background: var(--teal-light); color: var(--orange); border-bottom: 4px solid var(--orange); }
+  
+  .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+  .tab-content.active { display: flex; }
+
+  /* Подзаголовки внутри вкладок (Subtabs) */
+  .subtab-title { font-size: 18px; color: var(--orange); font-weight: 800; text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-top: 10px; }
+
+  /* Таблицы наград (в стиле скришота) */
+  .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+  .styled-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 400px; }
+  .styled-table th { background: rgba(245, 166, 49, 0.1); color: var(--orange); padding: 15px 10px; font-size: 12px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); letter-spacing: 1px; }
+  .styled-table td { padding: 12px 10px; font-size: 14px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.02); }
+  .styled-table tr:hover { background: rgba(255,255,255,0.03); }
   .styled-table tr:last-child td { border-bottom: none; }
-  .styled-table img { height: 30px; object-fit: contain; vertical-align: middle; }
+  .styled-table img { height: 35px; width: auto; object-fit: contain; vertical-align: middle; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
   @media (max-width: 768px) {
     .hero-title { font-size: 32px; }
-    .hero-subtitle { font-size: 11px; }
     .section-title { font-size: 22px; }
-    .gifts-grid { grid-template-columns: repeat(2, 1fr); }
+    .tab-btn { min-width: calc(50% - 5px); padding: 12px 10px; font-size: 13px; }
+    .styled-table th { font-size: 10px; padding: 12px 5px; }
+    .styled-table td { font-size: 12px; padding: 10px 5px; }
   }
 </style>
 </head>
 <body>
 
 <div class="container" id="landing-content">
-  <div class="loading" id="loader">Загрузка Фестиваля... 🚀</div>
+  <div class="loading" id="loader">Сборка интерфейса... 🚀</div>
 </div>
 
 <script>
-// ID вашей таблицы и GID страницы
 const sheetID = "1ENDx5Flv0Gs-lMOx_oNn_CsgV8euE-lJpgDa5knyFHM";
 const gid = "2053212498"; 
 
 async function loadLandingData() {
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=${gid}&_=${Date.now()}`;
-  
   try {
-    const response = await fetch(url);
-    const text = await response.text();
+    const res = await fetch(url);
+    const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
-    const rows = json.table.rows;
-    
-    renderLanding(rows);
+    renderLanding(json.table.rows);
   } catch (error) {
-    document.getElementById("loader").innerHTML = "❌ Ошибка загрузки данных. Проверьте ссылку на таблицу.";
+    document.getElementById("loader").innerHTML = "❌ Ошибка загрузки данных.";
   }
 }
 
@@ -107,131 +113,148 @@ function getVal(row, index) {
 }
 
 function renderLanding(rows) {
-  let html = "";
-  let isFirstTitle = true;
+  let topHtml = ""; // HTML до вкладок
+  let tabsMenuHtml = '<div class="tabs-menu">';
+  let tabsContentHtml = '<div class="tab-content-container">';
+  
+  let currentTabId = null;
+  let tabCount = 0;
   
   let inTable = false;
   let inGifts = false;
   let inCards = false;
-  
-  // Вспомогательная функция для закрытия группировок
-  function closeGroups(currentStyle) {
-    if (inTable && !currentStyle.includes("table")) { html += `</tbody></table></div>`; inTable = false; }
-    if (inGifts && currentStyle !== "таблица-карточка") { html += `</div>`; inGifts = false; }
-    if (inCards && currentStyle !== "карточка") { html += `</div>`; inCards = false; }
+  let isFirstTitle = true;
+
+  // Функция для закрытия открытых тегов
+  function closeGroups(newStyle = "") {
+    if (inTable && !newStyle.includes("table")) { 
+      let closeHtml = `</tbody></table></div>`;
+      if (currentTabId) tabsContentHtml += closeHtml; else topHtml += closeHtml;
+      inTable = false; 
+    }
+    if (inGifts && newStyle !== "таблица-карточка") { topHtml += `</div>`; inGifts = false; }
+    if (inCards && newStyle !== "карточка") { topHtml += `</div>`; inCards = false; }
+  }
+
+  // Функция для добавления HTML в правильное место (в топ или внутрь активной вкладки)
+  function appendHtml(htmlString) {
+    if (currentTabId) tabsContentHtml += htmlString;
+    else topHtml += htmlString;
   }
 
   rows.forEach((row, index) => {
-    // Пропускаем самую первую строку с заголовками (Lang, LangStyle, RU)
-    if (index === 0 && getVal(row, 0).includes("Lang")) return;
+    if (index === 0 && getVal(row, 0).includes("Lang")) return; // Пропуск заголовка
 
-    let style = getVal(row, 1).toLowerCase();
+    let style = getVal(row, 1).toLowerCase().replace(/\s+/g, ''); // убираем пробелы (subtab1.1 -> subtab1.1)
     let content = getVal(row, 2);
-    
-    if (!style && !content) return; // пустая строка
+    if (!style && !content) return;
 
     closeGroups(style);
 
-    // 1. ГЛАВНЫЙ ЗАГОЛОВОК И ПОДЗАГОЛОВОК (Hero)
+    // Главный заголовок
     if (style === "title" && isFirstTitle) {
-      let nextRowStyle = getVal(rows[index+1], 1).toLowerCase();
-      let subtitleHtml = "";
-      if (nextRowStyle === "subtitle") {
-         subtitleHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 2)}</div>`;
-         rows[index+1].processed = true; // помечаем, чтобы не дублировать
-      }
-      html += `
-        <div class="hero-header">
-          <h1 class="hero-title">${content}</h1>
-          ${subtitleHtml}
-        </div>`;
+      let nextStyle = getVal(rows[index+1], 1).toLowerCase();
+      let subHtml = nextStyle === "subtitle" ? `<div class="hero-subtitle">${getVal(rows[index+1], 2)}</div>` : "";
+      if(nextStyle === "subtitle") rows[index+1].processed = true;
+      appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
       isFirstTitle = false;
     }
-    else if (style === "subtitle" && row.processed) {
-      // Пропускаем подзаголовок, если он уже отрисован в Hero
-      return;
-    }
-
-    // 2. ОБЫЧНЫЕ ЗАГОЛОВКИ
-    else if (style === "title" && !isFirstTitle) {
-      html += `<h2 class="section-title">${content}</h2>`;
-    }
-    else if (style === "subtitle" || style.startsWith("tab") || style.startsWith("subtab") && !style.includes("table")) {
-      html += `<h3 class="sub-title">${content}</h3>`;
-    }
-
-    // 3. ТЕКСТ
-    else if (style === "text") {
-      html += `<div class="text-block">${content}</div>`;
-    }
-
-    // 4. БОЛЬШАЯ КАРТИНКА (Баннер)
-    else if (style === "image") {
-      html += `<img src="${content}" class="promo-image" alt="Promo">`;
-    }
-
-    // 5. КАРТОЧКИ (Группы)
+    else if (style === "subtitle" && row.processed) return;
+    
+    // Обычные заголовки
+    else if (style === "title" && !isFirstTitle) appendHtml(`<h2 class="section-title">${content}</h2>`);
+    else if (style === "text") appendHtml(`<div class="text-block">${content}</div>`);
+    else if (style === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
+    
+    // Карточки
     else if (style === "карточка") {
-      if (!inCards) { html += `<div class="cards-wrapper">`; inCards = true; }
-      html += `<div class="simple-card">${content}</div>`;
+      if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
+      appendHtml(`<div class="simple-card">${content}</div>`);
     }
 
-    // 6. ПОДАРКИ (Таблица-карточка)
+    // Подарки (Витрина)
     else if (style === "таблица-карточка") {
-      if (!inGifts) { html += `<div class="gifts-grid">`; inGifts = true; }
-      
-      let parts = content.split(",");
-      let name = parts[0] ? parts[0].trim() : "Подарок";
-      let price = parts[1] ? parts[1].trim() : "-";
-      let points = parts[2] ? parts[2].trim() : "-";
-      let imgUrl = parts[3] ? parts[3].trim() : "";
-
-      html += `
+      if (!inGifts) { appendHtml(`<div class="gifts-grid">`); inGifts = true; }
+      let p = content.split(",");
+      appendHtml(`
         <div class="gift-card">
-          <img src="${imgUrl}" class="gift-img" alt="${name}">
-          <div class="gift-title">${name}</div>
-          <div class="gift-stat">Цена: <span>${price}</span></div>
-          <div class="gift-stat">Дает: <span>${points}</span></div>
-        </div>`;
+          <img src="${p[3]||''}" class="gift-img">
+          <div class="gift-title">${p[0]||'Подарок'}</div>
+          <div class="gift-stat">Цена: <span>${p[1]||'-'}</span></div>
+          <div class="gift-stat">Баллы: <span>${p[2]||'-'}</span></div>
+        </div>`);
     }
 
-    // 7. ТАБЛИЦЫ (Награды)
+    // === ЛОГИКА ВКЛАДОК ===
+    else if (style.startsWith("tab") && !style.includes("subtab") && !style.includes("table")) {
+      // Это создание новой вкладки (Группа 1, Группа 2)
+      tabCount++;
+      currentTabId = `tab-${tabCount}`;
+      let activeClass = tabCount === 1 ? "active" : "";
+      
+      // Добавляем кнопку в меню
+      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('${currentTabId}')">${content}</button>`;
+      
+      // Закрываем предыдущий контент вкладки, если он был
+      if (tabCount > 1) tabsContentHtml += `</div>`;
+      
+      // Открываем контейнер для новой вкладки
+      tabsContentHtml += `<div id="${currentTabId}" class="tab-content ${activeClass}">`;
+    }
+
+    // Subtab (Оранжевые заголовки внутри вкладок)
+    else if (style.includes("subtab") && !style.includes("table")) {
+      appendHtml(`<div class="subtab-title">${content}</div>`);
+    }
+
+    // === ТАБЛИЦЫ ===
     else if (style.includes("table")) {
-      if (!inTable) { 
-        html += `<div class="table-wrapper"><table class="styled-table">`; 
-        inTable = true; 
-        
-        // Рисуем заголовок таблицы
-        let cols = content.split(",");
-        html += `<thead><tr>`;
-        cols.forEach(col => {
-          if (col.trim()) html += `<th>${col.trim()}</th>`;
-        });
-        html += `</tr></thead><tbody>`;
+      let cols = content.split(",");
+      let rowHtml = "";
+
+      if (!inTable) {
+        // Создаем шапку таблицы
+        rowHtml += `<div class="table-wrapper"><table class="styled-table"><thead><tr>`;
+        cols.forEach(c => rowHtml += `<th>${c.trim()}</th>`);
+        rowHtml += `</tr></thead><tbody>`;
+        inTable = true;
       } else {
-        // Рисуем строки таблицы
-        let cols = content.split(",");
-        html += `<tr>`;
-        cols.forEach(col => {
-          let c = col.trim();
-          if (c.startsWith("http")) {
-            html += `<td><img src="${c}" alt="icon"></td>`;
-          } else if (c) {
-            html += `<td>${c}</td>`;
-          }
+        // Создаем строки таблицы
+        rowHtml += `<tr>`;
+        cols.forEach(c => {
+          let text = c.trim();
+          if (text.startsWith("http")) rowHtml += `<td><img src="${text}" alt="icon"></td>`;
+          else rowHtml += `<td>${text}</td>`;
         });
-        html += `</tr>`;
+        rowHtml += `</tr>`;
       }
+      appendHtml(rowHtml);
     }
   });
 
-  // Закрываем тэги, если конец документа попал на таблицу или группу
-  closeGroups(""); 
+  closeGroups("");
+  if (currentTabId) tabsContentHtml += `</div>`; // закрываем последнюю вкладку
+  tabsMenuHtml += `</div>`;
+  tabsContentHtml += `</div>`;
 
-  document.getElementById("landing-content").innerHTML = html;
+  // Собираем весь HTML: Верхний блок + Меню вкладок + Контент вкладок (если они есть)
+  let finalHtml = topHtml;
+  if (tabCount > 0) {
+    finalHtml += tabsMenuHtml + tabsContentHtml;
+  }
+
+  document.getElementById("landing-content").innerHTML = finalHtml;
 }
 
-// Запускаем парсер
+// Переключатель вкладок
+window.switchTab = function(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+};
+
 loadLandingData();
 </script>
 
