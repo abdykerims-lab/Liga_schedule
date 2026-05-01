@@ -1,218 +1,322 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Семейный Май-Фест</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Семейный Май-Фест</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #0d1115;
+    --orange: #f5a631;        
+    --border-line: rgba(245, 166, 49, 0.3);
+    --text-main: #ffffff;
+    --text-muted: #c9d1d9;
+    --teal-light: rgba(24, 108, 114, 0.15);
+    --glass-bg: rgba(24, 29, 35, 0.8);
+  }
+
+  body {
+    margin: 0; padding: 0;
+    background-image: linear-gradient(rgba(13, 17, 21, 0.85), rgba(13, 17, 21, 0.95)), url('https://i.ibb.co/xqnNLxj4/1vs1-1.jpg'); 
+    background-size: cover; background-position: center; background-attachment: fixed;
+    background-color: var(--bg-page); font-family: 'Exo 2', sans-serif;
+    color: var(--text-main); min-height: 100vh; padding: 30px 15px 60px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+
+  /* Секции сайта (Блоки) */
+  .page-block { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+
+  /* Загрузка */
+  .loading { text-align: center; color: var(--orange); font-size: 20px; font-weight: 800; padding: 50px; }
+
+  /* Главный Заголовок */
+  .hero-header { text-align: center; padding: 20px; position: relative; background: radial-gradient(circle at top center, var(--teal-light) 0%, transparent 70%); margin-bottom: 10px; }
+  .hero-title { margin: 0 0 12px 0; font-size: 46px; font-weight: 800; text-transform: uppercase; background: linear-gradient(135deg, #ffffff 0%, var(--orange) 70%, #ff7a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
+  .hero-subtitle { font-size: 14px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 3px; background: rgba(24, 29, 35, 0.6); backdrop-filter: blur(10px); border-top: 1px solid var(--border-line); border-bottom: 1px solid rgba(245, 166, 49, 0.1); padding: 8px 24px; border-radius: 8px; display: inline-block; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+  /* Заголовки разделов */
+  .section-title { text-align: center; font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 20px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
+  .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-line), transparent); max-width: 150px; }
+  .sub-title { font-size: 20px; color: var(--orange); font-weight: 800; text-transform: uppercase; margin: 10px 0 0; text-align: center; }
+
+  /* Текст и Баннеры */
+  .text-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; text-align: center; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; margin-top: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+  .promo-image { width: 100%; border-radius: 12px; border: 1px solid var(--border-line); box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
+
+  /* === НОВЫЙ БЛОК: Текст + Картинка (text-image) === */
+  .text-image-block { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 20px; margin-top: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+  .text-image-content { flex: 1; font-size: 16px; font-weight: 600; line-height: 1.5; color: #e2e8f0; text-align: left;}
+  .text-image-img { max-width: 150px; border-radius: 10px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4)); }
+  @media (max-width: 768px) {
+    .text-image-block { flex-direction: column; text-align: center; }
+    .text-image-img { max-width: 100%; height: auto; max-height: 120px; }
+    .text-image-content { text-align: center; }
+  }
+
+  /* Карточки и Подарки */
+  .cards-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+  .simple-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-left: 4px solid var(--orange); border-radius: 10px; padding: 15px 20px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 16px; }
   
-  <style>
-    /* ================= БАЗОВЫЕ СТИЛИ И ДИЗАЙН ================= */
-    :root {
-      --bg-color: #0f172a;
-      --text-color: #f8fafc;
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --accent-color: #3b82f6;
-    }
-    
-    body {
-      margin: 0; padding: 20px;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-    }
+  .gifts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 10px; }
+  .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 15px; text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+  .gift-card:hover { transform: translateY(-5px); background: rgba(18, 63, 69, 0.6); }
+  .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
+  .gift-img { height: 70px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+  .gift-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #fff;}
+  
+  /* === СИСТЕМА ВКЛАДОК (TABS) === */
+  .tabs-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+  .tab-btn { background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 16px; font-weight: 800; text-transform: uppercase; padding: 14px 25px; border-radius: 8px; cursor: pointer; transition: 0.3s; flex: 1; min-width: 150px; text-align: center; }
+  .tab-btn.active { background: var(--teal-light); color: var(--orange); border-bottom: 4px solid var(--orange); }
+  
+  .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+  .tab-content.active { display: flex; }
 
-    #app {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+  /* Подзаголовки внутри вкладок */
+  .subtab-title { font-size: 18px; color: var(--orange); font-weight: 800; text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-top: 10px; }
 
-    /* Заголовки (title) */
-    .title-block {
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 30px;
-      margin-bottom: 15px;
-      color: var(--accent-color);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+  /* Таблицы */
+  .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+  .styled-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 400px; }
+  .styled-table th { background: rgba(245, 166, 49, 0.1); color: var(--orange); padding: 15px 10px; font-size: 12px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); letter-spacing: 1px; }
+  .styled-table td { padding: 12px 10px; font-size: 14px; font-weight: 600; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.02); }
+  .styled-table tr:hover { background: rgba(255,255,255,0.03); }
+  .styled-table tr:last-child td { border-bottom: none; }
+  .styled-table img { height: 35px; width: auto; object-fit: contain; vertical-align: middle; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
 
-    /* Обычный текст (text) */
-    .text-block {
-      font-size: 16px;
-      margin-bottom: 15px;
-      background: var(--glass-bg);
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid var(--glass-border);
-    }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Обычная таблица (table) */
-    .table-block {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 15px;
-    }
-    .table-block td {
-      border: 1px solid var(--glass-border);
-      padding: 10px;
-      text-align: center;
-    }
-
-    /* ================= НОВЫЙ БЛОК: ТЕКСТ + КАРТИНКА (text-image) ================= */
-    .text-image-block { 
-      background: var(--glass-bg); 
-      backdrop-filter: blur(12px); 
-      border: 1px solid var(--glass-border); 
-      border-radius: 12px; 
-      padding: 20px; 
-      display: flex; 
-      align-items: center; 
-      gap: 20px; 
-      margin-bottom: 15px; 
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-    }
-    .text-image-content { flex: 1; font-size: 16px; font-weight: 600; }
-    .text-image-img { max-width: 150px; border-radius: 10px; object-fit: cover; }
-
-    @media (max-width: 768px) {
-      .text-image-block { flex-direction: column; text-align: center; }
-      .text-image-img { max-width: 100%; height: auto; }
-    }
-
-    /* ================= НОВЫЙ БЛОК: ВИТРИНА ПОДАРКОВ (таблица-карточка) ================= */
-    .gift-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    .gift-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
-      border-radius: 15px;
-      padding: 15px 10px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-    }
-    .gift-card:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .gift-img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .gift-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.2;
-    }
-
-    /* Анимация загрузки */
-    .loader { text-align: center; font-size: 18px; margin-top: 50px; color: #94a3b8; }
-  </style>
+  @media (max-width: 768px) {
+    .hero-title { font-size: 32px; }
+    .section-title { font-size: 22px; }
+    .tab-btn { min-width: calc(50% - 5px); padding: 12px 10px; font-size: 13px; }
+    .styled-table th { font-size: 10px; padding: 12px 5px; }
+    .styled-table td { font-size: 12px; padding: 10px 5px; }
+  }
+</style>
 </head>
-
 <body>
-  <!-- Здесь появится контент из таблицы -->
-  <div id="app">
-    <div class="loader">Загрузка данных из таблицы... ⏳</div>
-  </div>
 
-  <script>
-    // Запрос данных из Google Таблицы
-    google.script.run
-      .withSuccessHandler(renderContent)
-      .getTableData(); // Убедитесь, что функция в Code.gs называется именно так
+<div class="container" id="landing-content">
+  <div class="loading" id="loader">Загрузка Базы Данных... 🚀</div>
+</div>
 
-    // Главная функция отрисовки
-    function renderContent(data) {
-      const app = document.getElementById("app");
-      app.innerHTML = ""; // Очищаем надпись "Загрузка..."
+<script>
+const sheetID = "1ENDx5Flv0Gs-lMOx_oNn_CsgV8euE-lJpgDa5knyFHM";
+const gid = "2053212498"; 
 
-      // Перебираем каждую строку, пришедшую из таблицы
-      data.forEach(row => {
-        let type = row.type ? row.type.toLowerCase().trim() : "";
-        let content = row.content ? row.content.trim() : "";
-        let html = "";
+async function loadLandingData() {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=${gid}&_=${Date.now()}`;
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    renderLanding(json.table.rows);
+  } catch (error) {
+    document.getElementById("loader").innerHTML = "❌ Ошибка загрузки данных.";
+  }
+}
 
-        if (!content) return; // Если ячейка пустая - пропускаем
+function getVal(row, index) {
+  if (!row || !row.c || !row.c[index]) return "";
+  return String(row.c[index].v || "").trim();
+}
 
-        // 1. Заголовки (title)
-        if (type.includes("title")) {
-          html = `<div class="title-block">${content}</div>`;
-        } 
-        
-        // 2. Обычный текст (text)
-        else if (type === "text") {
-          html = `<div class="text-block">${content}</div>`;
-        } 
-        
-        // 3. Текст + Картинка (text-image)
-        // Пример в таблице: Текст описания | https://ссылка-на-фото.jpg
-        else if (type === "text-image") {
-          let parts = content.split("|");
-          let textPart = parts[0] ? parts[0].trim() : "";
-          let imgPart = parts[1] ? parts[1].trim() : "";
-          
-          html = `
-            <div class="text-image-block">
-              ${imgPart ? `<img src="${imgPart}" class="text-image-img" alt="img">` : ''}
-              <div class="text-image-content">${textPart}</div>
-            </div>
-          `;
-        } 
-        
-        // 4. ВИТРИНА ПОДАРКОВ (таблица-карточка)
-        // Пример в таблице: Чайная церемония<br> ссылка, Сумалак<br> ссылка
-        else if (type === "таблица-карточка") {
-          let items = content.split(","); // Разбиваем по запятой на отдельные подарки
-          let cardsHtml = "";
-          
-          items.forEach(item => {
-            let parts = item.split("<br>"); // Разбиваем внутри подарка на имя и фото
-            let name = parts[0] ? parts[0].trim() : "";
-            let imgUrl = parts[1] ? parts[1].trim() : "";
-            
-            if (name || imgUrl) {
-              cardsHtml += `
-                <div class="gift-card">
-                  ${imgUrl ? `<img src="${imgUrl}" class="gift-img" alt="подарок">` : ''}
-                  <div class="gift-name">${name}</div>
-                </div>
-              `;
-            }
-          });
-          html = `<div class="gift-grid">${cardsHtml}</div>`;
-        } 
+function renderLanding(rows) {
+  let mainHtml = "";
+  let currentBlock = null;
 
-        // 5. Обычная таблица в ряд (table)
-        // Пример в таблице: Слово 1, Слово 2, Слово 3
-        else if (type === "table") {
-          let cells = content.split(",").map(c => `<td>${c.trim()}</td>`).join('');
-          html = `<table class="table-block"><tr>${cells}</tr></table>`;
-        }
+  let inTabs = false;
+  let tabsMenuHtml = "";
+  let tabsContentHtml = "";
+  let tabCount = 0;
 
-        // Если тип не распознан, выводим как обычный текст
-        else {
-          html = `<div class="text-block">${content}</div>`;
-        }
+  let inTable = false;
+  let inGifts = false;
+  let inCards = false;
 
-        // Вставляем готовый блок на сайт (сохраняя принадлежность к LangBlock)
-        let wrapper = document.createElement("div");
-        wrapper.setAttribute("data-block", row.block);
-        wrapper.innerHTML = html;
-        app.appendChild(wrapper);
-      });
+  function appendHtml(str) {
+    if (inTabs) tabsContentHtml += str;
+    else mainHtml += str;
+  }
+
+  function closeGroups(newType = "") {
+    if (inTable && !newType.includes("table")) { appendHtml(`</tbody></table></div>`); inTable = false; }
+    if (inGifts && !newType.includes("таблица-карточка")) { appendHtml(`</div>`); inGifts = false; }
+    if (inCards && newType !== "карточка") { appendHtml(`</div>`); inCards = false; }
+  }
+
+  function flushTabs() {
+    if (inTabs) {
+      closeGroups(""); 
+      tabsContentHtml += `</div>`; 
+      mainHtml += tabsMenuHtml + `</div><div class="tabs-content-wrapper">` + tabsContentHtml + `</div>`;
+      inTabs = false;
+      tabsMenuHtml = "";
+      tabsContentHtml = "";
     }
-  </script>
+  }
+
+  rows.forEach((row, index) => {
+    if (index === 0 && getVal(row, 0).includes("Lang")) return; 
+
+    let block = getVal(row, 1);                                     
+    let parent = getVal(row, 2).toLowerCase().replace(/\s+/g, '');  
+    let type = getVal(row, 3).toLowerCase().trim();                 
+    let content = getVal(row, 4);                                   
+    
+    if (!type && !content) return; 
+
+    if (currentBlock !== block) {
+      flushTabs();   
+      closeGroups(""); 
+      
+      if (currentBlock !== null) {
+        mainHtml += `</div>`; 
+      }
+      
+      mainHtml += `<div id="block-${block}" class="page-block">`;
+      currentBlock = block;
+    }
+
+    if (inTabs) {
+      let isTabRow = type.startsWith("tab") || parent.startsWith("tab") || parent.startsWith("subtab");
+      if (!isTabRow) {
+        flushTabs(); 
+      }
+    }
+
+    closeGroups(type);
+
+    // 1. Главный заголовок (Hero)
+    if (type === "title 1") {
+      let nextType = getVal(rows[index+1], 3).toLowerCase().trim();
+      let subHtml = "";
+      if (nextType === "subtitle") {
+        subHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 4)}</div>`;
+        rows[index+1].processed = true;
+      }
+      appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
+    }
+    else if (type === "subtitle" && row.processed) return;
+    
+    // 2. Обычные заголовки
+    else if (type.includes("title") && type !== "title 1") appendHtml(`<h2 class="section-title">${content}</h2>`);
+    else if (type === "subtitle") appendHtml(`<h3 class="sub-title">${content}</h3>`);
+    
+    // 3. Текст и Картинки
+    else if (type === "text") appendHtml(`<div class="text-block">${content}</div>`);
+    else if (type === "image") appendHtml(`<img src="${content}" class="promo-image" alt="Promo">`);
+    
+    // === НОВОЕ: Текст + Картинка (разделитель |) ===
+    else if (type === "text-image") {
+      let parts = content.split("|");
+      let textPart = parts[0] ? parts[0].trim() : "";
+      let imgPart = parts[1] ? parts[1].trim() : "";
+      
+      appendHtml(`
+        <div class="text-image-block">
+          ${imgPart ? `<img src="${imgPart}" class="text-image-img" alt="img">` : ''}
+          <div class="text-image-content">${textPart}</div>
+        </div>
+      `);
+    }
+
+    // 4. Карточки (Группы)
+    else if (type === "карточка") {
+      if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
+      appendHtml(`<div class="simple-card">${content}</div>`);
+    }
+
+    // === ОБНОВЛЕНО: Подарки (Витрина). Читает Название<br>Ссылка ===
+    else if (type === "таблица-карточка") {
+      if (!inGifts) { appendHtml(`<div class="gifts-grid">`); inGifts = true; }
+      
+      let items = content.split(","); // Разбиваем по запятой на отдельные подарки
+      let cardsHtml = "";
+      
+      items.forEach(item => {
+        let parts = item.split("<br>"); // Разделяем название и картинку
+        let name = parts[0] ? parts[0].trim() : "";
+        let imgUrl = parts[1] ? parts[1].trim() : "";
+        
+        if (name || imgUrl) {
+          cardsHtml += `
+            <div class="gift-card">
+              ${imgUrl ? `<img src="${imgUrl}" class="gift-img">` : ''}
+              <div class="gift-title">${name}</div>
+            </div>`;
+        }
+      });
+      
+      appendHtml(cardsHtml);
+    }
+
+    // 6. ВКЛАДКИ (Tab1, Tab2...)
+    else if (type.startsWith("tab") && !type.includes("subtab") && !type.includes("table")) {
+      if (!inTabs) {
+        inTabs = true;
+        tabCount = 0;
+        tabsMenuHtml = `<div class="tabs-menu">`;
+      }
+      tabCount++;
+      let activeClass = tabCount === 1 ? "active" : "";
+      
+      tabsMenuHtml += `<button class="tab-btn ${activeClass}" onclick="switchTab('tab-${currentBlock}-${tabCount}')">${content}</button>`;
+      
+      if (tabCount > 1) tabsContentHtml += `</div>`; 
+      tabsContentHtml += `<div id="tab-${currentBlock}-${tabCount}" class="tab-content ${activeClass}">`; 
+    }
+
+    // 7. Subtabs
+    else if (type.includes("subtab") && !type.includes("table")) {
+      appendHtml(`<div class="subtab-title">${content}</div>`);
+    }
+
+    // 8. ТАБЛИЦЫ
+    else if (type.includes("table")) {
+      let cols = content.split(",");
+      if (!inTable) {
+        let rowHtml = `<div class="table-wrapper"><table class="styled-table"><thead><tr>`;
+        cols.forEach(c => rowHtml += `<th>${c.trim()}</th>`);
+        rowHtml += `</tr></thead><tbody>`;
+        appendHtml(rowHtml);
+        inTable = true;
+      } else {
+        let rowHtml = `<tr>`;
+        cols.forEach(c => {
+          let text = c.trim();
+          if (text.startsWith("http")) rowHtml += `<td><img src="${text}" alt="icon"></td>`;
+          else rowHtml += `<td>${text}</td>`;
+        });
+        rowHtml += `</tr>`;
+        appendHtml(rowHtml);
+      }
+    }
+  });
+
+  flushTabs();
+  closeGroups("");
+  if (currentBlock !== null) mainHtml += `</div>`; 
+
+  document.getElementById("landing-content").innerHTML = mainHtml;
+}
+
+window.switchTab = function(tabId) {
+  let blockWrapper = event.target.closest('.page-block');
+  
+  blockWrapper.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  blockWrapper.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+};
+
+loadLandingData();
+</script>
+
 </body>
 </html>
