@@ -24,9 +24,14 @@
     color: var(--text-main); min-height: 100vh; padding: 20px 15px 60px;
   }
 
-  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 25px; }
+  .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 
-  /* === ДИЗАЙН БЛОКОВ (BLOCK) === */
+  /* === ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА === */
+  .lang-switcher { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: -10px; }
+  .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(245, 166, 49, 0.5); color: #fff; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: 800; font-family: 'Exo 2', sans-serif; font-size: 14px; transition: 0.3s; }
+  .lang-btn.active { background: var(--orange); color: #0d1115; border-color: var(--orange); box-shadow: 0 0 10px rgba(245, 166, 49, 0.5); }
+
+  /* === ДИЗАЙН БЛОКОВ === */
   .page-block { 
     background: var(--glass-bg); 
     backdrop-filter: blur(12px); 
@@ -36,29 +41,27 @@
     box-shadow: 0 8px 30px rgba(0,0,0,0.3); 
     display: flex; flex-direction: column; gap: 15px; 
   }
-  /* Блок 1 (Интро) делаем прозрачным для красоты */
   #block-1 { background: transparent; border: none; box-shadow: none; padding: 10px 0; }
 
-  /* Загрузка */
   .loading { text-align: center; color: var(--orange); font-size: 20px; font-weight: 800; padding: 50px; }
 
-  /* === ТЕКСТА И ЗАГОЛОВКИ (NAME, H1, H2, TEXT) === */
+  /* === ТЕКСТА И ЗАГОЛОВКИ === */
   .hero-header { text-align: center; position: relative; background: radial-gradient(circle at top center, var(--teal-light) 0%, transparent 70%); }
   .hero-title { margin: 0 0 12px 0; font-size: 42px; font-weight: 800; text-transform: uppercase; background: linear-gradient(135deg, #ffffff 0%, var(--orange) 70%, #ff7a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); line-height: 1.1; }
   .hero-subtitle { font-size: 16px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 3px; background: rgba(24, 29, 35, 0.8); border-top: 1px solid var(--border-line); border-bottom: 1px solid rgba(245, 166, 49, 0.1); padding: 8px 24px; border-radius: 8px; display: inline-block; }
 
-  .section-title { text-align: center; font-size: 26px; font-weight: 800; text-transform: uppercase; margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
+  .section-title { text-align: center; font-size: 26px; font-weight: 800; text-transform: uppercase; margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; text-align: center;}
   .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-line), transparent); max-width: 100px; }
   .sub-title { font-size: 18px; color: var(--orange); font-weight: 800; text-transform: uppercase; margin: 5px 0 0; text-align: center; }
   .text-block { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 15px; text-align: center; font-size: 15px; font-weight: 600; line-height: 1.5; color: #e2e8f0; }
 
-  /* === КАРТОЧКИ (GROUPCARD) === */
-  .cards-wrapper { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-  .simple-card { background: rgba(255,255,255,0.03); border-left: 4px solid var(--orange); border-radius: 8px; padding: 15px; flex: 1; min-width: 200px; text-align: center; font-weight: 800; color: var(--orange); font-size: 15px; }
+  /* === ОБНОВЛЕНО: КАРТОЧКИ (GROUPCARD - Строго 3 в ряд везде) === */
+  .cards-wrapper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+  .simple-card { background: rgba(255,255,255,0.03); border-left: 3px solid var(--orange); border-radius: 8px; padding: 12px 6px; text-align: center; font-weight: 800; color: var(--orange); font-size: 14px; display: flex; align-items: center; justify-content: center; }
 
-  /* === ПОДАРКИ (GIFTCARD 1 & 2) === */
-  .gifts-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; } /* Строго 3 в ряд */
-  .gifts-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; } /* Строго 2 в ряд */
+  /* === ПОДАРКИ === */
+  .gifts-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; } 
+  .gifts-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; } 
   
   .gift-card { background: rgba(18, 63, 69, 0.4); border-radius: 12px; padding: 12px 5px; text-align: center; position: relative; border: 1px solid rgba(255,255,255,0.05); }
   .gift-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--orange), #ff7a00); }
@@ -67,13 +70,13 @@
   .gift-stat { font-size: 11px; color: var(--text-muted); background: rgba(0,0,0,0.4); border-radius: 4px; padding: 3px 0; margin-bottom: 3px; font-weight: 600; }
   .gift-stat span { color: var(--orange); font-weight: 800; }
 
-  /* === ТАБЛИЦА-ФОТО (TABLECARD - Строго 5 в ряд) === */
+  /* === ТАБЛИЦА-ФОТО (TABLECARD - 5 в ряд) === */
   .photo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; }
   .photo-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; }
   .photo-img { width: 100%; height: 40px; object-fit: contain; margin-bottom: 6px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
   .photo-title { font-weight: 800; font-size: 10px; color: #fff; line-height: 1.2; word-wrap: break-word; }
 
-  /* === ВКЛАДКИ (TAB - Строго 3 в ряд) === */
+  /* === ВКЛАДКИ (TAB) === */
   .tabs-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 5px 0; }
   .tab-btn { background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 14px; font-weight: 800; text-transform: uppercase; padding: 12px 5px; border-radius: 8px; cursor: pointer; transition: 0.3s; text-align: center; }
   .tab-btn.active { background: var(--teal-light); color: var(--orange); border-bottom: 3px solid var(--orange); }
@@ -81,7 +84,7 @@
   .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 15px; }
   .tab-content.active { display: flex; }
 
-  /* === ТАБЛИЦЫ (REWARDTABLE / ITEMTABLE) === */
+  /* === ТАБЛИЦЫ === */
   .table-wrapper { width: 100%; overflow-x: auto; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
   .styled-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 300px; }
   .styled-table th { background: rgba(245, 166, 49, 0.1); color: var(--orange); padding: 12px 5px; font-size: 11px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-line); }
@@ -96,6 +99,11 @@
     .hero-title { font-size: 32px; }
     .section-title { font-size: 22px; }
     .tab-btn { font-size: 11px; padding: 10px 2px; }
+    
+    /* Делаем Groupcard меньше, чтобы 3 влезли в ряд */
+    .cards-wrapper { gap: 6px; }
+    .simple-card { font-size: 11px; padding: 8px 4px; border-left: 2px solid var(--orange); }
+
     .gifts-grid-3 .gift-title { font-size: 11px; }
     .gifts-grid-3 .gift-stat { font-size: 9px; }
     .gifts-grid-3 .gift-img { height: 45px; }
@@ -109,13 +117,25 @@
 </head>
 <body>
 
-<div class="container" id="landing-content">
-  <div class="loading" id="loader">Загрузка Базы Данных... 🚀</div>
+<div class="container">
+  <!-- Кнопки переключения языка -->
+  <div class="lang-switcher" id="lang-switcher" style="display: none;">
+    <button id="btn-ru" class="lang-btn active" onclick="switchLanguage('ru')">RU</button>
+    <button id="btn-uz" class="lang-btn" onclick="switchLanguage('uz')">UZ</button>
+  </div>
+
+  <div id="landing-content">
+    <div class="loading" id="loader">Загрузка Базы Данных... 🚀</div>
+  </div>
 </div>
 
 <script>
 const sheetID = "1ENDx5Flv0Gs-lMOx_oNn_CsgV8euE-lJpgDa5knyFHM";
 const gid = "2053212498"; 
+
+// Глобальные переменные для переключения языка
+let globalRows = [];
+let currentLang = 'ru'; 
 
 async function loadLandingData() {
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20*&gid=${gid}&_=${Date.now()}`;
@@ -123,19 +143,29 @@ async function loadLandingData() {
     const res = await fetch(url);
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
-    renderLanding(json.table.rows);
+    
+    globalRows = json.table.rows; // Сохраняем в память
+    document.getElementById("lang-switcher").style.display = "flex"; // Показываем кнопки языков
+    renderLanding();
   } catch (error) {
     document.getElementById("loader").innerHTML = "❌ Ошибка загрузки данных.";
   }
 }
 
-// Извлекаем ячейки по индексам
+// Функция смены языка по кнопке
+window.switchLanguage = function(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('btn-' + lang).classList.add('active');
+  renderLanding(); // Перерисовываем без запроса к интернету
+};
+
 function getVal(row, index) {
   if (!row || !row.c || !row.c[index]) return "";
   return String(row.c[index].v || "").trim();
 }
 
-function renderLanding(rows) {
+function renderLanding() {
   let mainHtml = "";
   let currentBlock = null;
 
@@ -144,7 +174,7 @@ function renderLanding(rows) {
   let tabsMenuHtml = "";
   let tabsContentHtml = "";
   let tabCount = 0;
-  let currentTabParent = ""; // Запоминаем Parent текущей вкладки
+  let currentTabParent = ""; 
 
   // Управление Группировкой
   let inTable = false;
@@ -157,7 +187,6 @@ function renderLanding(rows) {
     else mainHtml += str;
   }
 
-  // Закрытие открытых сеток (гридов/таблиц)
   function closeGroups(newType = "") {
     if (inTable && !newType.includes("table")) { appendHtml(`</tbody></table></div>`); inTable = false; }
     if (inCards && newType !== "groupcard") { appendHtml(`</div>`); inCards = false; }
@@ -165,7 +194,6 @@ function renderLanding(rows) {
     if (inGifts2 && newType !== "giftcard2") { appendHtml(`</div>`); inGifts2 = false; }
   }
 
-  // Сборка и закрытие вкладок
   function flushTabs() {
     if (inTabs) {
       closeGroups(""); 
@@ -178,68 +206,64 @@ function renderLanding(rows) {
     }
   }
 
-  rows.forEach((row, index) => {
-    // Пропускаем шапку
+  globalRows.forEach((row, index) => {
     if (index === 0 && getVal(row, 0).includes("Lang")) return; 
 
-    // Считываем новую структуру
-    let lang = getVal(row, 0); // Не используется в логике вывода
     let block = getVal(row, 1);
     let parent = getVal(row, 2).toLowerCase().trim();
     let child = getVal(row, 3).toLowerCase().trim();
-    let type = getVal(row, 4).toLowerCase().trim(); // Это колонка Style
-    let content = getVal(row, 5); // Это колонка RU
+    let type = getVal(row, 4).toLowerCase().trim(); 
     
-    if (!type && !content) return; // Пустая строка
+    // ДОБАВЛЕНА ЛОГИКА ВЫБОРА ЯЗЫКА
+    let contentRU = getVal(row, 5); 
+    let contentUZ = getVal(row, 6); 
+    // Если выбран UZ, но он пустой - показываем RU
+    let content = currentLang === 'uz' && contentUZ !== "" ? contentUZ : contentRU; 
+    
+    if (!type && !content) return; 
 
-    // === ЛОГИКА БЛОКОВ (Блоки 1, 2, 3...) ===
+    // Логика блоков
     if (currentBlock !== block) {
       flushTabs();   
       closeGroups(""); 
-      if (currentBlock !== null) { mainHtml += `</div>`; } // Закрываем старый блок
-      mainHtml += `<div id="block-${block}" class="page-block">`; // Открываем новый
+      if (currentBlock !== null) { mainHtml += `</div>`; } 
+      mainHtml += `<div id="block-${block}" class="page-block">`; 
       currentBlock = block;
     }
 
-    // === ЛОГИКА ВЫХОДА ИЗ ВКЛАДОК ===
     if (inTabs) {
-      if (type === 'tab') {
-        currentTabParent = parent; // Переключаемся на следующую вкладку
-      } 
-      // Если текущий Parent не совпадает с вкладкой и это не создание новой вкладки - выходим из вкладок
-      else if (parent !== currentTabParent) {
-        flushTabs(); 
-      }
+      if (type === 'tab') currentTabParent = parent;
+      else if (parent !== currentTabParent) flushTabs(); 
     }
 
-    closeGroups(type); // Закрываем таблицы/гриды если сменился тип
+    closeGroups(type); 
 
-    // === 1. ГЛАВНЫЕ ЗАГОЛОВКИ (NAME / SUBNAME) ===
+    // Отрисовка элементов
     if (type === "name") {
-      let nextType = getVal(rows[index+1], 4).toLowerCase().trim();
+      let nextType = getVal(globalRows[index+1], 4).toLowerCase().trim();
       let subHtml = "";
       if (nextType === "subname") {
-        subHtml = `<div class="hero-subtitle">${getVal(rows[index+1], 5)}</div>`;
-        rows[index+1].processed = true; // Помечаем чтобы не выводить дважды
+        let subRU = getVal(globalRows[index+1], 5);
+        let subUZ = getVal(globalRows[index+1], 6);
+        let subContent = currentLang === 'uz' && subUZ !== "" ? subUZ : subRU;
+        subHtml = `<div class="hero-subtitle">${subContent}</div>`;
+        globalRows[index+1].processed = true; 
       }
       appendHtml(`<div class="hero-header"><h1 class="hero-title">${content}</h1>${subHtml}</div>`);
     }
     else if (type === "subname" && row.processed) return;
     
-    // === 2. ЗАГОЛОВКИ СЕКЦИЙ (H1 / H2) ===
     else if (type === "h1") appendHtml(`<h2 class="section-title">${content}</h2>`);
     else if (type === "h2") appendHtml(`<h3 class="sub-title">${content}</h3>`);
     
-    // === 3. ТЕКСТ (TEXT) ===
     else if (type === "text") appendHtml(`<div class="text-block">${content}</div>`);
     
-    // === 4. КАРТОЧКИ (GROUPCARD) ===
+    // GROUPCARD (Строго 3 в ряд)
     else if (type === "groupcard") {
       if (!inCards) { appendHtml(`<div class="cards-wrapper">`); inCards = true; }
       appendHtml(`<div class="simple-card">${content}</div>`);
     }
 
-    // === 5. ПОДАРКИ (GIFTCARD 1 - Макс 3) ===
     else if (type === "giftcard1") {
       if (!inGifts1) { appendHtml(`<div class="gifts-grid-3">`); inGifts1 = true; }
       let p = content.split(",");
@@ -252,7 +276,6 @@ function renderLanding(rows) {
         </div>`);
     }
 
-    // === 6. ПОДАРКИ (GIFTCARD 2 - Макс 2) ===
     else if (type === "giftcard2") {
       if (!inGifts2) { appendHtml(`<div class="gifts-grid-2">`); inGifts2 = true; }
       let p = content.split(",");
@@ -265,7 +288,6 @@ function renderLanding(rows) {
         </div>`);
     }
 
-    // === 7. ТАБЛИЦА-ФОТО (TABLECARD - 5 в ряд) ===
     else if (type === "tablecard") {
       let items = content.split(","); 
       let cardsHtml = `<div class="photo-grid">`;
@@ -285,7 +307,6 @@ function renderLanding(rows) {
       appendHtml(cardsHtml); 
     }
 
-    // === 8. ВКЛАДКИ (TAB) ===
     else if (type === "tab") {
       if (!inTabs) {
         inTabs = true;
@@ -302,7 +323,6 @@ function renderLanding(rows) {
       tabsContentHtml += `<div id="tab-${currentBlock}-${tabCount}" class="tab-content ${activeClass}">`; 
     }
 
-    // === 9. ТАБЛИЦЫ (REWARDTABLE / ITEMTABLE) ===
     else if (type === "rewardtable" || type === "itemtable") {
       let cols = content.split(",");
       if (!inTable) {
@@ -324,7 +344,6 @@ function renderLanding(rows) {
     }
   });
 
-  // Завершение документа: закрываем всё, что осталось
   flushTabs();
   closeGroups("");
   if (currentBlock !== null) mainHtml += `</div>`; 
