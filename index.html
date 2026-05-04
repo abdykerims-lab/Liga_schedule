@@ -4,55 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Семейный Май-Фест</title>
-<!-- Добавлен классический шрифт для премиального вида -->
+<!-- Подключение шрифтов -->
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-page: #fdf5e6; /* Теплый кремовый фон */
+    --bg-page: #fff9f9; 
     --gold-light: #fbe69d;
-    --gold-main: #d4af37; /* Цвет золотого пьедестала */
+    --gold-main: #d4af37;
     --gold-dark: #b28925;
-    --red-ribbon: #c1272d; /* Цвет красной ленты и тюльпанов */
-    --text-main: #4a2c11; /* Темно-коричневый для читаемости */
+    --red-ribbon: #c1272d;
+    --text-main: #4a2c11;
     --text-muted: #8b6b52;
-    --glass-bg: rgba(255, 255, 255, 0.85); /* Светлое стекло */
+    --glass-bg: rgba(255, 255, 255, 0.85); 
     --border-line: rgba(212, 175, 55, 0.4);
   }
 
   body {
     margin: 0; padding: 0;
-    /* Установлен градиент, имитирующий теплый закат и весенний свет */
-    background: linear-gradient(135deg, #fff3e0 0%, #fdf5e6 50%, #ffe0b2 100%);
-    background-attachment: fixed;
+    background-color: var(--bg-page); /* Новый чистый фон */
     font-family: 'Exo 2', sans-serif;
     color: var(--text-main); 
     min-height: 100vh; 
     padding: 20px 15px 60px;
   }
 
-  /* Легкий паттерн боке/свечения на фоне */
-  body::before {
-    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(251, 230, 157, 0.4) 0%, transparent 40%);
-    z-index: -1; pointer-events: none;
-  }
-
   .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 
   /* === ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА === */
   .lang-switcher { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: -10px; }
-  .lang-btn { background: rgba(255,255,255,0.5); border: 2px solid var(--gold-main); color: var(--gold-dark); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: 800; font-family: 'Exo 2', sans-serif; font-size: 14px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .lang-btn { background: rgba(255,255,255,0.8); border: 2px solid var(--gold-main); color: var(--gold-dark); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: 800; font-family: 'Exo 2', sans-serif; font-size: 14px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
   .lang-btn.active { background: linear-gradient(to bottom, #d32f2f, var(--red-ribbon)); color: #fff; border-color: var(--red-ribbon); box-shadow: 0 4px 15px rgba(193, 39, 45, 0.4); }
 
   /* === ДИЗАЙН БЛОКОВ === */
   .page-block { 
     background: var(--glass-bg); 
     backdrop-filter: blur(15px); 
-    border: 1px solid rgba(255, 255, 255, 0.6); 
+    border: 1px solid rgba(255, 255, 255, 0.8); 
     border-radius: 20px; 
     padding: 25px 20px; 
-    box-shadow: 0 10px 30px rgba(139, 107, 82, 0.15), inset 0 0 0 1px var(--border-line); 
+    box-shadow: 0 10px 30px rgba(139, 107, 82, 0.1), inset 0 0 0 1px var(--border-line); 
     display: flex; flex-direction: column; gap: 15px; 
   }
   #block-1 { background: transparent; border: none; box-shadow: none; padding: 10px 0; }
@@ -62,16 +52,27 @@
   /* === ТЕКСТА И ЗАГОЛОВКИ === */
   .hero-header { text-align: center; position: relative; margin-bottom: 10px; }
   
-  /* Имитация 3D Золота для названия */
-  .hero-title { margin: 0 0 15px 0; font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
-    background: linear-gradient(to bottom, #fffde7 0%, #fbc02d 40%, #f57f17 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0 0 10px rgba(251, 230, 157, 0.8)); line-height: 1.1; }
+  /* Контрастный золотой заголовок с четкой тенью */
+  .hero-title { 
+    margin: 0 0 15px 0; 
+    font-family: 'Playfair Display', serif; 
+    font-size: 48px; 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    background: linear-gradient(to bottom, #ffd54f 0%, #f57f17 40%, #bf360c 100%);
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 6px rgba(100, 30, 0, 0.4)); 
+    line-height: 1.1; 
+  }
   
   /* Имитация Красной Ленты для дат */
-  .hero-subtitle { font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 2px;
+  .hero-subtitle { 
+    font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 2px;
     background: linear-gradient(to bottom, #e53935, #b71c1c); border: 2px solid #ffcdd2; border-radius: 25px;
-    padding: 8px 30px; display: inline-block; box-shadow: 0 6px 15px rgba(183, 28, 28, 0.3); }
+    padding: 8px 30px; display: inline-block; box-shadow: 0 6px 15px rgba(183, 28, 28, 0.3); 
+  }
 
   .section-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--red-ribbon); text-transform: uppercase; margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 15px; }
   .section-title::before, .section-title::after { content: ''; flex-grow: 1; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-main), transparent); max-width: 100px; }
@@ -155,7 +156,6 @@
 const sheetID = "1ENDx5Flv0Gs-lMOx_oNn_CsgV8euE-lJpgDa5knyFHM";
 const gid = "2053212498"; 
 
-// Глобальные переменные для переключения языка
 let globalRows = [];
 let currentLang = 'ru'; 
 
