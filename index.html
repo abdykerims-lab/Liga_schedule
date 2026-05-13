@@ -92,6 +92,7 @@
   /* --- СПИСКИ --- */
   .data-list { display: flex; flex-direction: column; gap: 15px; max-width: 800px; margin: 0 auto; width: 100%; }
 
+  /* БАЗОВАЯ КАРТОЧКА */
   .data-row {
     background-color: rgba(24, 29, 35, 0.85); 
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);      
@@ -102,6 +103,33 @@
     display: flex; align-items: center; gap: 15px;
   }
   .data-row:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+
+  /* --- СТИЛИ ДЛЯ ТОП-1, ТОП-2, ТОП-3 (КРАСИВЫЕ КАРТОЧКИ) --- */
+  
+  /* ЗОЛОТО (1 место) */
+  .data-row.top-1-row {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(24, 29, 35, 0.9) 50%);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
+  }
+  .data-row.top-1-row:hover { box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3); }
+
+  /* СЕРЕБРО (2 место) */
+  .data-row.top-2-row {
+    background: linear-gradient(135deg, rgba(224, 224, 224, 0.1) 0%, rgba(24, 29, 35, 0.9) 50%);
+    border: 1px solid rgba(224, 224, 224, 0.4);
+    box-shadow: 0 10px 30px rgba(224, 224, 224, 0.1);
+  }
+  .data-row.top-2-row:hover { box-shadow: 0 10px 30px rgba(224, 224, 224, 0.2); }
+
+  /* БРОНЗА (3 место) */
+  .data-row.top-3-row {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(24, 29, 35, 0.9) 50%);
+    border: 1px solid rgba(205, 127, 50, 0.4);
+    box-shadow: 0 10px 30px rgba(205, 127, 50, 0.1);
+  }
+  .data-row.top-3-row:hover { box-shadow: 0 10px 30px rgba(205, 127, 50, 0.2); }
+
 
   /* ТЕКСТЫ */
   .player-name { font-weight: 800; font-size: 18px; color: var(--text-main); display: block; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
@@ -114,11 +142,12 @@
     display: inline-block; font-weight: 600; letter-spacing: 0.5px;
   }
 
-  /* РЕЙТИНГИ */
-  .rank-box { font-size: 18px; font-weight: 800; color: var(--text-muted); min-width: 40px; text-align: center; flex-shrink: 0; }
-  .rank-1 { color: #facc15; font-size: 26px; text-shadow: 0 0 15px rgba(250, 204, 21, 0.5); }
-  .rank-2 { color: #e2e8f0; font-size: 22px; text-shadow: 0 0 10px rgba(226, 232, 240, 0.3); }
-  .rank-3 { color: #f97316; font-size: 20px; text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
+  /* РЕЙТИНГИ (МЕСТА) */
+  .rank-box { font-size: 16px; font-weight: 800; color: var(--text-muted); min-width: 60px; text-align: center; flex-shrink: 0; line-height: 1.2; }
+  
+  .rank-1 { color: #FFD700; font-size: 22px; text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+  .rank-2 { color: #E0E0E0; font-size: 20px; text-shadow: 0 0 12px rgba(224, 224, 224, 0.6); }
+  .rank-3 { color: #CD7F32; font-size: 18px; text-shadow: 0 0 10px rgba(205, 127, 50, 0.6); }
 
   .result-details { flex-grow: 1; text-align: left; min-width: 0; }
   .result-score-box { text-align: right; display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
@@ -169,10 +198,10 @@
     .clan-name { font-size: 11px; margin-bottom: 4px;}
     .clan-id { font-size: 10px; padding: 2px 6px; }
     
-    .rank-box { min-width: 35px; font-size: 15px; }
-    .rank-1 { font-size: 22px; }
-    .rank-2 { font-size: 19px; }
-    .rank-3 { font-size: 17px; }
+    .rank-box { min-width: 50px; font-size: 14px; }
+    .rank-1 { font-size: 18px; }
+    .rank-2 { font-size: 16px; }
+    .rank-3 { font-size: 15px; }
     
     .score-value { font-size: 16px; }
     .score-label { font-size: 9px; }
@@ -279,10 +308,10 @@ async function fetchData(tabName, isBackground = false) {
 function parseFamilies(rows) {
   cache.families.data = [];
   rows.forEach((r) => {
-    let id = getVal(r, 1);       // Колонка B (ID)
-    let name = getVal(r, 2);     // Колонка C (Имя)
-    let score = getVal(r, 3);    // Колонка D (Очки)
-    let link = getVal(r, 4);     // Колонка E (ССЫЛКА)
+    let id = getVal(r, 1);       
+    let name = getVal(r, 2);     
+    let score = getVal(r, 3);    
+    let link = getVal(r, 4);     
     let scoreNum = getNum(r, 3); 
     if (!name && !id) return;
     
@@ -297,10 +326,10 @@ function parseFamilies(rows) {
 function parseParticipants(rows) {
   cache.participants.data = [];
   rows.forEach((r) => {
-    let name = getVal(r, 2);     // Колонка C (Имя)
-    let score = getVal(r, 3);    // Колонка D (Очки)
-    let family = getVal(r, 4);   // Колонка E (Имя Семьи)
-    let link = getVal(r, 6);     // Колонка G (ССЫЛКА ДЛЯ УЧАСТНИКОВ) <--- ИЗМЕНЕНО ЗДЕСЬ
+    let name = getVal(r, 2);     
+    let score = getVal(r, 3);    
+    let family = getVal(r, 4);   
+    let link = getVal(r, 6);     
     let scoreNum = getNum(r, 3); 
     if (!name) return;
     
@@ -340,12 +369,18 @@ function renderContent(searchQuery = "") {
   if (currentTab === "families") {
     itemsToRender.forEach((m) => {
       let r = m.globalRank; 
+      // Классы текста
       let rankClass = r === 1 ? "rank-1" : (r === 2 ? "rank-2" : (r === 3 ? "rank-3" : ""));
+      // Классы для всей карточки (фон, рамка, свечение)
+      let rowClass = r === 1 ? "top-1-row" : (r === 2 ? "top-2-row" : (r === 3 ? "top-3-row" : ""));
+      // Формат текста (с короной для 1 места)
+      let displayRank = r === 1 ? `👑<br>Топ-1` : `Топ-${r}`;
+      
       let linkBtnHtml = m.link ? `<a href="${m.link}" target="_blank" class="action-btn">Перейти ></a>` : '';
 
       html += `
-        <div class="data-row">
-          <div class="rank-box ${rankClass}">#${r}</div>
+        <div class="data-row ${rowClass}">
+          <div class="rank-box ${rankClass}">${displayRank}</div>
           <div class="result-details">
             <span class="player-name">${m.name}</span>
             <span class="clan-id" style="margin-top: 4px;">Семья ID: ${m.id}</span>
@@ -362,12 +397,16 @@ function renderContent(searchQuery = "") {
   else if (currentTab === "participants") {
     itemsToRender.forEach((m) => {
       let r = m.globalRank;
+      
       let rankClass = r === 1 ? "rank-1" : (r === 2 ? "rank-2" : (r === 3 ? "rank-3" : ""));
+      let rowClass = r === 1 ? "top-1-row" : (r === 2 ? "top-2-row" : (r === 3 ? "top-3-row" : ""));
+      let displayRank = r === 1 ? `👑<br>Топ-1` : `Топ-${r}`;
+
       let linkBtnHtml = m.link ? `<a href="${m.link}" target="_blank" class="action-btn">Перейти ></a>` : '';
 
       html += `
-        <div class="data-row">
-          <div class="rank-box ${rankClass}">#${r}</div>
+        <div class="data-row ${rowClass}">
+          <div class="rank-box ${rankClass}">${displayRank}</div>
           <div class="result-details">
             <span class="player-name">${m.name}</span>
             <span class="clan-name">${m.family ? "Семья: " + m.family : "Без семьи"}</span>
