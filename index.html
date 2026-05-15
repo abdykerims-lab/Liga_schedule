@@ -255,7 +255,7 @@ const tabsConfig = {
   "royal-schedule": { sheetName: "Schedule", type: "schedule" },
   "royal-results":  { sheetName: "лист1", type: "result" },
   "mini-schedule":  { sheetName: "Schedule Mini", type: "schedule-mini" },
-  "mini-results":   { sheetName: "MiniPK Results", type: "result" }
+  "mini-results":   { sheetName: "MiniPK Results", type: "result-mini" }
 };
 
 let currentMain = "royal"; 
@@ -539,10 +539,8 @@ function renderItems(items, type, showDate = false) {
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
       
-      // Блок второго игрока или кнопки "Записаться"
       let rightSideHtml = "";
       if (m.isFreeSlot) {
-        // Выводим текст "Свободный слот" и кнопку под ним
         rightSideHtml = `
           <div class="team-block right">
             <span class="player-name" style="color: #34d399; font-style: italic;">Свободный слот</span>
@@ -552,7 +550,6 @@ function renderItems(items, type, showDate = false) {
           </div>
         `;
       } else {
-        // Стандартный вывод игрока
         rightSideHtml = `
           <div class="team-block right">
             <span class="player-name">${m.p2_name || "&nbsp;"}</span>
@@ -577,10 +574,27 @@ function renderItems(items, type, showDate = false) {
     });
     html += `</div>`;
   } 
-  else if (type === "result") {
+  
+  /* ---- Логика отображения Результатов ---- */
+  else if (type.startsWith("result")) {
     html += `<div class="results-list">`;
     items.forEach(m => {
       let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      
+      // Формируем блок бобов ТОЛЬКО если это Королевский ПК (type === "result")
+      let beansHtml = "";
+      if (type === "result") {
+        beansHtml = `<div class="stat-line">Награда, бобы: <span class="stat-val beans">${m.beans || "0"}</span></div>`;
+      }
+
+      // Выводим "ПК очки" всегда, а "бобы" - в зависимости от переменной beansHtml
+      let statsBlockHtml = `
+        <div class="res-right">
+          <div class="stat-line">ПК очки: <span class="stat-val points">${m.pointsStr || "0"}</span></div>
+          ${beansHtml}
+        </div>
+      `;
+
       html += `
         <div class="result-card glass">
           ${dateBadge}
@@ -588,10 +602,7 @@ function renderItems(items, type, showDate = false) {
             <div class="res-winner">👑 Победитель: <span>${m.winner || "---"}</span></div>
             <div class="res-vs">${m.colB || "---"} <span class="vs-red">VS</span> ${m.colD || "---"}</div>
           </div>
-          <div class="res-right">
-            <div class="stat-line">ПК очки: <span class="stat-val points">${m.pointsStr || "0"}</span></div>
-            <div class="stat-line">Награда, бобы: <span class="stat-val beans">${m.beans || "0"}</span></div>
-          </div>
+          ${statsBlockHtml}
         </div>`;
     });
     html += `</div>`;
