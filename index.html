@@ -396,4 +396,211 @@ async function fetchData(key, isBackground = false) {
 
 function parseScheduleData(rows, key) {
   cache[key].dates = [];
-  cache[key].byDate
+  cache[key].byDate = {};
+
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase().includes("дата")) return;
+
+    let time = formatTime(getVal(r, 1)) || "--:--"; 
+    let colD = getVal(r, 3);
+    let colE = getVal(r, 4);
+    let colI = getVal(r, 8);
+    let colJ = getVal(r, 9);
+    let isFreeSlot = false;
+
+    if (colI.trim().toLowerCase() === "свободный слот") {
+      colI = "";
+    }
+
+    if (!colJ || colJ.trim() === "" || colJ.toLowerCase() === "свободный слот") {
+      colJ = "Свободный слот";
+      isFreeSlot = true;
+      if (!colI) colI = ""; 
+    }
+
+    let searchStr = `${colD} ${colI}`.toLowerCase();
+
+    if (!cache[key].byDate[date]) { cache[key].byDate[date] = []; cache[key].dates.push(date); }
+    cache[key].byDate[date].push({ time, p1_name: colD, p1_id: colE, p2_name: colI, p2_id: colJ, isFreeSlot, searchStr });
+  });
+
+  for (let d in cache[key].byDate) {
+    cache[key].byDate[d].sort((a, b) => a.time.localeCompare(b.time));
+  }
+}
+
+function parseResultData(rows, key) {
+  cache[key].dates = [];
+  cache[key].byDate = {};
+
+  rows.forEach(r => {
+    let date = parseDate(getVal(r, 0));
+    if (!date || date.toLowerCase().includes("дата")) return;
+
+    let colB = getVal(r, 1);
+    let colD = getVal(r, 3);
+    let winner = getVal(r, 4);
+    let pointsNum = getNum(r, 5);
+    let pointsStr = getVal(r, 5);
+    let beans = getVal(r, 6);
+    let searchStr = `${colB} ${colD} ${winner}`.toLowerCase();
+
+    if (!cache[key].byDate[date]) { cache[key].byDate[date] = []; cache[key].dates.push(date); }
+    cache[key].byDate[date].push({ colB, colD, winner, pointsNum, pointsStr, beans, searchStr });
+  });
+
+  for (let d in cache[key].byDate) cache[key].byDate[d].sort((a, b) => b.pointsNum - a.pointsNum);
+}
+
+function buildSidebar(isBackground = false) {
+  const key = getCurrentKey();
+  const dataRef = cache[key];
+  const sidebar = document.getElementById("sidebar");
+  sidebar.innerHTML = "";
+
+  if (dataRef.dates.length === 0) {
+    document.getElementById("data-container").innerHTML = `<div class="loading">Нет данных</div>`;
+    return;
+  }
+
+  if (!isBackground || !dataRef.dates.includes(selectedDate)) {
+    selectedDate = dataRef.dates[0];
+  }
+
+  dataRef.dates.forEach((date) => {
+    const btn = document.createElement("div");
+    btn.className = "date-btn glass";
+    if (date === selectedDate) btn.classList.add("active");
+    btn.innerText = date;
+    btn.onclick = () => selectDate(date);
+    sidebar.appendChild(btn);
+  });
+  
+  if (document.getElementById("searchInput").value.trim() !== "") handleSearch();
+  else renderContent();
+}
+
+function selectDate(date) {
+  selectedDate = date;
+  document.getElementById("searchInput").value = ""; 
+  document.querySelectorAll(".date-btn").forEach(btn => btn.classList.toggle("active", btn.innerText === selectedDate));
+  renderContent();
+}
+
+function handleSearch() {
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  renderContent(q);
+}
+
+function renderContent(searchQuery = "") {
+  const container = document.getElementById("data-container");
+  const key = getCurrentKey();
+  const dataRef = cache[key];
+  const type = tabsConfig[key].type;
+  let html = "";
+
+  if (searchQuery !== "") {
+    const searchTerms = searchQuery.split(" ").filter(t => t !== "");
+    let matches = [];
+
+    dataRef.dates.forEach(d => {
+      dataRef.byDate[d].forEach(item => {
+        if (searchTerms.every(term => item.searchStr.includes(term))) {
+          matches.push({ ...item, dateLabel: d });
+        }
+      });
+    });
+
+    if (matches.length === 0) {
+      container.innerHTML = `<div class="loading">Ничего не найдено</div>`;
+      return;
+    }
+    document.querySelectorAll(".date-btn").forEach(btn => btn.classList.remove("active"));
+    html = renderItems(matches, type, true);
+
+  } else {
+    const data = dataRef.byDate[selectedDate] || [];
+    if (data.length === 0) {
+      container.innerHTML = `<div class="loading">Нет данных</div>`;
+      return;
+    }
+    html = renderItems(data, type, false);
+  }
+
+  container.innerHTML = html;
+}
+
+function renderItems(items, type, showDate = false) {
+  let html = "";
+
+  if (type.startsWith("schedule")) {
+    html += `<div class="schedule-list">`;
+    items.forEach(m => {
+      let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      
+      // Блок второго игрока или кнопки "Записаться"
+      let rightSideHtml = "";
+      if (m.isFreeSlot) {
+        // Выводим текст "Свободный слот" и кнопку под ним
+        rightSideHtml = `
+          <div class="team-block right">
+            <span class="player-name" style="color: #34d399; font-style: italic;">Свободный слот</span>
+            <a href="https://activity.bigo.tv/live/act/act_16907/index.html?id=84033" target="_blank" class="signup-btn">
+              ✏️ Записаться
+            </a>
+          </div>
+        `;
+      } else {
+        // Стандартный вывод игрока
+        rightSideHtml = `
+          <div class="team-block right">
+            <span class="player-name">${m.p2_name || "&nbsp;"}</span>
+            <span class="id-badge">${m.p2_id || "---"}</span>
+          </div>
+        `;
+      }
+
+      html += `
+        <div class="match-row glass">
+          ${dateBadge}
+          <div class="team-block left">
+            <span class="player-name">${m.p1_name || "&nbsp;"}</span>
+            <span class="id-badge">${m.p1_id || "---"}</span>
+          </div>
+          <div class="match-center">
+            <div class="time-badge">${m.time}</div>
+            <div class="vs-text">VS</div>
+          </div>
+          ${rightSideHtml}
+        </div>`;
+    });
+    html += `</div>`;
+  } 
+  else if (type === "result") {
+    html += `<div class="results-list">`;
+    items.forEach(m => {
+      let dateBadge = showDate ? `<div class="date-badge">${m.dateLabel}</div>` : "";
+      html += `
+        <div class="result-card glass">
+          ${dateBadge}
+          <div class="res-left">
+            <div class="res-winner">👑 Победитель: <span>${m.winner || "---"}</span></div>
+            <div class="res-vs">${m.colB || "---"} <span class="vs-red">VS</span> ${m.colD || "---"}</div>
+          </div>
+          <div class="res-right">
+            <div class="stat-line">ПК очки: <span class="stat-val points">${m.pointsStr || "0"}</span></div>
+            <div class="stat-line">Награда, бобы: <span class="stat-val beans">${m.beans || "0"}</span></div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+  return html;
+}
+
+loadCurrentView();
+startAutoRefresh();
+</script>
+</body>
+</html>
