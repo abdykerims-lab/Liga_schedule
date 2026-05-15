@@ -3,25 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подключение к VPN...</title>
+    <title>Подключение VPN</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; text-align: center; font-family: sans-serif; padding-top: 20vh; margin: 0; }
+        .btn { display: inline-block; padding: 18px 30px; background-color: #2481cc; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .info { margin-top: 30px; font-size: 14px; color: #888; padding: 0 20px; }
+    </style>
 </head>
-<body style="background-color: #1a1a1a; color: white; text-align: center; font-family: Arial, sans-serif; padding-top: 50px;">
-    <h2>⏳ Открываем приложение...</h2>
-    <p>Если приложение Happ Plus не открылось автоматически, нажмите кнопку ниже:</p>
-    <a id="vpn-link" href="#" style="display: inline-block; padding: 15px 30px; background-color: #0088cc; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px;">ОТКРЫТЬ VPN</a>
+<body>
+    <h2>⏳ Запускаем приложение...</h2>
+    <p>Нажмите кнопку ниже, чтобы добавить ключ в Happ Plus.</p>
+    
+    <a id="vpn-link" href="#" class="btn">ДОБАВИТЬ В HAPP PLUS</a>
+
+    <div class="info">
+        *Если вы открыли эту страницу внутри Telegram, нажмите на три точки в правом верхнем углу и выберите <b>«Открыть в браузере»</b> (Safari/Chrome).
+    </div>
 
     <script>
-        // Получаем ключ vless:// из ссылки (всё, что идет после ?url=)
+        // Извлекаем ключ из ссылки
         const params = new URLSearchParams(window.location.search);
         const vpnUrl = params.get('url');
 
         if (vpnUrl) {
             // Вставляем ссылку в кнопку
             document.getElementById('vpn-link').href = vpnUrl;
-            // Автоматически перенаправляем в приложение!
-            window.location.href = vpnUrl;
+            
+            // Пытаемся открыть приложение автоматически через 1 секунду
+            setTimeout(() => {
+                window.location.href = vpnUrl;
+            }, 1000);
         } else {
-            document.body.innerHTML = "<h2>❌ Ошибка: Ключ не найден</h2>";
+            document.body.innerHTML = "<h2>❌ Ошибка: Ключ не передан</h2>";
         }
     </script>
 </body>
