@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BIGO Event Page</title>
+<title>BIGO Event Page - Kurban Bayram</title>
 
 <!-- Подключаем шрифт Exo 2 -->
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12,14 +12,14 @@
   :root {
     --bg-page: #fefffd; /* Заданный фон */
     --block-bg: #ffffff;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --primary: #f5a631;
-    --primary-grad: linear-gradient(135deg, #ff7a00, #f5a631);
-    --secondary-grad: linear-gradient(135deg, #fff7ed, #ffedd5);
-    --border-color: #f1f5f9;
-    --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.04);
-    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.02);
+    --kurban-green: #0d5c46; /* Изумрудный зеленый */
+    --kurban-green-dark: #073b2d;
+    --kurban-gold: #d4af37; /* Благородное золото */
+    --kurban-gold-light: #fdfaf0;
+    --text-main: #1a2622;
+    --text-muted: #4f635c;
+    --border-color: #e5edea;
+    --shadow-soft: 0 12px 30px rgba(13, 92, 70, 0.06);
   }
 
   body {
@@ -34,14 +34,14 @@
     overflow-x: hidden;
   }
 
-  /* Легкое свечение сверху для эффекта Landing Page */
+  /* Праздничное легкое свечение вверху страницы (зелено-золотое) */
   body::before {
     content: '';
     position: absolute;
-    top: -100px; left: 50%;
+    top: -150px; left: 50%;
     transform: translateX(-50%);
-    width: 100vw; max-width: 600px; height: 400px;
-    background: radial-gradient(circle, rgba(245,166,49,0.12) 0%, transparent 70%);
+    width: 100vw; max-width: 600px; height: 500px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(13, 92, 70, 0.05) 40%, transparent 70%);
     z-index: -1;
   }
 
@@ -51,11 +51,11 @@
     padding: 15px 15px 50px;
   }
 
-  /* СОВРЕМЕННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (в стиле iOS) */
+  /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
   .lang-switcher {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     position: sticky;
     top: 15px;
     z-index: 100;
@@ -63,45 +63,45 @@
   .lang-switcher::before {
     content: '';
     position: absolute; right: 0; top: 0;
-    background: #f8fafc;
+    background: var(--block-bg);
     border-radius: 30px;
     width: 120px; height: 100%;
     z-index: -1;
-    border: 1px solid var(--border-color);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    border: 1px solid var(--kurban-gold);
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.15);
   }
   .lang-btn {
     background: transparent;
     border: none;
-    color: var(--text-muted);
+    color: var(--kurban-green);
     padding: 8px 18px;
     border-radius: 20px;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: 0.3s;
   }
   .lang-btn.active { 
-    background: var(--block-bg); 
-    color: #ff7a00; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: var(--kurban-green); 
+    color: #fff; 
   }
 
   /* =========================================
-     РАМКИ БЛОКОВ (ПРЕМИУМ)
+     РАМКИ БЛОКОВ (КУРБАН БАЙРАМ СТИЛЬ)
      ========================================= */
   .content-block {
     background: var(--block-bg);
-    border-radius: 24px;
-    padding: 30px 20px;
-    margin-bottom: 24px;
+    border-radius: 16px;
+    padding: 35px 20px 25px; /* Увеличен верхний отступ для H1 */
+    margin-top: 35px; /* Отступ сверху для врезанного заголовка */
+    margin-bottom: 25px;
     box-shadow: var(--shadow-soft);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--kurban-gold);
+    position: relative;
     animation: fadeUp 0.6s ease-out backwards;
   }
   
-  /* Каскадная анимация появления блоков */
-  .content-block:nth-child(1) { animation-delay: 0.1s; }
+  .content-block:nth-child(1) { animation-delay: 0.1s; margin-top: 10px; padding-top: 25px;} /* Первому блоку (без H1) меньше отступ */
   .content-block:nth-child(2) { animation-delay: 0.2s; }
   .content-block:nth-child(3) { animation-delay: 0.3s; }
   .content-block:nth-child(4) { animation-delay: 0.4s; }
@@ -112,102 +112,118 @@
   }
 
   /* =========================================
+     ЦЕНТРИРОВАНИЕ ВСЕХ ТЕКСТОВ
+     ========================================= */
+  .block-Title, .block-Subtitle, .block-Text, 
+  .block-H1, .block-H2, .block-H3 {
+    text-align: center;
+  }
+
+  /* =========================================
      ТИПОГРАФИКА
      ========================================= */
-  /* Главный заголовок с градиентом */
   .block-Title { 
-    font-size: 34px; 
+    font-size: 32px; 
     font-weight: 800; 
-    text-align: center; 
     margin: 0 0 5px; 
-    background: var(--primary-grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--kurban-green-dark);
     line-height: 1.2;
-    letter-spacing: -0.5px;
   }
   .block-Subtitle { 
-    font-size: 14px; 
+    font-size: 15px; 
     font-weight: 700; 
-    text-align: center; 
     margin-bottom: 25px; 
-    color: var(--text-muted); 
+    color: var(--kurban-gold); 
     text-transform: uppercase; 
     letter-spacing: 2px;
   }
   
-  /* Элегантный H1 (в виде бэйджа) */
-  .h1-wrapper { text-align: center; margin-bottom: 30px; margin-top: -10px;}
+  /* ЭЛЕГАНТНЫЙ H1 (ВРЕЗАН В РАМКУ) */
+  .h1-wrapper { 
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    z-index: 10;
+  }
   .block-H1 { 
     font-size: 18px; 
     font-weight: 800; 
-    color: #ea580c; 
-    background: var(--secondary-grad);
-    padding: 8px 24px;
-    border-radius: 30px;
+    color: var(--kurban-green-dark); 
+    background: var(--block-bg); /* Цвет фона блока, чтобы перекрыть линию рамки */
+    padding: 0 15px;
     display: inline-block;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border: 1px solid #ffedd5;
+    white-space: nowrap;
   }
+  /* Декоративные золотые звезды по бокам H1 */
+  .block-H1::before { content: '✦ '; color: var(--kurban-gold); font-weight: 400;}
+  .block-H1::after { content: ' ✦'; color: var(--kurban-gold); font-weight: 400;}
   
-  /* H2 с маркером */
+  /* НОВЫЙ H2 (Элегантный, по центру, с линией снизу) */
   .block-H2 { 
-    font-size: 20px; font-weight: 800; margin: 30px 0 12px; 
-    display: flex; align-items: center; gap: 10px; color: var(--text-main);
+    font-size: 20px; 
+    font-weight: 800; 
+    margin: 30px 0 15px; 
+    color: var(--kurban-green);
+    display: block; /* Убираем flex, чтобы центрировалось */
+    position: relative;
   }
-  .block-H2::before { 
-    content: ''; display: block; width: 6px; height: 20px; 
-    background: var(--primary-grad); border-radius: 6px;
+  /* Золотая линия подчеркивания для H2 */
+  .block-H2::after { 
+    content: ''; 
+    display: block; 
+    width: 50px; 
+    height: 3px; 
+    background: var(--kurban-gold); 
+    border-radius: 2px;
+    margin: 8px auto 0;
   }
   
-  .block-H3 { font-size: 16px; font-weight: 700; margin: 15px 0 8px; color: #ea580c;}
+  .block-H3 { font-size: 16px; font-weight: 700; margin: 15px 0 8px; color: var(--kurban-gold);}
   .block-Text { font-size: 15px; margin-bottom: 15px; color: var(--text-muted); line-height: 1.6;}
   
   /* ИНСТРУКЦИЯ */
   .block-Instruction {
-    background: #f8fafc;
-    border-left: 4px solid var(--primary);
+    background: var(--kurban-gold-light);
+    border: 1px solid rgba(212, 175, 55, 0.4);
     padding: 16px 20px;
     margin: 20px 0;
-    border-radius: 0 16px 16px 0;
+    border-radius: 12px;
     font-weight: 600;
-    color: var(--text-main);
+    color: var(--kurban-green-dark);
     font-size: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    text-align: center;
   }
 
   /* ОДИНАРНОЕ ИЗОБРАЖЕНИЕ */
   .block-Image { text-align: center; margin: 20px 0; }
-  .block-Image img { max-width: 100%; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+  .block-Image img { max-width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(13, 92, 70, 0.1); border: 1px solid var(--border-color);}
 
   /* =========================================
-     СЕТКА КАРТОЧЕК (5 В РЯД, ПРЕМИУМ)
+     СЕТКА КАРТОЧЕК (5 В РЯД)
      ========================================= */
   .grid-TableCard {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px; 
+    gap: 6px; 
     margin: 20px 0;
   }
   .card-item {
     background: #fff;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 8px 4px;
+    border-radius: 10px;
+    padding: 6px 4px;
     text-align: center;
-    box-shadow: var(--shadow-card);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   }
-  .card-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(245,166,49,0.1);
-    border-color: #ffedd5;
-  }
   .card-item img {
-    width: 80%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 6px;
-    background: #f8fafc; border-radius: 8px; padding: 2px;
+    width: 85%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 6px;
+    background: var(--kurban-gold-light); border-radius: 6px; padding: 2px;
   }
   .card-item span { 
     font-weight: 700; 
@@ -216,7 +232,7 @@
   }
 
   /* =========================================
-     КНОПКИ (СОВРЕМЕННЫЙ CALL-TO-ACTION)
+     КНОПКИ (ИЗУМРУД И ЗОЛОТО)
      ========================================= */
   .grid-Button {
     display: grid;
@@ -225,46 +241,46 @@
     margin: 25px 0 10px;
   }
   .btn-item {
-    background: var(--primary-grad);
+    background: var(--kurban-green);
     color: #fff; text-align: center; padding: 16px; border-radius: 50px;
     text-decoration: none; font-weight: 800; font-size: 15px;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+    text-transform: uppercase; letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(13, 92, 70, 0.3);
+    border: 1px solid var(--kurban-gold);
     transition: all 0.3s;
-    border: 2px solid transparent;
   }
   .btn-item:hover { 
+    background: var(--kurban-green-dark);
     transform: translateY(-2px); 
-    box-shadow: 0 12px 24px rgba(255, 122, 0, 0.35);
+    box-shadow: 0 10px 24px rgba(13, 92, 70, 0.4);
   }
-  .btn-item:active { transform: translateY(1px); }
 
   /* =========================================
-     ТАБЛИЦА НАГРАД (ЧИСТЫЙ ДИЗАЙН)
+     ТАБЛИЦА НАГРАД
      ========================================= */
   .reward-table-container { 
-    margin: 20px 0; overflow-x: auto; border-radius: 16px; 
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-card);
+    margin: 20px 0; overflow-x: auto; border-radius: 12px; 
+    border: 1px solid var(--kurban-gold);
+    box-shadow: var(--shadow-soft);
   }
   .reward-table {
     width: 100%; border-collapse: collapse; background: #fff; min-width: 320px;
   }
   .reward-table th {
-    background: #f8fafc; color: var(--text-muted); font-weight: 800;
-    padding: 14px 10px; border-bottom: 2px solid var(--border-color);
-    text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+    background: var(--kurban-green); color: #fff; font-weight: 800;
+    padding: 14px 10px; border-bottom: 2px solid var(--kurban-gold);
+    text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
   }
   .reward-table td {
     padding: 12px 10px; border-bottom: 1px solid var(--border-color);
-    text-align: center; font-weight: 700; vertical-align: middle; font-size: 13px; color: var(--text-main);
+    text-align: center; font-weight: 700; vertical-align: middle; font-size: 13px; color: var(--kurban-green-dark);
   }
   .reward-table tr:last-child td { border-bottom: none; }
-  .reward-table tr:nth-child(even) { background-color: #fdfdfd; }
+  .reward-table tr:nth-child(even) { background: var(--kurban-gold-light); }
   
-  .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));}
+  .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto;}
 
-  .loading { text-align: center; padding: 50px; font-size: 16px; font-weight: 700; color: var(--text-muted); animation: pulse 1.5s infinite; }
+  .loading { text-align: center; padding: 50px; font-size: 16px; font-weight: 700; color: var(--kurban-green); animation: pulse 1.5s infinite; }
   @keyframes pulse { 0% {opacity: 0.5;} 50% {opacity: 1;} 100% {opacity: 0.5;} }
 
 </style>
@@ -302,7 +318,6 @@ async function fetchData() {
     let currentBlockId = null;
     let currentGroup = [];
 
-    // Парсим и группируем по Колонке A (Block)
     rows.forEach(r => {
       let block = r.c[0] ? String(r.c[0].v).trim() : "";
       let style = r.c[1] ? String(r.c[1].v).trim() : "";
@@ -435,7 +450,7 @@ function renderPage() {
           break;
 
         default:
-          html += `<div>${content}</div>`;
+          html += `<div class="block-Text">${content}</div>`;
           break;
       }
     });
