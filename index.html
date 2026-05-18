@@ -89,7 +89,7 @@
   .content-block {
     background: var(--block-bg);
     border-radius: 16px;
-    padding: 40px 20px 25px; /* Немного увеличил отступ для округлого H1 */
+    padding: 25px 20px 25px; /* Уменьшен верхний отступ для компактности */
     margin-top: 40px; 
     margin-bottom: 25px;
     box-shadow: var(--shadow-soft);
@@ -160,22 +160,30 @@
   .block-H1::before { content: '✦ '; color: var(--kurban-gold); font-weight: 400;}
   .block-H1::after { content: ' ✦'; color: var(--kurban-gold); font-weight: 400;}
   
-  /* H2 С ЛИНИЕЙ */
+  /* Убираем отступ у первого элемента под H1 */
+  .h1-wrapper + div {
+    margin-top: 0 !important;
+  }
+
+  /* H2 С ЛИНИЕЙ - делаем компактнее */
   .block-H2 { 
     font-size: 20px; 
     font-weight: 800; 
-    margin: 30px 0 15px; 
+    margin: 20px 0 5px; /* Сильно уменьшили отступ снизу */
     color: var(--kurban-green);
     display: block; 
     position: relative;
   }
   .block-H2::after { 
     content: ''; display: block; width: 50px; height: 3px; 
-    background: var(--kurban-gold); border-radius: 2px; margin: 8px auto 0;
+    background: var(--kurban-gold); border-radius: 2px; margin: 6px auto 0;
   }
   
-  .block-H3 { font-size: 16px; font-weight: 700; margin: 15px 0 8px; color: var(--kurban-gold);}
-  .block-Text { font-size: 15px; margin-bottom: 15px; color: var(--text-muted); line-height: 1.6;}
+  /* H3 - прижимаем к тексту */
+  .block-H3 { font-size: 16px; font-weight: 700; margin: 5px 0 5px; color: var(--kurban-gold);}
+  
+  /* TEXT - уплотняем абзацы */
+  .block-Text { font-size: 15px; margin-bottom: 5px; color: var(--text-muted); line-height: 1.4;}
   
   /* ИНСТРУКЦИЯ */
   .block-Instruction {
