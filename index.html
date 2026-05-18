@@ -1,41 +1,316 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подключение VPN</title>
-    <style>
-        body { background-color: #1a1a1a; color: white; text-align: center; font-family: sans-serif; padding-top: 20vh; margin: 0; }
-        .btn { display: inline-block; padding: 18px 30px; background-color: #2481cc; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .info { margin-top: 30px; font-size: 14px; color: #888; padding: 0 20px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIGO Event Page</title>
+
+<!-- Подключаем шрифт Exo 2 -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-color: #fefffd; /* Заданный цвет фона */
+    --text-color: #2c3e50;
+    --primary-color: #f5a631;
+    --border-color: #e2e8f0;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Exo 2', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
+  .lang-switcher {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+  }
+  .lang-btn {
+    background: #fff;
+    border: 2px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--primary-color);
+    color: #fff;
+  }
+
+  /* СТИЛИ БЛОКОВ (СТРОКИ ИЗ ТАБЛИЦЫ) */
+  .block-Title { font-size: 36px; font-weight: 800; text-align: center; margin: 40px 0 10px; color: #111; }
+  .block-Subtitle { font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 30px; color: #666; }
+  .block-H1 { font-size: 32px; font-weight: 800; margin: 30px 0 15px; border-bottom: 2px solid var(--primary-color); padding-bottom: 5px; display: inline-block;}
+  .block-H2 { font-size: 26px; font-weight: 800; margin: 25px 0 10px; }
+  .block-H3 { font-size: 20px; font-weight: 600; margin: 20px 0 10px; }
+  .block-Text { font-size: 16px; margin-bottom: 15px; }
+  
+  .block-Instruction {
+    background: #f8f9fa;
+    border-left: 5px solid var(--primary-color);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+    font-weight: 600;
+  }
+
+  .block-Image { text-align: center; margin: 20px 0; }
+  .block-Image img { max-width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+  /* СЕТКА КАРТОЧЕК (5 в ряд) */
+  .grid-TableCard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .card-item {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  .card-item img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .card-item span { font-weight: 800; font-size: 14px; display: block; }
+
+  /* СЕТКА КНОПОК (2 в ряд) */
+  .grid-Button {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .btn-item {
+    background: linear-gradient(135deg, #f5a631, #ff7a00);
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 16px;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(245, 166, 49, 0.3);
+    transition: transform 0.2s;
+  }
+  .btn-item:hover { transform: translateY(-3px); }
+
+  /* ТАБЛИЦА НАГРАД (3 колонки) */
+  .reward-table-container { margin: 20px 0; overflow-x: auto; }
+  .reward-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .reward-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    font-weight: 600;
+  }
+  .reward-table tr:nth-child(even) { background-color: #f8f9fa; }
+
+  .loading { text-align: center; padding: 50px; font-size: 20px; font-weight: 800; color: var(--primary-color); }
+
+  /* МОБИЛЬНАЯ АДАПТАЦИЯ */
+  @media (max-width: 768px) {
+    .grid-TableCard { grid-template-columns: repeat(2, 1fr); }
+    .grid-Button { grid-template-columns: 1fr; } /* На телефоне кнопки по одной в ряд */
+    .block-Title { font-size: 28px; }
+    .block-H1 { font-size: 24px; }
+  }
+</style>
 </head>
 <body>
-    <h2>⏳ Запускаем приложение...</h2>
-    <p>Нажмите кнопку ниже, чтобы добавить ключ в Happ Plus.</p>
-    
-    <a id="vpn-link" href="#" class="btn">ДОБАВИТЬ В HAPP PLUS</a>
 
-    <div class="info">
-        *Если вы открыли эту страницу внутри Telegram, нажмите на три точки в правом верхнем углу и выберите <b>«Открыть в браузере»</b> (Safari/Chrome).
+  <div class="container">
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-ru" onclick="switchLang('ru')">RU</button>
+      <button class="lang-btn" id="btn-uz" onclick="switchLang('uz')">UZ</button>
     </div>
 
-    <script>
-        // Извлекаем ключ из ссылки
-        const params = new URLSearchParams(window.location.search);
-        const vpnUrl = params.get('url');
+    <div id="content">
+      <div class="loading">Загрузка данных... ⏳</div>
+    </div>
+  </div>
 
-        if (vpnUrl) {
-            // Вставляем ссылку в кнопку
-            document.getElementById('vpn-link').href = vpnUrl;
-            
-            // Пытаемся открыть приложение автоматически через 1 секунду
-            setTimeout(() => {
-                window.location.href = vpnUrl;
-            }, 1000);
-        } else {
-            document.body.innerHTML = "<h2>❌ Ошибка: Ключ не передан</h2>";
+<script>
+const sheetID = "1YZh92BcRe-ctZjJNxnRCNgSCgw3i4UEuu6STb_06PUo";
+const sheetGID = "0"; 
+let currentLang = 'ru'; 
+let pageData = [];
+
+// Подтягиваем данные из Google Таблицы
+async function fetchData() {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20A,B,C,D&gid=${sheetGID}&_=${Date.now()}`;
+  
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows || [];
+
+    // Парсим таблицу
+    pageData = rows.map(r => {
+      return {
+        block: r.c[0] ? String(r.c[0].v).trim() : "",
+        style: r.c[1] ? String(r.c[1].v).trim() : "",
+        ru: r.c[2] ? String(r.c[2].v).trim() : "",
+        uz: r.c[3] ? String(r.c[3].v).trim() : ""
+      };
+    }).filter(item => item.block !== ""); // убираем пустые строки
+
+    renderPage();
+  } catch (e) {
+    document.getElementById("content").innerHTML = `<div class="loading">❌ Ошибка загрузки данных</div>`;
+    console.error(e);
+  }
+}
+
+// Переключение языка
+function switchLang(lang) {
+  currentLang = lang;
+  document.getElementById("btn-ru").classList.toggle("active", lang === 'ru');
+  document.getElementById("btn-uz").classList.toggle("active", lang === 'uz');
+  renderPage();
+}
+
+// Рендер страницы
+function renderPage() {
+  const container = document.getElementById("content");
+  let html = "";
+  
+  let inTableCardGrid = false;
+  let inButtonGrid = false;
+  let inRewardTable = false;
+
+  // Функция для закрытия открытых группирующих тегов (Гриды, Таблицы)
+  function closeGroups(currentStyle) {
+    if (inTableCardGrid && currentStyle !== 'TableCard') { html += `</div>`; inTableCardGrid = false; }
+    if (inButtonGrid && currentStyle !== 'Button') { html += `</div>`; inButtonGrid = false; }
+    if (inRewardTable && currentStyle !== 'RewardTable') { html += `</tbody></table></div>`; inRewardTable = false; }
+  }
+
+  pageData.forEach((row, index) => {
+    // Пропускаем строку с заголовками таблицы (если есть)
+    if (row.block.toLowerCase() === 'block' || row.block.toLowerCase() === 'блоки') return;
+
+    let content = currentLang === 'ru' ? row.ru : row.uz;
+    // Если для языка нет текста, берем русский по умолчанию, чтобы не было пустот
+    if (!content) content = row.ru; 
+    if (!content) return; // Если вообще пусто - пропускаем
+
+    const style = row.style;
+    
+    // Закрываем предыдущие гриды, если стиль изменился
+    closeGroups(style);
+
+    switch(style) {
+      case 'Title':
+      case 'Subtitle':
+      case 'H1':
+      case 'H2':
+      case 'H3':
+      case 'Text':
+      case 'Instruction':
+        // Простые текстовые блоки
+        html += `<div class="block-${style}">${content.replace(/\n/g, '<br>')}</div>`;
+        break;
+
+      case 'Image':
+        // Картинка (в ячейке должна быть ссылка)
+        html += `<div class="block-Image"><img src="${content}" alt="Image"></div>`;
+        break;
+
+      case 'TableCard':
+        // Карточка с картинкой и текстом (Разделитель |)
+        if (!inTableCardGrid) {
+          html += `<div class="grid-TableCard">`;
+          inTableCardGrid = true;
         }
-    </script>
+        let cardParts = content.split('|').map(s => s.trim());
+        let imgLink = cardParts[0] || '';
+        let cardName = cardParts[1] || '';
+        html += `
+          <div class="card-item">
+            <img src="${imgLink}" alt="Card">
+            <span>${cardName}</span>
+          </div>`;
+        break;
+
+      case 'Button':
+        // Кнопка-ссылка (Разделитель |)
+        if (!inButtonGrid) {
+          html += `<div class="grid-Button">`;
+          inButtonGrid = true;
+        }
+        let btnParts = content.split('|').map(s => s.trim());
+        let btnName = btnParts[0] || 'Кликни';
+        let btnLink = btnParts[1] || '#';
+        html += `<a href="${btnLink}" target="_blank" class="btn-item">${btnName}</a>`;
+        break;
+
+      case 'RewardTable':
+        // Строка таблицы (Разделитель | на 3 колонки)
+        if (!inRewardTable) {
+          html += `<div class="reward-table-container"><table class="reward-table"><tbody>`;
+          inRewardTable = true;
+        }
+        let cols = content.split('|').map(s => s.trim());
+        html += `<tr>`;
+        html += `<td>${cols[0] || ''}</td>`;
+        html += `<td>${cols[1] || ''}</td>`;
+        html += `<td>${cols[2] || ''}</td>`;
+        html += `</tr>`;
+        break;
+
+      default:
+        // Если стиль не распознан, выводим как простой текст
+        html += `<div>${content}</div>`;
+        break;
+    }
+  });
+
+  // В самом конце закрываем все теги, если они остались открыты
+  closeGroups('');
+
+  container.innerHTML = html;
+}
+
+// Запуск
+fetchData();
+</script>
 </body>
 </html>
