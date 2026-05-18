@@ -10,166 +10,175 @@
 
 <style>
   :root {
-    --bg-color: #fefffd;
-    --text-color: #2c3e50;
-    --primary-color: #f5a631;
+    --bg-page: #f0f2f5; /* Цвет фона за рамками */
+    --block-bg: #ffffff; /* Цвет внутри рамок */
+    --text-main: #1a202c;
+    --text-muted: #4a5568;
+    --primary: #f5a631;
+    --primary-grad: linear-gradient(135deg, #f5a631, #ff7a00);
     --border-color: #e2e8f0;
   }
 
   body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg-page);
+    color: var(--text-main);
     font-family: 'Exo 2', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
 
+  /* МОБИЛЬНЫЙ КОНТЕЙНЕР (Выглядит как приложение) */
   .container {
-    max-width: 1200px;
+    max-width: 550px; /* Имитация экрана телефона на ПК */
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px 10px 40px;
   }
 
   /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
   .lang-switcher {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 15px;
     position: sticky;
     top: 10px;
     z-index: 100;
   }
   .lang-btn {
     background: #fff;
-    border: 2px solid var(--primary-color);
-    color: var(--text-color);
-    padding: 8px 16px;
-    border-radius: 8px;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 6px 14px;
+    border-radius: 20px;
     font-weight: 800;
+    font-size: 14px;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     transition: 0.2s;
+    backdrop-filter: blur(10px);
   }
-  .lang-btn.active { background: var(--primary-color); color: #fff; }
+  .lang-btn.active { background: var(--primary-grad); color: #fff; border-color: transparent;}
 
+  /* =========================================
+     КРАСИВЫЕ РАМКИ БЛОКОВ
+     ========================================= */
+  .content-block {
+    background: var(--block-bg);
+    border-radius: 24px;
+    padding: 25px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(245, 166, 49, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Оранжевая полоска сверху каждого блока */
+  .content-block::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: var(--primary-grad);
+  }
+
+  /* ЦЕНТРИРОВАНИЕ ДЛЯ H1 (Красивая плашка) */
+  .h1-wrapper { text-align: center; margin-bottom: 20px; margin-top: -5px;}
+  
   /* СТИЛИ ТЕКСТА И ЗАГОЛОВКОВ */
-  .block-Title { font-size: 34px; font-weight: 800; text-align: center; margin: 30px 0 10px; color: #111; line-height: 1.2;}
-  .block-Subtitle { font-size: 18px; font-weight: 600; text-align: center; margin-bottom: 25px; color: #666; }
-  .block-H1 { font-size: 28px; font-weight: 800; margin: 30px 0 15px; border-bottom: 2px solid var(--primary-color); padding-bottom: 5px; display: inline-block;}
-  .block-H2 { font-size: 22px; font-weight: 800; margin: 25px 0 10px; color: #1a202c;}
-  .block-H3 { font-size: 18px; font-weight: 600; margin: 15px 0 10px; color: var(--primary-color);}
-  .block-Text { font-size: 16px; margin-bottom: 15px; color: #4a5568;}
+  .block-Title { font-size: 30px; font-weight: 800; text-align: center; margin: 0 0 10px; color: #111; line-height: 1.2;}
+  .block-Subtitle { font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;}
+  
+  .block-H1 { 
+    font-size: 20px; font-weight: 800; color: #fff; background: var(--primary-grad);
+    padding: 8px 24px; border-radius: 20px; display: inline-block;
+    box-shadow: 0 6px 15px rgba(245, 166, 49, 0.4); text-transform: uppercase;
+  }
+  
+  .block-H2 { font-size: 19px; font-weight: 800; margin: 25px 0 10px; display: flex; align-items: center; gap: 8px;}
+  .block-H2::before { content: ''; display: block; width: 6px; height: 18px; background: var(--primary); border-radius: 4px;}
+  
+  .block-H3 { font-size: 16px; font-weight: 800; margin: 15px 0 10px; color: var(--primary);}
+  .block-Text { font-size: 15px; margin-bottom: 15px; color: var(--text-muted);}
   
   /* ИНСТРУКЦИЯ */
   .block-Instruction {
-    background: #fffaf0;
-    border-left: 5px solid var(--primary-color);
-    padding: 15px 20px;
+    background: #fff8eb;
+    border: 1px dashed var(--primary);
+    padding: 15px;
     margin: 20px 0;
-    border-radius: 0 8px 8px 0;
+    border-radius: 12px;
     font-weight: 600;
     color: #2d3748;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 14px;
   }
 
   /* ОДИНАРНОЕ ИЗОБРАЖЕНИЕ */
-  .block-Image { text-align: center; margin: 20px 0; }
-  .block-Image img { max-width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+  .block-Image { text-align: center; margin: 15px 0; }
+  .block-Image img { max-width: 100%; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
-  /* СЕТКА КАРТОЧЕК (5 в ряд) */
+  /* СЕТКА КАРТОЧЕК (МОБИЛЬНАЯ - 3 в ряд) */
   .grid-TableCard {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-    margin: 20px 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 15px 0;
   }
   .card-item {
-    background: #fff;
+    background: #f8fafc;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 10px;
+    border-radius: 14px;
+    padding: 10px 5px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   }
   .card-item img {
-    width: 80%;
-    aspect-ratio: 1/1;
-    object-fit: contain;
-    margin-bottom: 10px;
+    width: 65%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 8px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
   }
-  .card-item span { font-weight: 800; font-size: 13px; display: block; line-height: 1.2;}
+  .card-item span { font-weight: 800; font-size: 11px; display: block; line-height: 1.2; color: #2d3748; word-break: break-word;}
 
   /* СЕТКА КНОПОК */
   .grid-Button {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin: 30px 0;
+    grid-template-columns: 1fr; /* На мобилке кнопки друг под другом */
+    gap: 12px;
+    margin: 20px 0 5px;
   }
   .btn-item {
-    background: linear-gradient(135deg, #f5a631, #ff7a00);
-    color: #fff;
-    text-align: center;
-    padding: 15px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 16px;
-    text-transform: uppercase;
-    box-shadow: 0 5px 15px rgba(245, 166, 49, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--primary-grad);
+    color: #fff; text-align: center; padding: 14px; border-radius: 14px;
+    text-decoration: none; font-weight: 800; font-size: 15px;
+    text-transform: uppercase; box-shadow: 0 6px 15px rgba(245, 166, 49, 0.4);
+    transition: transform 0.2s;
   }
-  .btn-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 166, 49, 0.6);}
+  .btn-item:active { transform: translateY(2px); }
 
   /* ТАБЛИЦА НАГРАД */
-  .reward-table-container { margin: 20px 0; overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .reward-table-container { 
+    margin: 15px 0; overflow-x: auto; border-radius: 14px; 
+    border: 1px solid var(--border-color);
+  }
   .reward-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    min-width: 400px;
+    width: 100%; border-collapse: collapse; background: #fff; min-width: 300px;
   }
   .reward-table th {
-    background-color: #f7fafc;
-    color: #2d3748;
-    font-weight: 800;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 13px;
+    background: #f8fafc; color: var(--text-main); font-weight: 800;
+    padding: 12px 10px; border-bottom: 2px solid var(--border-color);
+    text-align: center; font-size: 12px; text-transform: uppercase;
   }
   .reward-table td {
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    text-align: center;
-    font-weight: 600;
-    vertical-align: middle;
+    padding: 10px; border-bottom: 1px solid var(--border-color);
+    text-align: center; font-weight: 600; vertical-align: middle; font-size: 13px;
   }
-  .reward-table tr:nth-child(even) { background-color: #fafbfc; }
+  .reward-table tr:last-child td { border-bottom: none; }
+  .reward-table tr:nth-child(even) { background-color: #fcfcfc; }
   
-  .reward-icon { width: 50px; height: 50px; object-fit: contain; display: block; margin: 0 auto; }
+  .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));}
 
-  .loading { text-align: center; padding: 50px; font-size: 20px; font-weight: 800; color: var(--primary-color); }
+  .loading { text-align: center; padding: 50px; font-size: 18px; font-weight: 800; color: var(--primary); }
 
-  /* МОБИЛЬНАЯ АДАПТАЦИЯ */
-  @media (max-width: 768px) {
-    .grid-TableCard { grid-template-columns: repeat(3, 1fr); gap: 10px;}
-    .grid-Button { grid-template-columns: 1fr; gap: 10px;}
-    .block-Title { font-size: 26px; }
-    .block-H1 { font-size: 22px; }
-    .block-H2 { font-size: 18px; }
-    .card-item { padding: 8px; }
-    .card-item span { font-size: 11px; }
-  }
-  @media (max-width: 480px) {
+  /* Для совсем мелких экранов */
+  @media (max-width: 380px) {
     .grid-TableCard { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
@@ -188,12 +197,12 @@
   </div>
 
 <script>
-// ID ВАШЕЙ ТАБЛИЦЫ
+// ID ТАБЛИЦЫ
 const sheetID = "1YZh92BcRe-ctZjJNxnRCNgSCgw3i4UEuu6STb_06PUo";
 const sheetGID = "0"; 
 
 let currentLang = 'ru'; 
-let pageData = [];
+let pageBlocks = []; // Массив сгруппированных блоков
 
 async function fetchData() {
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20A,B,C,D&gid=${sheetGID}&_=${Date.now()}`;
@@ -204,14 +213,29 @@ async function fetchData() {
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows || [];
 
-    pageData = rows.map(r => {
-      return {
-        block: r.c[0] ? String(r.c[0].v).trim() : "",
-        style: r.c[1] ? String(r.c[1].v).trim() : "",
-        ru: r.c[2] ? String(r.c[2].v).trim() : "",
-        uz: r.c[3] ? String(r.c[3].v).trim() : ""
-      };
-    }).filter(item => item.style !== ""); 
+    let currentBlockId = null;
+    let currentGroup = [];
+
+    // Парсим и группируем по Колонке A (Block)
+    rows.forEach(r => {
+      let block = r.c[0] ? String(r.c[0].v).trim() : "";
+      let style = r.c[1] ? String(r.c[1].v).trim() : "";
+      let ru = r.c[2] ? String(r.c[2].v).trim() : "";
+      let uz = r.c[3] ? String(r.c[3].v).trim() : "";
+
+      if (style.toLowerCase() === 'style' || style === "") return;
+
+      let rowData = { style, ru, uz };
+
+      if (block !== currentBlockId) {
+        if (currentGroup.length > 0) pageBlocks.push(currentGroup);
+        currentBlockId = block;
+        currentGroup = [];
+      }
+      currentGroup.push(rowData);
+    });
+    
+    if (currentGroup.length > 0) pageBlocks.push(currentGroup);
 
     renderPage();
   } catch (e) {
@@ -230,112 +254,113 @@ function switchLang(lang) {
 function renderPage() {
   const container = document.getElementById("content");
   let html = "";
-  
-  let inTableCardGrid = false;
-  let inButtonGrid = false;
-  let inRewardTable = false;
 
-  // Закрытие тегов сеток/таблиц
-  function closeGroups(currentStyle) {
-    if (inTableCardGrid && currentStyle !== 'TableCard') { html += `</div>`; inTableCardGrid = false; }
-    if (inButtonGrid && currentStyle !== 'Button') { html += `</div>`; inButtonGrid = false; }
-    if (inRewardTable && currentStyle !== 'RewardTable') { html += `</tbody></table></div>`; inRewardTable = false; }
-  }
+  // Проходимся по КАЖДОМУ блоку (рамке)
+  pageBlocks.forEach(group => {
+    html += `<div class="content-block">`; // Открываем красивую рамку
 
-  pageData.forEach((row) => {
-    if (row.style.toLowerCase() === 'style') return; // Пропускаем заголовок таблицы
+    let inTableCardGrid = false;
+    let inButtonGrid = false;
+    let inRewardTable = false;
 
-    let content = currentLang === 'ru' ? row.ru : row.uz;
-    if (!content) content = row.ru; // Фолбэк на русский
-    if (!content) return; 
-
-    const style = row.style;
-    closeGroups(style);
-
-    switch(style) {
-      case 'Title':
-      case 'Subtitle':
-      case 'H1':
-      case 'H2':
-      case 'H3':
-      case 'Text':
-        html += `<div class="block-${style}">${content.replace(/\n/g, '<br>')}</div>`;
-        break;
-
-      case 'Instruction':
-        // Для инструкции переносы строк меняем на <br>
-        html += `<div class="block-Instruction">${content.replace(/\n/g, '<br>')}</div>`;
-        break;
-
-      case 'Image':
-        html += `<div class="block-Image"><img src="${content}" alt="Image"></div>`;
-        break;
-
-      case 'TableCard':
-        if (!inTableCardGrid) {
-          html += `<div class="grid-TableCard">`;
-          inTableCardGrid = true;
-        }
-        // Делим строку по запятой на отдельные карточки
-        let cards = content.split(',');
-        cards.forEach(cardStr => {
-          if(!cardStr.trim()) return;
-          // Делим карточку по <br> на Имя и Ссылку
-          let parts = cardStr.split('<br>');
-          let cardName = parts[0] ? parts[0].trim() : '';
-          let imgLink = parts[1] ? parts[1].trim() : '';
-          
-          html += `
-            <div class="card-item">
-              ${imgLink ? `<img src="${imgLink}" alt="item">` : ''}
-              <span>${cardName}</span>
-            </div>`;
-        });
-        break;
-
-      case 'Button':
-        if (!inButtonGrid) {
-          html += `<div class="grid-Button">`;
-          inButtonGrid = true;
-        }
-        // Делим кнопку по запятой
-        let btnParts = content.split(',');
-        let btnName = btnParts[0] ? btnParts[0].trim() : 'Кнопка';
-        let btnLink = btnParts[1] ? btnParts[1].trim() : '#';
-        html += `<a href="${btnLink}" target="_blank" class="btn-item">${btnName}</a>`;
-        break;
-
-      case 'RewardTable':
-        let isHeader = false;
-        if (!inRewardTable) {
-          html += `<div class="reward-table-container"><table class="reward-table"><tbody>`;
-          inRewardTable = true;
-          isHeader = true; // Первая строка при открытии таблицы - это шапка
-        }
-        
-        let cols = content.split(',');
-        html += `<tr>`;
-        cols.forEach(col => {
-          let val = col.trim();
-          let tag = isHeader ? 'th' : 'td';
-          
-          // Если значение начинается на http - выводим картинку, иначе текст
-          if (val.startsWith('http')) {
-            html += `<${tag}><img src="${val}" class="reward-icon" alt="reward"></${tag}>`;
-          } else {
-            html += `<${tag}>${val}</${tag}>`;
-          }
-        });
-        html += `</tr>`;
-        break;
-
-      default:
-        html += `<div>${content}</div>`;
-        break;
+    function closeGroups(currentStyle) {
+      if (inTableCardGrid && currentStyle !== 'TableCard') { html += `</div>`; inTableCardGrid = false; }
+      if (inButtonGrid && currentStyle !== 'Button') { html += `</div>`; inButtonGrid = false; }
+      if (inRewardTable && currentStyle !== 'RewardTable') { html += `</tbody></table></div>`; inRewardTable = false; }
     }
+
+    // Проходимся по строкам ВНУТРИ рамки
+    group.forEach(row => {
+      let content = currentLang === 'ru' ? row.ru : row.uz;
+      if (!content) content = row.ru; // Фолбэк на русский
+      if (!content) return; 
+
+      const style = row.style;
+      closeGroups(style);
+
+      switch(style) {
+        case 'H1':
+          // H1 теперь красиво отцентрирован как бейджик сверху блока
+          html += `<div class="h1-wrapper"><div class="block-H1">${content.replace(/\n/g, '<br>')}</div></div>`;
+          break;
+        case 'Title':
+        case 'Subtitle':
+        case 'H2':
+        case 'H3':
+        case 'Text':
+          html += `<div class="block-${style}">${content.replace(/\n/g, '<br>')}</div>`;
+          break;
+
+        case 'Instruction':
+          html += `<div class="block-Instruction">${content.replace(/\n/g, '<br>')}</div>`;
+          break;
+
+        case 'Image':
+          html += `<div class="block-Image"><img src="${content}" alt="Image"></div>`;
+          break;
+
+        case 'TableCard':
+          if (!inTableCardGrid) {
+            html += `<div class="grid-TableCard">`;
+            inTableCardGrid = true;
+          }
+          let cards = content.split(',');
+          cards.forEach(cardStr => {
+            if(!cardStr.trim()) return;
+            let parts = cardStr.split('<br>');
+            let cardName = parts[0] ? parts[0].trim() : '';
+            let imgLink = parts[1] ? parts[1].trim() : '';
+            html += `
+              <div class="card-item">
+                ${imgLink ? `<img src="${imgLink}" alt="item">` : ''}
+                <span>${cardName}</span>
+              </div>`;
+          });
+          break;
+
+        case 'Button':
+          if (!inButtonGrid) {
+            html += `<div class="grid-Button">`;
+            inButtonGrid = true;
+          }
+          let btnParts = content.split(',');
+          let btnName = btnParts[0] ? btnParts[0].trim() : 'Кнопка';
+          let btnLink = btnParts[1] ? btnParts[1].trim() : '#';
+          html += `<a href="${btnLink}" target="_blank" class="btn-item">${btnName}</a>`;
+          break;
+
+        case 'RewardTable':
+          let isHeader = false;
+          if (!inRewardTable) {
+            html += `<div class="reward-table-container"><table class="reward-table"><tbody>`;
+            inRewardTable = true;
+            isHeader = true; 
+          }
+          
+          let cols = content.split(',');
+          html += `<tr>`;
+          cols.forEach(col => {
+            let val = col.trim();
+            let tag = isHeader ? 'th' : 'td';
+            if (val.startsWith('http')) {
+              html += `<${tag}><img src="${val}" class="reward-icon" alt="reward"></${tag}>`;
+            } else {
+              html += `<${tag}>${val}</${tag}>`;
+            }
+          });
+          html += `</tr>`;
+          break;
+
+        default:
+          html += `<div>${content}</div>`;
+          break;
+      }
+    });
+
+    closeGroups(''); // Закрываем гриды, если они остались открыты в конце блока
+    html += `</div>`; // Закрываем рамку (content-block)
   });
 
-  closeGroups('');
   container.innerHTML = html;
 }
 
