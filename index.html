@@ -6,17 +6,20 @@
 <title>BIGO Event Page</title>
 
 <!-- Подключаем шрифт Exo 2 -->
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg-page: #f0f2f5; /* Цвет фона за рамками */
-    --block-bg: #ffffff; /* Цвет внутри рамок */
-    --text-main: #1a202c;
-    --text-muted: #4a5568;
+    --bg-page: #fefffd; /* Заданный фон */
+    --block-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
     --primary: #f5a631;
-    --primary-grad: linear-gradient(135deg, #f5a631, #ff7a00);
-    --border-color: #e2e8f0;
+    --primary-grad: linear-gradient(135deg, #ff7a00, #f5a631);
+    --secondary-grad: linear-gradient(135deg, #fff7ed, #ffedd5);
+    --border-color: #f1f5f9;
+    --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.04);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.02);
   }
 
   body {
@@ -25,162 +28,245 @@
     font-family: 'Exo 2', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.5;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
   }
 
-  /* МОБИЛЬНЫЙ КОНТЕЙНЕР (Выглядит как приложение) */
+  /* Легкое свечение сверху для эффекта Landing Page */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 100vw; max-width: 600px; height: 400px;
+    background: radial-gradient(circle, rgba(245,166,49,0.12) 0%, transparent 70%);
+    z-index: -1;
+  }
+
   .container {
-    max-width: 550px; /* Имитация экрана телефона на ПК */
+    max-width: 550px; 
     margin: 0 auto;
-    padding: 15px 10px 40px;
+    padding: 15px 15px 50px;
   }
 
-  /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
+  /* СОВРЕМЕННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (в стиле iOS) */
   .lang-switcher {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     position: sticky;
-    top: 10px;
+    top: 15px;
     z-index: 100;
   }
-  .lang-btn {
-    background: #fff;
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    transition: 0.2s;
-    backdrop-filter: blur(10px);
+  .lang-switcher::before {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    background: #f8fafc;
+    border-radius: 30px;
+    width: 120px; height: 100%;
+    z-index: -1;
+    border: 1px solid var(--border-color);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
   }
-  .lang-btn.active { background: var(--primary-grad); color: #fff; border-color: transparent;}
+  .lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .lang-btn.active { 
+    background: var(--block-bg); 
+    color: #ff7a00; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
 
   /* =========================================
-     КРАСИВЫЕ РАМКИ БЛОКОВ
+     РАМКИ БЛОКОВ (ПРЕМИУМ)
      ========================================= */
   .content-block {
     background: var(--block-bg);
     border-radius: 24px;
-    padding: 25px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(245, 166, 49, 0.15);
-    position: relative;
-    overflow: hidden;
+    padding: 30px 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+    animation: fadeUp 0.6s ease-out backwards;
   }
-  /* Оранжевая полоска сверху каждого блока */
-  .content-block::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-    background: var(--primary-grad);
+  
+  /* Каскадная анимация появления блоков */
+  .content-block:nth-child(1) { animation-delay: 0.1s; }
+  .content-block:nth-child(2) { animation-delay: 0.2s; }
+  .content-block:nth-child(3) { animation-delay: 0.3s; }
+  .content-block:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ЦЕНТРИРОВАНИЕ ДЛЯ H1 (Красивая плашка) */
-  .h1-wrapper { text-align: center; margin-bottom: 20px; margin-top: -5px;}
-  
-  /* СТИЛИ ТЕКСТА И ЗАГОЛОВКОВ */
-  .block-Title { font-size: 30px; font-weight: 800; text-align: center; margin: 0 0 10px; color: #111; line-height: 1.2;}
-  .block-Subtitle { font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;}
-  
-  .block-H1 { 
-    font-size: 20px; font-weight: 800; color: #fff; background: var(--primary-grad);
-    padding: 8px 24px; border-radius: 20px; display: inline-block;
-    box-shadow: 0 6px 15px rgba(245, 166, 49, 0.4); text-transform: uppercase;
+  /* =========================================
+     ТИПОГРАФИКА
+     ========================================= */
+  /* Главный заголовок с градиентом */
+  .block-Title { 
+    font-size: 34px; 
+    font-weight: 800; 
+    text-align: center; 
+    margin: 0 0 5px; 
+    background: var(--primary-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+  .block-Subtitle { 
+    font-size: 14px; 
+    font-weight: 700; 
+    text-align: center; 
+    margin-bottom: 25px; 
+    color: var(--text-muted); 
+    text-transform: uppercase; 
+    letter-spacing: 2px;
   }
   
-  .block-H2 { font-size: 19px; font-weight: 800; margin: 25px 0 10px; display: flex; align-items: center; gap: 8px;}
-  .block-H2::before { content: ''; display: block; width: 6px; height: 18px; background: var(--primary); border-radius: 4px;}
+  /* Элегантный H1 (в виде бэйджа) */
+  .h1-wrapper { text-align: center; margin-bottom: 30px; margin-top: -10px;}
+  .block-H1 { 
+    font-size: 18px; 
+    font-weight: 800; 
+    color: #ea580c; 
+    background: var(--secondary-grad);
+    padding: 8px 24px;
+    border-radius: 30px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #ffedd5;
+  }
   
-  .block-H3 { font-size: 16px; font-weight: 800; margin: 15px 0 10px; color: var(--primary);}
-  .block-Text { font-size: 15px; margin-bottom: 15px; color: var(--text-muted);}
+  /* H2 с маркером */
+  .block-H2 { 
+    font-size: 20px; font-weight: 800; margin: 30px 0 12px; 
+    display: flex; align-items: center; gap: 10px; color: var(--text-main);
+  }
+  .block-H2::before { 
+    content: ''; display: block; width: 6px; height: 20px; 
+    background: var(--primary-grad); border-radius: 6px;
+  }
+  
+  .block-H3 { font-size: 16px; font-weight: 700; margin: 15px 0 8px; color: #ea580c;}
+  .block-Text { font-size: 15px; margin-bottom: 15px; color: var(--text-muted); line-height: 1.6;}
   
   /* ИНСТРУКЦИЯ */
   .block-Instruction {
-    background: #fff8eb;
-    border: 1px dashed var(--primary);
-    padding: 15px;
+    background: #f8fafc;
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
     margin: 20px 0;
-    border-radius: 12px;
+    border-radius: 0 16px 16px 0;
     font-weight: 600;
-    color: #2d3748;
+    color: var(--text-main);
     font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
   }
 
   /* ОДИНАРНОЕ ИЗОБРАЖЕНИЕ */
-  .block-Image { text-align: center; margin: 15px 0; }
-  .block-Image img { max-width: 100%; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .block-Image { text-align: center; margin: 20px 0; }
+  .block-Image img { max-width: 100%; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
 
-  /* СЕТКА КАРТОЧЕК (МОБИЛЬНАЯ - 3 в ряд) */
+  /* =========================================
+     СЕТКА КАРТОЧЕК (5 В РЯД, ПРЕМИУМ)
+     ========================================= */
   .grid-TableCard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 15px 0;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px; 
+    margin: 20px 0;
   }
   .card-item {
-    background: #f8fafc;
+    background: #fff;
     border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 10px 5px;
+    border-radius: 12px;
+    padding: 8px 4px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s, box-shadow 0.2s;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   }
-  .card-item img {
-    width: 65%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 8px;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  .card-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(245,166,49,0.1);
+    border-color: #ffedd5;
   }
-  .card-item span { font-weight: 800; font-size: 11px; display: block; line-height: 1.2; color: #2d3748; word-break: break-word;}
+  .card-item img {
+    width: 80%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 6px;
+    background: #f8fafc; border-radius: 8px; padding: 2px;
+  }
+  .card-item span { 
+    font-weight: 700; 
+    font-size: 9px;
+    display: block; line-height: 1.2; color: var(--text-main); word-break: break-word;
+  }
 
-  /* СЕТКА КНОПОК */
+  /* =========================================
+     КНОПКИ (СОВРЕМЕННЫЙ CALL-TO-ACTION)
+     ========================================= */
   .grid-Button {
     display: grid;
-    grid-template-columns: 1fr; /* На мобилке кнопки друг под другом */
+    grid-template-columns: 1fr; 
     gap: 12px;
-    margin: 20px 0 5px;
+    margin: 25px 0 10px;
   }
   .btn-item {
     background: var(--primary-grad);
-    color: #fff; text-align: center; padding: 14px; border-radius: 14px;
+    color: #fff; text-align: center; padding: 16px; border-radius: 50px;
     text-decoration: none; font-weight: 800; font-size: 15px;
-    text-transform: uppercase; box-shadow: 0 6px 15px rgba(245, 166, 49, 0.4);
-    transition: transform 0.2s;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+    transition: all 0.3s;
+    border: 2px solid transparent;
   }
-  .btn-item:active { transform: translateY(2px); }
+  .btn-item:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 12px 24px rgba(255, 122, 0, 0.35);
+  }
+  .btn-item:active { transform: translateY(1px); }
 
-  /* ТАБЛИЦА НАГРАД */
+  /* =========================================
+     ТАБЛИЦА НАГРАД (ЧИСТЫЙ ДИЗАЙН)
+     ========================================= */
   .reward-table-container { 
-    margin: 15px 0; overflow-x: auto; border-radius: 14px; 
+    margin: 20px 0; overflow-x: auto; border-radius: 16px; 
     border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-card);
   }
   .reward-table {
-    width: 100%; border-collapse: collapse; background: #fff; min-width: 300px;
+    width: 100%; border-collapse: collapse; background: #fff; min-width: 320px;
   }
   .reward-table th {
-    background: #f8fafc; color: var(--text-main); font-weight: 800;
-    padding: 12px 10px; border-bottom: 2px solid var(--border-color);
-    text-align: center; font-size: 12px; text-transform: uppercase;
+    background: #f8fafc; color: var(--text-muted); font-weight: 800;
+    padding: 14px 10px; border-bottom: 2px solid var(--border-color);
+    text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   .reward-table td {
-    padding: 10px; border-bottom: 1px solid var(--border-color);
-    text-align: center; font-weight: 600; vertical-align: middle; font-size: 13px;
+    padding: 12px 10px; border-bottom: 1px solid var(--border-color);
+    text-align: center; font-weight: 700; vertical-align: middle; font-size: 13px; color: var(--text-main);
   }
   .reward-table tr:last-child td { border-bottom: none; }
-  .reward-table tr:nth-child(even) { background-color: #fcfcfc; }
+  .reward-table tr:nth-child(even) { background-color: #fdfdfd; }
   
-  .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));}
+  .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));}
 
-  .loading { text-align: center; padding: 50px; font-size: 18px; font-weight: 800; color: var(--primary); }
+  .loading { text-align: center; padding: 50px; font-size: 16px; font-weight: 700; color: var(--text-muted); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% {opacity: 0.5;} 50% {opacity: 1;} 100% {opacity: 0.5;} }
 
-  /* Для совсем мелких экранов */
-  @media (max-width: 380px) {
-    .grid-TableCard { grid-template-columns: repeat(2, 1fr); }
-  }
 </style>
 </head>
 <body>
@@ -202,7 +288,7 @@ const sheetID = "1YZh92BcRe-ctZjJNxnRCNgSCgw3i4UEuu6STb_06PUo";
 const sheetGID = "0"; 
 
 let currentLang = 'ru'; 
-let pageBlocks = []; // Массив сгруппированных блоков
+let pageBlocks = []; 
 
 async function fetchData() {
   const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20A,B,C,D&gid=${sheetGID}&_=${Date.now()}`;
@@ -255,9 +341,8 @@ function renderPage() {
   const container = document.getElementById("content");
   let html = "";
 
-  // Проходимся по КАЖДОМУ блоку (рамке)
   pageBlocks.forEach(group => {
-    html += `<div class="content-block">`; // Открываем красивую рамку
+    html += `<div class="content-block">`; 
 
     let inTableCardGrid = false;
     let inButtonGrid = false;
@@ -269,10 +354,9 @@ function renderPage() {
       if (inRewardTable && currentStyle !== 'RewardTable') { html += `</tbody></table></div>`; inRewardTable = false; }
     }
 
-    // Проходимся по строкам ВНУТРИ рамки
     group.forEach(row => {
       let content = currentLang === 'ru' ? row.ru : row.uz;
-      if (!content) content = row.ru; // Фолбэк на русский
+      if (!content) content = row.ru; 
       if (!content) return; 
 
       const style = row.style;
@@ -280,7 +364,6 @@ function renderPage() {
 
       switch(style) {
         case 'H1':
-          // H1 теперь красиво отцентрирован как бейджик сверху блока
           html += `<div class="h1-wrapper"><div class="block-H1">${content.replace(/\n/g, '<br>')}</div></div>`;
           break;
         case 'Title':
@@ -357,8 +440,8 @@ function renderPage() {
       }
     });
 
-    closeGroups(''); // Закрываем гриды, если они остались открыты в конце блока
-    html += `</div>`; // Закрываем рамку (content-block)
+    closeGroups(''); 
+    html += `</div>`; 
   });
 
   container.innerHTML = html;
