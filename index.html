@@ -222,7 +222,7 @@ let pageBlocks = [];
 
 // Умная функция разделения, которая не ломает URL адреса слэшами
 function parseRowData(str, maxCols) {
-  let parts = str.split('/');
+  let parts = str.split(',');
   if (parts.length <= maxCols) return parts;
   let result = parts.slice(0, maxCols - 1);
   result.push(parts.slice(maxCols - 1).join('/')); // Собираем остаток обратно в URL
