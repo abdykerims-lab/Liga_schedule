@@ -2,768 +2,404 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Семейный ПК</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BIGO Event Page - Family PK</title>
 
+<!-- Подключаем шрифт Exo 2 -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
   :root {
-    --gold: #FFD700;
-    --gold2: #FFA500;
-    --dark: #0a0a1a;
-    --dark2: #12122a;
-    --dark3: #1a1a3e;
-    --accent: #6c3fff;
-    --accent2: #a855f7;
-    --text: #e8e8f0;
-    --text2: #a0a0c0;
-    --card: #16163a;
-    --card2: #1e1e45;
-    --border: rgba(108,63,255,0.3);
+    --bg-page: #f4f7fe; 
+    --block-bg: #ffffff;
+    --primary: #3b82f6; /* Энергичный синий для Family PK */
+    --primary-dark: #1e3a8a;
+    --accent: #f59e0b;  /* Золотой/Оранжевый акцент */
+    --accent-light: #fef3c7;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    --shadow-soft: 0 12px 30px rgba(59, 130, 246, 0.08);
   }
 
   body {
-    background: var(--dark);
-    color: var(--text);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    min-height: 100vh;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Exo 2', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
     overflow-x: hidden;
   }
 
-  /* ─── STARS BACKGROUND ─── */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(108,63,255,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.1) 0%, transparent 50%),
-      radial-gradient(ellipse at 60% 80%, rgba(255,165,0,0.05) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
+    position: absolute;
+    top: -150px; left: 50%;
+    transform: translateX(-50%);
+    width: 100vw; max-width: 600px; height: 500px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(245, 158, 11, 0.05) 40%, transparent 70%);
+    z-index: -1;
   }
 
-  /* ─── LANG SWITCHER ─── */
-  .lang-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,26,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+  .container {
+    max-width: 550px; 
+    margin: 0 auto;
+    padding: 15px 15px 50px;
+  }
+
+  /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
+  .lang-switcher {
     display: flex;
     justify-content: flex-end;
-    padding: 10px 20px;
-    gap: 8px;
+    margin-bottom: 25px;
+    position: sticky;
+    top: 15px;
+    z-index: 100;
+  }
+  .lang-switcher::before {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    background: var(--block-bg);
+    border-radius: 30px;
+    width: 120px; height: 100%;
+    z-index: -1;
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
   }
   .lang-btn {
-    padding: 6px 18px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text2);
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: all 0.2s;
+    background: transparent; border: none;
+    color: var(--primary);
+    padding: 8px 18px; border-radius: 20px;
+    font-weight: 800; font-size: 13px;
+    cursor: pointer; transition: 0.3s;
   }
-  .lang-btn.active {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-color: transparent;
-    color: #fff;
-    box-shadow: 0 0 12px rgba(108,63,255,0.5);
-  }
-  .lang-btn:hover:not(.active) {
-    border-color: var(--accent);
-    color: #fff;
-  }
+  .lang-btn.active { background: var(--primary); color: #fff; }
 
-  /* ─── MAIN WRAPPER ─── */
-  .page { position: relative; z-index: 1; }
-
-  /* ─── BLOCK ─── */
-  .block {
-    padding: 60px 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .block + .block {
-    border-top: 1px solid var(--border);
-  }
-
-  /* ─── TITLE ─── */
-  .style-title {
-    text-align: center;
-    font-size: clamp(32px, 6vw, 56px);
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-    margin-bottom: 16px;
-    text-shadow: none;
-    filter: drop-shadow(0 0 30px rgba(255,215,0,0.3));
-  }
-
-  /* ─── SUBTITLE ─── */
-  .style-subtitle {
-    text-align: center;
-    font-size: clamp(14px, 2.5vw, 18px);
-    color: var(--text2);
-    line-height: 1.7;
-    max-width: 700px;
-    margin: 0 auto 24px;
-  }
-
-  /* ─── H1 ─── */
-  .style-h1 {
-    font-size: clamp(22px, 4vw, 34px);
-    font-weight: 800;
-    margin: 12px 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .style-h1 a {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-decoration: none;
-  }
-  .style-h1 a:hover { opacity: 0.8; }
-  .style-h1 span {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .style-h1::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 1em;
-    background: linear-gradient(to bottom, var(--gold), var(--accent));
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  /* ─── H3 ─── */
-  .style-h3 {
-    font-size: clamp(15px, 2.5vw, 20px);
-    font-weight: 700;
-    color: var(--accent2);
-    margin: 24px 0 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .style-h3::before {
-    content: '◆';
-    color: var(--gold);
-    font-size: 0.7em;
-  }
-
-  /* ─── TEXT ─── */
-  .style-text {
-    text-align: left;
-    font-size: clamp(13px, 2vw, 15px);
-    line-height: 1.85;
-    color: var(--text);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin: 12px 0;
-    white-space: pre-line;
-  }
-
-  /* ─── BUTTON ─── */
-  .style-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 16px 0;
-    padding: 14px 32px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    border-radius: 50px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(108,63,255,0.4);
-    transition: all 0.25s;
-    letter-spacing: 0.3px;
-  }
-  .style-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(108,63,255,0.6);
-  }
-  .btn-wrap { text-align: center; }
-
-  /* ─── IMAGE ─── */
-  .style-image {
-    width: 100%;
-    max-width: 700px;
-    display: block;
-    margin: 16px auto;
+  /* РАМКИ БЛОКОВ */
+  .content-block {
+    background: var(--block-bg);
     border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    padding: 25px 20px 25px; 
+    margin-top: 40px; 
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+    border-top: 3px solid var(--primary);
+    position: relative;
+    animation: fadeUp 0.6s ease-out backwards;
+  }
+  
+  .content-block:nth-child(1) { margin-top: 10px; padding-top: 30px; border-top: 1px solid var(--border-color);}
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ─── TABS ─── */
-  .tabs-container { margin: 20px 0 0; }
-  .tabs-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 0;
-    flex-wrap: wrap;
+  /* ТИПОГРАФИКА */
+  .block-Title { 
+    font-size: 34px; font-weight: 800; margin: 0 0 5px; 
+    color: var(--primary-dark); text-align: center; line-height: 1.2;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .block-Subtitle { 
+    font-size: 14px; font-weight: 700; margin-bottom: 25px; 
+    color: var(--accent); text-align: center; text-transform: uppercase; 
+  }
+  
+  /* H1 СКРУГЛЕННАЯ РАМКА */
+  .h1-wrapper { 
+    position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+    width: 90%; text-align: center; z-index: 10;
+  }
+  .block-H1 { 
+    font-size: 16px; font-weight: 800; color: #fff; 
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    padding: 8px 24px; display: inline-block;
+    text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
+    border: 2px solid var(--accent); border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+  .block-H1.has-link { cursor: pointer; text-decoration: none; transition: 0.3s; }
+  .block-H1.has-link:hover { transform: scale(1.05); }
+  .link-icon { font-size: 14px; margin-left: 5px; color: var(--accent-light); }
+
+  .h1-wrapper + div { margin-top: 10px !important; }
+
+  /* H3 */
+  .block-H3 { 
+    font-size: 16px; font-weight: 800; margin: 20px 0 10px; 
+    color: var(--primary-dark); text-align: center;
+  }
+  
+  /* TEXT - выравнивание по левому краю (как в задаче) */
+  .block-Text { 
+    font-size: 14px; margin-bottom: 15px; color: var(--text-muted); 
+    line-height: 1.5; text-align: left; font-weight: 600;
+  }
+  
+  /* ИЗОБРАЖЕНИЕ */
+  .block-Image { text-align: center; margin: 20px 0; }
+  .block-Image img { max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-soft); }
+
+  /* КНОПКА */
+  .btn-container { text-align: center; margin: 25px 0 10px; }
+  .btn-main {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: #fff; padding: 14px 30px; border-radius: 50px;
+    font-weight: 800; font-size: 15px; text-transform: uppercase; 
+    letter-spacing: 1px; text-decoration: none;
+    box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4); transition: 0.3s;
+  }
+  .btn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.6); }
+
+  /* ВКЛАДКИ (TABS) */
+  .tabs-header {
+    display: flex; gap: 8px; margin: 20px 0 15px;
+    background: var(--bg-page); padding: 4px; border-radius: 12px;
   }
   .tab-btn {
-    padding: 10px 22px;
-    border-radius: 12px 12px 0 0;
-    border: 1px solid var(--border);
-    border-bottom: none;
-    background: var(--card);
-    color: var(--text2);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s;
-    position: relative;
-    top: 1px;
+    flex: 1; background: transparent; border: none;
+    color: var(--text-muted); padding: 12px 5px; border-radius: 8px;
+    font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.3s;
   }
   .tab-btn.active {
-    background: var(--card2);
-    color: #fff;
-    border-color: var(--accent);
-    border-bottom: 1px solid var(--card2);
+    background: var(--block-bg); color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  .tab-panel {
-    display: none;
-    background: var(--card2);
-    border: 1px solid var(--accent);
-    border-radius: 0 12px 12px 12px;
-    padding: 24px;
-  }
-  .tab-panel.active { display: block; }
+  .tab-pane { animation: fadeIn 0.4s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  /* ─── REWARD TABLE ─── */
+  /* ТАБЛИЦА НАГРАД (4 КОЛОНКИ) */
+  .reward-table-container { 
+    margin: 15px 0; overflow-x: auto; border-radius: 12px; 
+    border: 1px solid var(--accent); box-shadow: var(--shadow-soft);
+  }
   .reward-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 6px;
-    margin: 8px 0;
+    width: 100%; min-width: 400px; border-collapse: collapse; background: #fff; 
   }
-  .reward-table thead tr th {
-    padding: 12px 10px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: rgba(255,215,0,0.08);
-    border-top: 1px solid rgba(255,215,0,0.2);
-    border-bottom: 1px solid rgba(255,215,0,0.2);
+  .reward-table th {
+    background: var(--primary); color: #fff; font-weight: 800;
+    padding: 12px 6px; border-bottom: 2px solid var(--accent);
+    text-align: center; font-size: 11px; text-transform: uppercase;
   }
-  .reward-table thead tr th:first-child {
-    border-radius: 8px 0 0 8px;
-    border-left: 1px solid rgba(255,215,0,0.2);
+  .reward-table td {
+    padding: 10px 6px; border-bottom: 1px solid var(--border-color);
+    text-align: center; font-weight: 700; vertical-align: middle; 
+    font-size: 12px; color: var(--text-main);
   }
-  .reward-table thead tr th:last-child {
-    border-radius: 0 8px 8px 0;
-    border-right: 1px solid rgba(255,215,0,0.2);
-  }
-  .reward-table tbody tr td {
-    padding: 10px 10px;
-    text-align: center;
-    font-size: 13px;
-    background: rgba(255,255,255,0.03);
-    border-top: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    transition: background 0.2s;
-  }
-  .reward-table tbody tr:hover td {
-    background: rgba(108,63,255,0.12);
-  }
-  .reward-table tbody tr td:first-child {
-    border-radius: 8px 0 0 8px;
-    border-left: 1px solid rgba(255,255,255,0.05);
-    font-weight: 700;
-    color: #fff;
-  }
-  .reward-table tbody tr td:last-child {
-    border-radius: 0 8px 8px 0;
-    border-right: 1px solid rgba(255,255,255,0.05);
-  }
-  .reward-table tbody tr td img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-  }
-  /* top rows highlight */
-  .reward-table tbody tr.top1 td { background: rgba(255,215,0,0.12); }
-  .reward-table tbody tr.top2 td { background: rgba(192,192,192,0.1); }
-  .reward-table tbody tr.top3 td { background: rgba(205,127,50,0.1); }
-  .reward-table tbody tr.top1:hover td { background: rgba(255,215,0,0.2); }
-  .reward-table tbody tr.top2:hover td { background: rgba(192,192,192,0.18); }
-  .reward-table tbody tr.top3:hover td { background: rgba(205,127,50,0.18); }
+  .reward-table tr:last-child td { border-bottom: none; }
+  .reward-table tr:nth-child(even) { background: var(--bg-page); }
+  .reward-icon { width: 45px; height: 45px; object-fit: contain; display: block; margin: 0 auto;}
 
-  .cell-num {
-    color: var(--gold2);
-    font-weight: 700;
-    font-size: 13px;
-  }
-
-  /* ─── HERO DECORATION ─── */
-  .hero-decor {
-    text-align: center;
-    font-size: 60px;
-    margin-bottom: 16px;
-    filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  /* ─── LOADING ─── */
-  .loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    flex-direction: column;
-    gap: 16px;
-    font-size: 18px;
-    color: var(--text2);
-  }
-  .spinner {
-    width: 48px; height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ─── FADE IN ─── */
-  .block { animation: fadeUp 0.5s ease both; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 600px) {
-    .block { padding: 40px 14px; }
-    .reward-table tbody tr td img { width: 36px; height: 36px; }
-    .tab-btn { padding: 8px 14px; font-size: 12px; }
-  }
+  .loading { text-align: center; padding: 50px; font-weight: 700; color: var(--primary); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% {opacity: 0.5;} 50% {opacity: 1;} 100% {opacity: 0.5;} }
 </style>
 </head>
 <body>
 
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('ru')">🇷🇺 RU</button>
-  <button class="lang-btn" onclick="setLang('uz')">🇺🇿 UZ</button>
-</div>
+  <div class="container">
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-ru" onclick="switchLang('ru')">RU</button>
+      <button class="lang-btn" id="btn-uz" onclick="switchLang('uz')">UZ</button>
+    </div>
 
-<div id="app">
-  <div class="loading">
-    <div class="spinner"></div>
-    <span>Загрузка...</span>
+    <div id="content">
+      <div class="loading">Загрузка данных... ⏳</div>
+    </div>
   </div>
-</div>
 
 <script>
-// ══════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════
-const SHEET_ID  = '1CqZoDGdr4OgsdXh9sFhGmhz4AAyhtX9TQWWuzSCdfRw';
-const GID       = '0';
-const CSV_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+const sheetID = "1CqZoDGdr4OgsdXh9sFhGmhz4AAyhtX9TQWWuzSCdfRw";
+const sheetGID = "0"; 
 
-let currentLang = 'ru';
-let parsedData  = [];
+let currentLang = 'ru'; 
+let pageBlocks = []; 
 
-// ══════════════════════════════════════════
-//  LANG
-// ══════════════════════════════════════════
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b =>
-    b.classList.toggle('active', b.textContent.includes(lang.toUpperCase()))
-  );
-  // swap visible text
-  document.querySelectorAll('[data-ru]').forEach(el => {
-    el.textContent = lang === 'ru' ? el.dataset.ru : (el.dataset.uz || el.dataset.ru);
-  });
-  document.querySelectorAll('[data-ru-html]').forEach(el => {
-    el.innerHTML = lang === 'ru' ? el.dataset.ruHtml : (el.dataset.uzHtml || el.dataset.ruHtml);
-  });
-  // swap images
-  document.querySelectorAll('[data-img-ru]').forEach(el => {
-    el.src = lang === 'ru' ? el.dataset.imgRu : (el.dataset.imgUz || el.dataset.imgRu);
-  });
-  // swap button href
-  document.querySelectorAll('[data-href-ru]').forEach(el => {
-    el.href = lang === 'ru' ? el.dataset.hrefRu : (el.dataset.hrefUz || el.dataset.hrefRu);
-  });
+// Умная функция разделения, которая не ломает URL адреса слэшами
+function parseRowData(str, maxCols) {
+  let parts = str.split('/');
+  if (parts.length <= maxCols) return parts;
+  let result = parts.slice(0, maxCols - 1);
+  result.push(parts.slice(maxCols - 1).join('/')); // Собираем остаток обратно в URL
+  return result;
 }
 
-// ══════════════════════════════════════════
-//  CSV PARSER (handles quoted fields)
-// ══════════════════════════════════════════
-function parseCSV(text) {
-  const rows = [];
-  const lines = text.split('\n');
-  for (let line of lines) {
-    const cols = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') {
-        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
-        else inQ = !inQ;
-      } else if (c === ',' && !inQ) {
-        cols.push(cur.trim()); cur = '';
-      } else cur += c;
-    }
-    cols.push(cur.trim());
-    rows.push(cols);
-  }
-  return rows;
-}
-
-// ══════════════════════════════════════════
-//  FETCH
-// ══════════════════════════════════════════
 async function fetchData() {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tq=SELECT%20A,B,C,D,E&gid=${sheetGID}&_=${Date.now()}`;
+  
   try {
-    const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error('Network error');
+    const res = await fetch(url);
     const text = await res.text();
-    return processCSV(text);
-  } catch(e) {
-    // fallback to embedded data
-    return getEmbeddedData();
-  }
-}
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows || [];
 
-function processCSV(text) {
-  const rows = parseCSV(text);
-  // skip header row
-  const data = [];
-  for (let i = 1; i < rows.length; i++) {
-    const r = rows[i];
-    if (!r || r.length < 3) continue;
-    data.push({
-      block:     r[0] || '',
-      parent:    r[1] || '',
-      stylecode: (r[2] || '').trim(),
-      ru:        r[3] || '',
-      uz:        r[4] || ''
+    let currentBlockId = null;
+    let currentBlock = null;
+    const getVal = (col) => (col && col.v !== null && col.v !== undefined) ? String(col.v).trim() : "";
+
+    rows.forEach(r => {
+      let blockId = getVal(r.c[0]) || currentBlockId || "";
+      if (!blockId) return;
+
+      if (blockId !== currentBlockId) {
+        currentBlockId = blockId;
+        currentBlock = { id: blockId, items: [], tabs: {}, tabNames: [] };
+        pageBlocks.push(currentBlock);
+      }
+
+      let parent = getVal(r.c[1]);
+      let rawStyle = getVal(r.c[2]);
+      let ru = getVal(r.c[3]);
+      let uz = getVal(r.c[4]);
+
+      if (!rawStyle || rawStyle.toLowerCase() === 'stylecode') return;
+
+      // Нормализация стилей
+      let style = rawStyle.toLowerCase();
+      if (style === 'title') style = 'Title';
+      else if (style === 'subtitle') style = 'Subtitle';
+      else if (style === 'text') style = 'Text';
+      else if (style === 'button') style = 'Button';
+      else if (style === 'h1') style = 'H1';
+      else if (style === 'h3') style = 'H3';
+      else if (style === 'tab') style = 'Tab';
+      else if (style === 'rewardtable') style = 'RewardTable';
+      else if (style === 'image') style = 'Image';
+
+      let rowData = { style, parent, ru, uz };
+
+      if (style === 'Tab') {
+        let tabId = `tab_${currentBlockId}_${currentBlock.tabNames.length}`;
+        currentBlock.tabNames.push({ nameRu: ru, nameUz: uz || ru, origParent: ru, id: tabId });
+        currentBlock.tabs[tabId] = [];
+      } else if (parent) {
+        let tabInfo = currentBlock.tabNames.find(t => t.origParent === parent);
+        if (tabInfo) currentBlock.tabs[tabInfo.id].push(rowData);
+      } else {
+        currentBlock.items.push(rowData);
+      }
     });
+
+    renderPage();
+  } catch (e) {
+    document.getElementById("content").innerHTML = `<div class="loading">❌ Ошибка загрузки данных</div>`;
+    console.error(e);
   }
-  return data;
 }
 
-// ══════════════════════════════════════════
-//  EMBEDDED FALLBACK DATA
-// ══════════════════════════════════════════
-function getEmbeddedData() {
-  return [
-    {block:'1', parent:'', stylecode:'Title', ru:'Семейный ПК', uz:'Oilaviy PK'},
-    {block:'1', parent:'', stylecode:'subtitle', ru:'специальный режим ПК с участием участников вашей семьи как внутри так и между другими семьями СНГ региона', uz:''},
-    {block:'1', parent:'', stylecode:'Text', ru:'💠 Чем больше ваша семья играет и набирает баллов, тем больше награда для семьи!\n💠 Играйте в «Семейный ПК» весь месяц и получите «Орла»\n💠 Чтобы баллы Семейного ПК были засчитаны, просим следовать инструкции по правильному запуску Семейного ПК', uz:''},
-    {block:'1', parent:'', stylecode:'Button', ru:'Главная страница мероприятия', uz:''},
-    {block:'2', parent:'', stylecode:'H1', ru:'Условия участия', uz:''},
-    {block:'2', parent:'', stylecode:'Text', ru:'💠 Система засчитывает только баллы, набранные в действительных ПК в режиме Командный РК: Семья\n💠 Действительный ПК — общее количество бобов, полученных в Семейном ПК, превышает 20 бобов\n💠 Семья получает 1 балл за каждый 1 боб, полученный в Семейном ПК каждым участников семьи\n💠 Система начисляет дополнительные баллы за результат ПК:\n🔸 Победителю — +5 баллов\n🔸 Проигравшему — 0 баллов\n🔸 За ничью — +1 балл', uz:''},
-    {block:'3', parent:'', stylecode:'H1', ru:'Награды мероприятия', uz:'Tadbir mukofotlari', _h1link:'https://activity.bigo.tv/live/act/act_24020/index.html'},
-    {block:'3', parent:'', stylecode:'Tab', ru:'Бобы 🫛', uz:'Loviyalar 🫛'},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ🏆/Порог🎯/Бобы🫛/Орел', uz:'Top🏆/Chegara🎯/Loviya🫛/Burgut'},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ🥇/4 000 000/475 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ🥈/3 500 000/380 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ🥉/3 000 000/315 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ-4/2 500 000/250 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ-5/2 000 000/200 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ 6-10/1 500 000/150 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Топ 11-20/1 000 000/100 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0D/13/A1/s_obAFzP7BGIZgZrAAAPFGAlfrkAA93sQIkBi0AAA8s194.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/500 000/50 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0A/13/9A/s_obAFzP6hmIPd0lAAANx-gf6F0AA93BwNUhzMAAA3f325.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/250 000/25 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0A/13/9A/s_obAFzP6hmIPd0lAAANx-gf6F0AA93BwNUhzMAAA3f325.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/100 000/10 000/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0A/13/9A/s_obAFzP6hmIPd0lAAANx-gf6F0AA93BwNUhzMAAA3f325.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/50 000/2 500/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0A/13/9A/s_obAFzP6hmIPd0lAAANx-gf6F0AA93BwNUhzMAAA3f325.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/10 000/500/https://static-comm.bigolive.tv/as/pgc-live-manage/7h1/M0A/13/9A/s_obAFzP6hmIPd0lAAANx-gf6F0AA93BwNUhzMAAA3f325.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'RewardTable', ru:'Без Рейтинга/2 000/0/https://static-comm.bigolive.tv/as/pgc-live-manage/4hd/03ecpQ.png', uz:''},
-    {block:'3', parent:'Бобы 🫛', stylecode:'H3', ru:'Условия получения награды', uz:'Mukofot olish shartlari'},
-    {block:'3', parent:'Бобы 🫛', stylecode:'Text', ru:'💠 Награда в бобах направляется основателю семьи в начале следующего месяца\n💠 Для получения награды за Топ 1–20 необходимо одновременно выполнить два условия:\n— занять соответствующее место в рейтинге мероприятия;\n— преодолеть установленный для данного места порог баллов.\n💠 Если семья заняла место в Топ 1-20 и преодолела порог баллов, награда начисляется в соответствии с занятым местом, даже если количество набранных баллов соответствует более высокому порогу.\n💠 Если семья заняла место в Топ 1-20, но не преодолела порог баллов, награда начисляется по наибольшему достигнутому порогу, соответствующему фактически набранным баллам.\n💠 Если семья не вошла в Топ-20 рейтинга, награда начисляется только по порогу баллов.', uz:''},
-    {block:'3', parent:'', stylecode:'Tab', ru:'Виртуальные предметы 🪄', uz:'Virtual buyumlar 🪄'},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Рейтинг🏆/Эффект входа✨/Рамка🧩/Значок🎖️', uz:'Reyting🏆/Kirish effekti✨/Ramka🧩/Nishon🎖️'},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Топ🥇/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/0hVOII.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/1iLriA.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s1/0tqADj.png', uz:''},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Топ🥈/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/0J71HH.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/1jMtUd.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s1/0cZu53.png', uz:''},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Топ🥉/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/245jzL.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s1/1WtKYk.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/0xlOmR.png', uz:''},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Топ-4/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/03roQx.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/15iH05.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/0rfKB1.png', uz:''},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'RewardTable', ru:'Топ-5/https://static-comm.bigolive.tv/as/pgc-live-manage/3s1/0ywdlT.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s2/0obtIO.png/https://static-comm.bigolive.tv/as/pgc-live-manage/3s1/2TPKcC.png', uz:''},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'H3', ru:'Условия получения награды', uz:'Mukofot olish shartlari'},
-    {block:'3', parent:'Виртуальные предметы 🪄', stylecode:'Text', ru:'💠 Виртуальные награды будут направлены всем участникам Топ 1-5 семей в начале следующего календарного месяца', uz:''},
-    {block:'4', parent:'', stylecode:'H1', ru:'Инструкция', uz:'Yo\'riqnoma'},
-    {block:'4', parent:'', stylecode:'Image', ru:'https://i.ibb.co/k2cZZVkQ/image.jpg', uz:'https://i.ibb.co/Ng0L6NhY/Oilaviy-Pk-qanday-boshlanadi.jpg'},
-    {block:'4', parent:'', stylecode:'Button', ru:'Начать Прямой эфир/bigolive://livebroadcast?roomtype=1&source_from=11', uz:'Jonli efirni boshlash/bigolive://livebroadcast?roomtype=1&source_from=11'},
-  ];
+function switchLang(lang) {
+  currentLang = lang;
+  document.getElementById("btn-ru").classList.toggle("active", lang === 'ru');
+  document.getElementById("btn-uz").classList.toggle("active", lang === 'uz');
+  renderPage();
 }
 
-// ══════════════════════════════════════════
-//  RENDER HELPERS
-// ══════════════════════════════════════════
-function isImageUrl(s) {
-  return s && (s.startsWith('http') && (s.match(/\.(png|jpg|jpeg|gif|webp|svg)/i) || s.includes('bigolive') || s.includes('ibb.co')));
+window.switchTab = function(btn, tabId) {
+  let parentHeader = btn.parentElement;
+  parentHeader.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  let contentArea = parentHeader.nextElementSibling;
+  contentArea.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+  contentArea.querySelector('#' + tabId).style.display = 'block';
 }
 
-function renderCell(val) {
-  if (isImageUrl(val)) return `<img src="${val}" alt="reward" loading="lazy">`;
-  if (val === '0') return `<span style="color:var(--text2)">—</span>`;
-  // format numbers with spaces
-  if (/^\d[\d ]+$/.test(val)) return `<span class="cell-num">${val}</span>`;
-  return `<span>${val}</span>`;
-}
+function renderElementGroup(rows) {
+  let out = "";
+  let inTable = false;
 
-function getRowClass(label) {
-  if (label.includes('🥇') || label.includes('Топ🥇')) return 'top1';
-  if (label.includes('🥈') || label.includes('Топ🥈')) return 'top2';
-  if (label.includes('🥉') || label.includes('Топ🥉')) return 'top3';
-  return '';
-}
+  rows.forEach((row, index) => {
+    let content = currentLang === 'ru' ? row.ru : row.uz;
+    if (!content) content = row.ru; 
+    if (!content) return; 
 
-// ══════════════════════════════════════════
-//  BUILD PAGE
-// ══════════════════════════════════════════
-function buildPage(data) {
-  // group by block
-  const blocks = {};
-  for (const row of data) {
-    const b = row.block || 'x';
-    if (!blocks[b]) blocks[b] = [];
-    blocks[b].push(row);
-  }
-
-  let html = '<div class="page">';
-
-  for (const [blockId, rows] of Object.entries(blocks)) {
-    html += `<div class="block" style="animation-delay:${Object.keys(blocks).indexOf(blockId)*0.08}s">`;
-
-    // Hero decoration for block 1
-    if (blockId === '1') {
-      html += `<div class="hero-decor">👨‍👩‍👧‍👦</div>`;
-    }
-
-    // Process rows — collect tabs first
-    let i = 0;
-    while (i < rows.length) {
-      const row = rows[i];
-      const sc  = row.stylecode.toLowerCase();
-
-      if (sc === 'title') {
-        html += `<h1 class="style-title" data-ru="${esc(row.ru)}" data-uz="${esc(row.uz||row.ru)}">${esc(row.ru)}</h1>`;
-        i++; continue;
+    if (row.style === 'RewardTable') {
+      if (!inTable) {
+        out += `<div class="reward-table-container"><table class="reward-table"><tbody>`;
+        inTable = true;
       }
-
-      if (sc === 'subtitle') {
-        html += `<p class="style-subtitle" data-ru="${esc(row.ru)}" data-uz="${esc(row.uz||row.ru)}">${esc(row.ru)}</p>`;
-        i++; continue;
-      }
-
-      if (sc === 'h1') {
-        // check if RU contains a link (name/url)
-        const parts = row.ru.split('/');
-        const link  = parts.length >= 2 && parts[1].startsWith('http') ? parts[1] : null;
-        const text  = link ? parts[0] : row.ru;
-        const uzText = row.uz ? row.uz.split('/')[0] : text;
-        if (link) {
-          html += `<h2 class="style-h1"><a href="${link}" target="_blank" data-ru="${esc(text)}" data-uz="${esc(uzText)}">${esc(text)}</a></h2>`;
+      let cols = parseRowData(content, 4); // Делим строго на 4 колонки
+      out += `<tr>`;
+      let isHeader = (index === 0 || rows[index-1].style !== 'RewardTable');
+      cols.forEach(col => {
+        let val = col.trim();
+        let tag = isHeader ? 'th' : 'td';
+        if (val.startsWith('http')) {
+          out += `<${tag}><img src="${val}" class="reward-icon" alt="reward"></${tag}>`;
         } else {
-          html += `<h2 class="style-h1"><span data-ru="${esc(text)}" data-uz="${esc(uzText)}">${esc(text)}</span></h2>`;
-        }
-        i++; continue;
-      }
-
-      if (sc === 'h3') {
-        html += `<h3 class="style-h3" data-ru="${esc(row.ru)}" data-uz="${esc(row.uz||row.ru)}">${esc(row.ru)}</h3>`;
-        i++; continue;
-      }
-
-      if (sc === 'text') {
-        const ruText = row.ru.replace(/</g,'&lt;');
-        const uzText = (row.uz||row.ru).replace(/</g,'&lt;');
-        html += `<div class="style-text" data-ru-html="${encodeURIComponent(ruText)}" data-uz-html="${encodeURIComponent(uzText)}">${ruText}</div>`;
-        i++; continue;
-      }
-
-      if (sc === 'button') {
-        const parts   = row.ru.split('/');
-        const label   = parts[0];
-        const href    = parts.slice(1).join('/') || '#';
-        const uzParts = row.uz ? row.uz.split('/') : parts;
-        const uzLabel = uzParts[0] || label;
-        const uzHref  = uzParts.slice(1).join('/') || href;
-        html += `<div class="btn-wrap"><a class="style-button" href="${href}" data-href-ru="${href}" data-href-uz="${uzHref}" target="_blank">
-          <span data-ru="${esc(label)}" data-uz="${esc(uzLabel)}">${esc(label)}</span> →
-        </a></div>`;
-        i++; continue;
-      }
-
-      if (sc === 'image') {
-        const ruImg = row.ru.trim();
-        const uzImg = row.uz.trim() || ruImg;
-        html += `<img class="style-image" src="${ruImg}" data-img-ru="${ruImg}" data-img-uz="${uzImg}" alt="instruction" loading="lazy">`;
-        i++; continue;
-      }
-
-      // ─── TABS ───
-      if (sc === 'tab') {
-        // collect all consecutive Tab groups from this block
-        const tabGroups = [];
-        let j = i;
-        while (j < rows.length && rows[j].stylecode.toLowerCase() === 'tab') {
-          const tabLabel = rows[j];
-          const tabName  = tabLabel.ru;
-          const tabUz    = tabLabel.uz || tabName;
-          // collect children (same parent = tabName)
-          const children = rows.filter(r => r.parent === tabName);
-          tabGroups.push({ labelRu: tabName, labelUz: tabUz, children });
-          j++;
-        }
-        i = j;
-
-        const tid = 'tabs_' + blockId + '_' + i;
-        html += `<div class="tabs-container" id="${tid}">`;
-        html += `<div class="tabs-nav">`;
-        tabGroups.forEach((tg, idx) => {
-          html += `<button class="tab-btn${idx===0?' active':''}" 
-            data-ru="${esc(tg.labelRu)}" data-uz="${esc(tg.labelUz)}"
-            onclick="switchTab('${tid}',${idx})">${esc(tg.labelRu)}</button>`;
-        });
-        html += `</div>`;
-
-        tabGroups.forEach((tg, idx) => {
-          html += `<div class="tab-panel${idx===0?' active':''}">`;
-          html += renderTabContent(tg.children);
-          html += `</div>`;
-        });
-        html += `</div>`;
-        continue;
-      }
-
-      i++;
-    }
-
-    html += `</div>`; // end block
-  }
-
-  html += '</div>';
-  return html;
-}
-
-// ══════════════════════════════════════════
-//  RENDER TAB CONTENT
-// ══════════════════════════════════════════
-function renderTabContent(rows) {
-  let html = '';
-  let i = 0;
-
-  // separate RewardTable rows (first = header)
-  const rewardRows = rows.filter(r => r.stylecode === 'RewardTable');
-  const otherRows  = rows.filter(r => r.stylecode !== 'RewardTable');
-
-  if (rewardRows.length > 0) {
-    const headerRow = rewardRows[0];
-    const dataRows  = rewardRows.slice(1);
-    const headers   = headerRow.ru.split('/');
-    const headersUz = (headerRow.uz || headerRow.ru).split('/');
-
-    html += `<div style="overflow-x:auto"><table class="reward-table">`;
-    html += `<thead><tr>`;
-    headers.forEach((h, hi) => {
-      html += `<th data-ru="${esc(h)}" data-uz="${esc(headersUz[hi]||h)}">${esc(h)}</th>`;
-    });
-    html += `</tr></thead><tbody>`;
-
-    dataRows.forEach(row => {
-      const cols   = row.ru.split('/');
-      const colsUz = row.uz ? row.uz.split('/') : cols;
-      const cls    = getRowClass(cols[0]);
-      html += `<tr class="${cls}">`;
-      cols.forEach((c, ci) => {
-        const uzC = colsUz[ci] || c;
-        // if both are images use data-img approach
-        if (isImageUrl(c)) {
-          html += `<td><img src="${c}" ${isImageUrl(uzC)?`data-img-ru="${c}" data-img-uz="${uzC}"`:''}  alt="" loading="lazy" style="width:48px;height:48px;object-fit:contain;border-radius:8px;display:block;margin:0 auto"></td>`;
-        } else {
-          html += `<td data-ru="${esc(c)}" data-uz="${esc(uzC)}">${renderCell(c)}</td>`;
+          out += `<${tag}>${val.replace(/\n/g, '<br>')}</${tag}>`;
         }
       });
-      html += `</tr>`;
-    });
+      out += `</tr>`;
+    } else {
+      if (inTable) { out += `</tbody></table></div>`; inTable = false; }
 
-    html += `</tbody></table></div>`;
-  }
-
-  // other rows (H3, Text, etc.)
-  for (const row of otherRows) {
-    const sc = row.stylecode.toLowerCase();
-    if (sc === 'h3') {
-      html += `<h3 class="style-h3" data-ru="${esc(row.ru)}" data-uz="${esc(row.uz||row.ru)}">${esc(row.ru)}</h3>`;
-    } else if (sc === 'text') {
-      const ruText = row.ru.replace(/</g,'&lt;');
-      const uzText = (row.uz||row.ru).replace(/</g,'&lt;');
-      html += `<div class="style-text" data-ru-html="${encodeURIComponent(ruText)}" data-uz-html="${encodeURIComponent(uzText)}">${ruText}</div>`;
+      if (row.style === 'H1') {
+        let parts = parseRowData(content, 2);
+        if(parts[1]) out += `<div class="h1-wrapper"><a href="${parts[1]}" target="_blank" class="block-H1 has-link">${parts[0]} <span class="link-icon">🔗</span></a></div>`;
+        else out += `<div class="h1-wrapper"><div class="block-H1">${parts[0]}</div></div>`;
+      }
+      else if (row.style === 'Button') {
+        let parts = parseRowData(content, 2);
+        let name = parts[0] ? parts[0].trim() : '';
+        let link = parts[1] ? parts[1].trim() : '#';
+        out += `<div class="btn-container"><a href="${link}" target="_blank" class="btn-main">${name}</a></div>`;
+      }
+      else if (row.style === 'Image') {
+        out += `<div class="block-Image"><img src="${content}" alt="Image"></div>`;
+      }
+      else if (row.style === 'Title' || row.style === 'Subtitle' || row.style === 'H3' || row.style === 'Text') {
+        out += `<div class="block-${row.style}">${content.replace(/\n/g, '<br>')}</div>`;
+      }
     }
-  }
-
-  return html;
-}
-
-// ══════════════════════════════════════════
-//  TAB SWITCH
-// ══════════════════════════════════════════
-function switchTab(containerId, idx) {
-  const container = document.getElementById(containerId);
-  container.querySelectorAll('.tab-btn').forEach((b,i)   => b.classList.toggle('active', i===idx));
-  container.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
-}
-
-// ══════════════════════════════════════════
-//  ESCAPE
-// ══════════════════════════════════════════
-function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-async function init() {
-  const data = await fetchData();
-  parsedData = data;
-  document.getElementById('app').innerHTML = buildPage(data);
-
-  // Fix encoded text blocks
-  document.querySelectorAll('[data-ru-html]').forEach(el => {
-    el.innerHTML = decodeURIComponent(el.dataset.ruHtml);
   });
+  if (inTable) out += `</tbody></table></div>`;
+  
+  return out;
 }
 
-init();
+function renderPage() {
+  const container = document.getElementById("content");
+  let html = "";
+
+  pageBlocks.forEach((block, bIndex) => {
+    html += `<div class="content-block" style="animation-delay: ${bIndex * 0.1}s">`;
+    
+    // 1. Рисуем элементы блока (до вкладок)
+    html += renderElementGroup(block.items);
+
+    // 2. Рисуем вкладки (если они есть)
+    if (block.tabNames.length > 0) {
+      html += `<div class="tabs-header">`;
+      block.tabNames.forEach((tab, index) => {
+        let tabName = currentLang === 'ru' ? tab.nameRu : tab.nameUz;
+        let activeClass = index === 0 ? 'active' : '';
+        html += `<button class="tab-btn ${activeClass}" onclick="switchTab(this, '${tab.id}')">${tabName}</button>`;
+      });
+      html += `</div>`;
+
+      html += `<div class="tabs-content">`;
+      block.tabNames.forEach((tab, index) => {
+        let activeStyle = index === 0 ? 'display:block;' : 'display:none;';
+        html += `<div class="tab-pane" id="${tab.id}" style="${activeStyle}">`;
+        html += renderElementGroup(block.tabs[tab.id] || []);
+        html += `</div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `</div>`; 
+  });
+
+  container.innerHTML = html;
+}
+
+fetchData();
 </script>
 </body>
 </html>
