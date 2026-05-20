@@ -35,44 +35,24 @@
   }
 
   body::before {
-    content: '';
-    position: absolute;
-    top: -150px; left: 50%;
-    transform: translateX(-50%);
+    content: ''; position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
     width: 100vw; max-width: 600px; height: 500px;
     background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(13, 92, 70, 0.05) 40%, transparent 70%);
     z-index: -1;
   }
 
-  .container {
-    max-width: 550px; 
-    margin: 0 auto;
-    padding: 15px 15px 50px;
-  }
+  .container { max-width: 550px; margin: 0 auto; padding: 15px 15px 50px; }
 
   /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
-  .lang-switcher {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 30px;
-    position: sticky;
-    top: 15px;
-    z-index: 100;
-  }
+  .lang-switcher { display: flex; justify-content: flex-end; margin-bottom: 30px; position: sticky; top: 15px; z-index: 100; }
   .lang-switcher::before {
-    content: '';
-    position: absolute; right: 0; top: 0;
-    background: var(--block-bg);
-    border-radius: 30px;
-    width: 120px; height: 100%;
-    z-index: -1;
-    border: 1px solid var(--kurban-gold);
-    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.15);
+    content: ''; position: absolute; right: 0; top: 0; background: var(--block-bg);
+    border-radius: 30px; width: 120px; height: 100%; z-index: -1;
+    border: 1px solid var(--kurban-gold); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.15);
   }
   .lang-btn {
     background: transparent; border: none; color: var(--kurban-green);
-    padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 13px;
-    cursor: pointer; transition: 0.3s;
+    padding: 8px 18px; border-radius: 20px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.3s;
   }
   .lang-btn.active { background: var(--kurban-green); color: #fff; }
 
@@ -80,15 +60,11 @@
   .content-block {
     background: var(--block-bg); border-radius: 16px; padding: 25px 20px 25px;
     margin-top: 40px; margin-bottom: 25px; box-shadow: var(--shadow-soft);
-    border: 1px solid var(--kurban-gold); position: relative;
-    animation: fadeUp 0.6s ease-out backwards;
+    border: 1px solid var(--kurban-gold); position: relative; animation: fadeUp 0.6s ease-out backwards;
   }
   .content-block:nth-child(1) { margin-top: 10px; padding-top: 25px;} 
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
   /* ЦЕНТРИРОВАНИЕ ТЕКСТОВ */
   .block-Title, .block-Subtitle, .block-Text, .block-H1, .block-H2, .block-H3 { text-align: center; }
@@ -112,11 +88,7 @@
   .block-H2::after { content: ''; display: block; width: 50px; height: 3px; background: var(--kurban-gold); border-radius: 2px; margin: 6px auto 0; }
   
   .block-H3 { font-size: 16px; font-weight: 700; margin: 15px 0 5px; color: var(--kurban-gold);}
-  
-  /* ОБЫЧНЫЙ ТЕКСТ (по центру) */
   .block-Text { font-size: 15px; margin-bottom: 5px; color: var(--text-muted); line-height: 1.4;}
-  
-  /* RULE ТЕКСТ (по ширине) */
   .block-Rule { font-size: 14px; margin-bottom: 10px; color: var(--text-muted); line-height: 1.5; text-align: justify; font-weight: 600;}
   
   .block-Image { text-align: center; margin: 20px 0; }
@@ -124,12 +96,10 @@
 
   /* ВКЛАДКИ */
   .tabs-header {
-    display: flex; gap: 6px; margin: 20px 0 15px; 
-    background: var(--kurban-gold-light); padding: 4px; border-radius: 12px; border: 1px solid var(--kurban-gold);
+    display: flex; gap: 6px; margin: 20px 0 15px; background: var(--kurban-gold-light); padding: 4px; border-radius: 12px; border: 1px solid var(--kurban-gold);
   }
   .tab-btn {
-    flex: 1; background: transparent; border: none; color: var(--kurban-green-dark); 
-    padding: 10px 2px; border-radius: 8px; font-weight: 800; font-size: 11px; 
+    flex: 1; background: transparent; border: none; color: var(--kurban-green-dark); padding: 10px 2px; border-radius: 8px; font-weight: 800; font-size: 11px; 
     cursor: pointer; transition: 0.3s; text-transform: uppercase; word-break: break-word; line-height: 1.2;
   }
   .tab-btn.active { background: var(--kurban-green); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -139,46 +109,47 @@
   /* СЕТКА ПОДАРКОВ GIFTCARD */
   .grid-giftcard { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 20px 0; }
   .giftcard-item {
-    background: #fff; border: 1px solid var(--border-color); border-radius: 10px;
-    padding: 6px 4px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 6px 4px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   }
-  .giftcard-item img {
-    width: 85%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 6px;
-    background: var(--kurban-gold-light); border-radius: 6px; padding: 2px;
-  }
+  .giftcard-item img { width: 85%; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 6px; background: var(--kurban-gold-light); border-radius: 6px; padding: 2px;}
   .giftcard-item span { font-weight: 700; font-size: 9px; display: block; line-height: 1.2; color: var(--text-main); word-break: break-word; text-transform: uppercase;}
 
-  /* CARDSHOW */
-  .cardshow-wrapper { margin: 30px auto 20px; max-width: 280px; }
+  /* CARDSHOW (ИЗМЕНЕН ВНЕШНИЙ ВИД И СТРЕЛКИ) */
+  .cardshow-wrapper { margin: 30px auto 20px; max-width: 320px; }
   .cardshow {
-    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
-    gap: 15px; position: relative; justify-items: center; align-items: center;
+    display: grid; grid-template-columns: repeat(3, auto); grid-template-rows: repeat(3, auto);
+    justify-content: center; gap: 25px 25px; position: relative; justify-items: center; align-items: center;
   }
+  
+  /* Угловые карточки - вытянутые */
   .cs-item {
-    width: 65px; height: 65px; background: var(--block-bg); border: 2px solid var(--kurban-gold);
-    border-radius: 12px; box-shadow: var(--shadow-soft); padding: 4px;
+    width: 60px; height: 85px; background: var(--block-bg); border: 2px solid var(--kurban-gold);
+    border-radius: 10px; box-shadow: var(--shadow-soft); padding: 3px;
     display: flex; align-items: center; justify-content: center; z-index: 2; position: relative;
   }
-  .cs-item img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px;}
+  .cs-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px;}
   
+  /* Центральная карточка - большая с зеленой рамкой */
   .cs-center {
-    grid-column: 2; grid-row: 2; width: 85px; height: 85px;
-    border-color: var(--kurban-green); background: var(--kurban-gold-light);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); z-index: 3; animation: pulseGlow 2s infinite alternate;
+    grid-column: 2; grid-row: 2; width: 85px; height: 120px;
+    border: 2px solid var(--kurban-green-dark); background: var(--block-bg);
+    border-radius: 12px; padding: 4px;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); z-index: 3; animation: pulseGlow 2s infinite alternate;
   }
-  @keyframes pulseGlow { from { transform: scale(1); } to { transform: scale(1.08); box-shadow: 0 0 25px rgba(212, 175, 55, 0.7); } }
+  @keyframes pulseGlow { from { transform: scale(1); } to { transform: scale(1.06); box-shadow: 0 0 45px rgba(212, 175, 55, 0.7); } }
   
   .cs-1 { grid-column: 1; grid-row: 1; }
   .cs-2 { grid-column: 3; grid-row: 1; }
   .cs-3 { grid-column: 3; grid-row: 3; }
   .cs-4 { grid-column: 1; grid-row: 3; }
 
-  .cs-arrow { position: absolute; width: 28px; height: 28px; color: var(--kurban-gold); z-index: 1; opacity: 0.9; }
-  .arr-tl { top: 21%; left: 21%; }
-  .arr-tr { top: 21%; right: 21%; }
-  .arr-br { bottom: 21%; right: 21%; }
-  .arr-bl { bottom: 21%; left: 21%; }
+  /* Стрелочки, выходящие из углов */
+  .cs-arr { position: absolute; width: 20px; height: 20px; color: var(--kurban-gold); z-index: 1;}
+  .cs-arr-1 { bottom: -18px; right: -18px; } /* Выходит из правого нижнего угла ↘ */
+  .cs-arr-2 { bottom: -18px; left: -18px; }  /* Выходит из левого нижнего угла ↙ */
+  .cs-arr-3 { top: -18px; left: -18px; }     /* Выходит из левого верхнего угла ↖ */
+  .cs-arr-4 { top: -18px; right: -18px; }    /* Выходит из правого верхнего угла ↗ */
 
   /* КНОПКИ */
   .grid-Button { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 25px 0 10px; }
@@ -196,9 +167,7 @@
     background: var(--kurban-green); color: #fff; font-weight: 800; padding: 14px 10px; border-bottom: 2px solid var(--kurban-gold);
     text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
   }
-  .reward-table td {
-    padding: 12px 10px; border-bottom: 1px solid var(--border-color); text-align: center; font-weight: 700; vertical-align: middle; font-size: 13px; color: var(--kurban-green-dark);
-  }
+  .reward-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); text-align: center; font-weight: 700; vertical-align: middle; font-size: 13px; color: var(--kurban-green-dark); }
   .reward-table tr:last-child td { border-bottom: none; }
   .reward-table tr:nth-child(even) { background: var(--kurban-gold-light); }
   .reward-icon { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto;}
@@ -265,7 +234,7 @@ async function fetchData() {
       if (style === 'title') style = 'Title';
       else if (style === 'subtitle') style = 'Subtitle';
       else if (style === 'text') style = 'Text';
-      else if (style === 'rule') style = 'Rule'; // Добавлена обработка Rule
+      else if (style === 'rule') style = 'Rule';
       else if (style === 'button') style = 'Button';
       else if (style === 'h1') style = 'H1';
       else if (style === 'h2') style = 'H2';
@@ -350,7 +319,6 @@ function renderElementGroup(rows) {
       let cards = content.split(',');
       cards.forEach(cardStr => {
         if (!cardStr.trim()) return;
-        
         let parts = cardStr.split(/<br\s*\/?>/i);
         let cardName = parts[0] ? parts[0].trim() : '';
         let imgLink = parts[1] ? parts[1].trim() : '';
@@ -364,21 +332,31 @@ function renderElementGroup(rows) {
         }
       });
     }
+    // ОБНОВЛЕННЫЙ CARDSHOW (Синтез)
     else if (row.style === 'cardshow') {
       let urls = content.split(',').map(s => s.trim());
       out += `
       <div class="cardshow-wrapper">
         <div class="cardshow">
-          <div class="cs-item cs-1"><img src="${urls[0] || ''}"></div>
-          <div class="cs-item cs-2"><img src="${urls[1] || ''}"></div>
-          <div class="cs-item cs-center"><img src="${urls[4] || ''}"></div>
-          <div class="cs-item cs-4"><img src="${urls[3] || ''}"></div>
-          <div class="cs-item cs-3"><img src="${urls[2] || ''}"></div>
-          
-          <svg class="cs-arrow arr-tl" viewBox="0 0 24 24"><path fill="currentColor" d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></svg>
-          <svg class="cs-arrow arr-tr" viewBox="0 0 24 24"><path fill="currentColor" d="M15 5v2h-6.59L20 18.59 18.59 20 7 8.41V15H5V5h10z"/></svg>
-          <svg class="cs-arrow arr-br" viewBox="0 0 24 24"><path fill="currentColor" d="M15 19v-2h-6.59L20 5.41 18.59 4 7 15.59V9H5v10h10z"/></svg>
-          <svg class="cs-arrow arr-bl" viewBox="0 0 24 24"><path fill="currentColor" d="M9 19v-2h6.59L4 5.41 5.41 4 17 15.59V9h2v10H9z"/></svg>
+          <div class="cs-item cs-1">
+            <img src="${urls[0] || ''}">
+            <svg class="cs-arr cs-arr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="4" x2="20" y2="20"></line><polyline points="11 20 20 20 20 11"></polyline></svg>
+          </div>
+          <div class="cs-item cs-2">
+            <img src="${urls[1] || ''}">
+            <svg class="cs-arr cs-arr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="4" x2="4" y2="20"></line><polyline points="13 20 4 20 4 11"></polyline></svg>
+          </div>
+          <div class="cs-item cs-center">
+            <img src="${urls[4] || ''}">
+          </div>
+          <div class="cs-item cs-4">
+            <img src="${urls[3] || ''}">
+            <svg class="cs-arr cs-arr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="20" y2="4"></line><polyline points="11 4 20 4 20 13"></polyline></svg>
+          </div>
+          <div class="cs-item cs-3">
+            <img src="${urls[2] || ''}">
+            <svg class="cs-arr cs-arr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="20" x2="4" y2="4"></line><polyline points="13 4 4 4 4 13"></polyline></svg>
+          </div>
         </div>
       </div>`;
     }
@@ -390,7 +368,6 @@ function renderElementGroup(rows) {
     else if (row.style === 'H1') {
       out += `<div class="h1-wrapper"><div class="block-H1">${content}</div></div>`;
     }
-    // Добавлен Rule в список стандартных текстовых блоков
     else if (row.style === 'Title' || row.style === 'Subtitle' || row.style === 'H2' || row.style === 'H3' || row.style === 'Text' || row.style === 'Rule') {
       out += `<div class="block-${row.style}">${content.replace(/\n/g, '<br>')}</div>`;
     }
