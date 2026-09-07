@@ -3,330 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейный Турнир</title>
+    <title>Мультичат Олимп</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0e14;
-            --panel-bg: #151a23;
-            --accent-gold: #ffd700;
-            --accent-purple: #8a2be2;
-            --text-color: #ffffff;
-            --border-color: #2a3242;
+            --bg-marble: #f4efea;
+            --gold-primary: #d4a359;
+            --gold-gradient: linear-gradient(180deg, #ffe8ad 0%, #c89542 100%);
+            --gold-border: #e6c280;
+            --text-dark: #1e132b;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 20px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             font-family: 'Exo 2', sans-serif;
+            background-color: var(--bg-marble);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 232, 173, 0.5), transparent 70%),
+                linear-gradient(to bottom, #fdfbf7, #eae3d9);
+            color: var(--text-dark);
             display: flex;
             justify-content: center;
+            min-height: 100vh;
+            padding: 20px 10px;
         }
 
-        .container {
+        .wrapper {
             width: 100%;
-            max-width: 1000px;
-            background: var(--panel-bg);
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 3px solid var(--gold-border);
+            border-radius: 20px;
             padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        /* --- Анимация карточек --- */
-        .cards-showcase {
+            box-shadow: 0 15px 35px rgba(184, 134, 11, 0.15);
             position: relative;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            overflow: hidden;
         }
 
-        .card {
-            width: 18%;
-            height: 220px;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            border: 2px solid var(--accent-gold);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInCard 0.5s forwards;
-        }
-
-        .card:nth-child(1) { animation-delay: 0.2s; }
-        .card:nth-child(2) { animation-delay: 0.5s; }
-        .card:nth-child(3) { animation-delay: 0.8s; }
-        .card:nth-child(4) { animation-delay: 1.1s; }
-        
-        .card.fifth {
-            background: linear-gradient(135deg, #8e44ad, #f1c40f);
-            animation: fadeInFifth 0.3s forwards;
-            animation-delay: 1.8s;
-        }
-
-        @keyframes fadeInCard {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInFifth {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Эффект молнии */
-        .lightning-bolt {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 18%;
-            width: 4px;
-            background: #fff;
-            box-shadow: 0 0 15px 5px #fff, 0 0 25px 10px #00d8ff;
-            opacity: 0;
-            animation: strike 0.2s 1.7s ease-out;
-            pointer-events: none;
-        }
-
-        @keyframes strike {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* --- Вкладки --- */
-        .tabs {
-            display: flex;
-            gap: 10px;
+        /* --- Шапка Олимп --- */
+        .header-title {
+            text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
         }
 
-        .tab-btn {
-            padding: 12px 24px;
-            font-size: 24px;
-            font-family: 'Exo 2', sans-serif;
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+        }
+
+        .header-title .subtitle {
+            font-size: 18px;
             font-weight: 700;
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            transition: 0.3s;
+            color: #2c1a4d;
+            margin-top: 5px;
         }
 
-        .tab-btn.active {
-            color: var(--accent-gold);
-            border-bottom: 4px solid var(--accent-gold);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* --- Стилизация контента --- */
-        h1 {
-            font-size: 22px;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            color: var(--accent-gold);
-        }
-
-        h2 {
-            font-size: 22px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 20px;
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-
-        .text-info {
-            font-size: 20px;
-            border: 2px solid var(--accent-purple);
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin: 12px 0;
-            background: rgba(138, 43, 226, 0.1);
-            display: inline-block;
-            font-weight: 600;
-        }
-
-        .text-attention {
-            font-size: 16px;
-            font-style: italic;
-            color: #ff6b6b;
-            margin: 8px 0;
-        }
-
-        /* --- Таблица --- */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-        }
-
-        th, td {
-            font-size: 20px;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: rgba(255, 215, 0, 0.1);
-            color: var(--accent-gold);
-        }
-
-        /* --- Подарки (Сетка 5 в ряд) --- */
-        .gifts-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
+        /* --- Блок с картами и анимацией --- */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 12px;
-            margin-top: 16px;
-        }
-
-        .gift-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .gift-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .gifts-grid { grid-template-columns: repeat(2, 1fr); }
-            .card { font-size: 12px; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-
-    <div class="cards-showcase">
-        <div class="card">Карта 1</div>
-        <div class="card">Карта 2</div>
-        <div class="card">Карта 3</div>
-        <div class="card">Карта 4</div>
-        <div class="lightning-bolt"></div>
-        <div class="card fifth">Карта 5 ⚡</div>
-    </div>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'tab1')">Условия</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab2')">Правила Мероприятия</button>
-    </div>
-
-    <div id="tab1" class="tab-content active">
-        <h1>Общие Условия</h1>
-        <p>🎁 Отправляйте и 💝 Получайте Семейные подарки</p>
-        <div class="text-info">100 алмазов/бобов = 1 карточка</div>
-        <p>🚀 Без ограничений: чем больше дарите и получаете семейных подарков, тем больше карточек получаете!</p>
-        <p>🎉 Соберите билет из 4 уникальных карточек и участвуйте в розыгрыше призового фонда</p>
-        <br>
-        <div class="text-info">Призовой Фонд до 525,000 бобов!</div>
-
-        <h1>🏆 ПРИЗОВОЙ ФОНД</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Уровень 🎖️</th>
-                    <th>Порог 🎟</th>
-                    <th>Призовой фонд (бобы) 💰</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>★☆☆☆☆</td><td>30 000</td><td>50 000</td></tr>
-                <tr><td>★★☆☆☆</td><td>40 000</td><td>300 000</td></tr>
-                <tr><td>★★★☆☆</td><td>55 000</td><td>400 000</td></tr>
-                <tr><td>★★★★☆</td><td>75 000</td><td>700 000</td></tr>
-            </tbody>
-        </table>
-
-        <h1>Семейные Подарки</h1>
-        <div class="gifts-grid">
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 1</p></div>
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 2</p></div>
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 3</p></div>
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 4</p></div>
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 5</p></div>
-            <div class="gift-card"><img src="https://via.placeholder.com/100" alt="Подарок"><p>Подарок 6</p></div>
-        </div>
-    </div>
-
-    <div id="tab2" class="tab-content">
-        <h1>Правила Мероприятия</h1>
-        
-        <h2>Отправка и Получение Семейных подарков</h2>
-        <p>➤ Отправляйте любимым ведущим Семейные подарки</p>
-        <p>➤ Получайте от дарителей Семейные подарки</p>
-        <p>➤ Количество не ограничено — чем больше дарите и получаете, тем больше карточек у вас будет:</p>
-        <div class="text-info">100 алмазов/бобов = 1 карточка</div>
-        <p class="text-attention">⚠️ Cтатистика учитывает отправку и получение Семейных подарков только внутри СНГ региона</p>
-
-        <h2>Сбор карточных сетов</h2>
-        <p>➤ Соберите сет из 4-х уникальных карточек и объедините их в специальный билет "Dream Team".</p>
-        <p>➤ Только участники семей, обладающие хотя бы одним билетом "Dream Team", смогут претендовать на розыгрыш призового фонда.</p>
-
-        <h2>Участники</h2>
-        <p>➤ В мероприятии участвуют только члены СНГ семей</p>
-        <p>➤ Аккаунт участника должен быть в СНГ регионе</p>
-
-        <h2>Призовой фонд</h2>
-        <p>➤ Призовой фонд зависит от общего количества собранных билетов всеми участниками семей СНГ Региона за время мерпоприятия</p>
-        <p>➤ Если общее количество собранных билетов не пройдет порог в 30,000 билетов, призовой фонд не будет распределён.</p>
-
-        <h2>Распределение награды</h2>
-        <p>➤ Награда будет распределена по формуле:</p>
-        <div class="text-info">(ваши собранные билеты / общее количество билетов) х Призовой фонд</div>
-        <p>➤ Чем больше у вас билетов — тем выше ваша доля от призового фонда.</p>
-        <p>➤ Награды будут отправлены в течение 7 дней после окончания мероприятия</p>
-
-        <h2>Увеличение Призового фонда</h2>
-        <p>➤ Собирайте больше билетов — увеличивайте призовой фонд.</p>
-        <p>➤ Размер призового фонда зависит от общего количества собранных билетов.</p>
-    </div>
-
-</div>
-
-<script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].classList.remove("active");
-        }
-        tablinks = document.getElementsByClassName("tab-btn");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].classList.remove("active");
-        }
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
-</script>
-
-</body>
-</html>
+            margin: 30px 0;
+            perspective: 1000px;
+            min-height: 180px;
+            position
